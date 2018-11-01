@@ -1,14 +1,31 @@
-class CommandDefinition:
+from shrub.Base import EvergreenBuilder
+from shrub.Base import NAME_KEY
+from shrub.Base import RECURSE_KEY
+
+
+class CommandDefinition(EvergreenBuilder):
 
     def __init__(self):
-        self.function_name = ""
-        self.execution_type = ""
-        self.display_name = ""
-        self.command_name = ""
-        self.timeout = 0
-        self.variants = []
-        self.vars = {}
-        self.params = {}
+        self._function_name = None
+        self._execution_type = None
+        self._display_name = None
+        self._command_name = None
+        self._timeout = None
+        self._variants = []
+        self._vars = {}
+        self._params = {}
+
+    def _yaml_map(self):
+        return {
+            "_function_name": {NAME_KEY: "func", RECURSE_KEY: False},
+            "_execution_type": {NAME_KEY: "type", RECURSE_KEY: False},
+            "_display_name": {NAME_KEY: "display_name", RECURSE_KEY: False},
+            "_command_name": {NAME_KEY: "command", RECURSE_KEY: False},
+            "_timeout": {NAME_KEY: "timeout_secs", RECURSE_KEY: False},
+            "_variants": {NAME_KEY: "variants", RECURSE_KEY: False},
+            "_vars": {NAME_KEY: "vars", RECURSE_KEY: False},
+            "_params": {NAME_KEY: "params", RECURSE_KEY: False},
+        }
 
     def validate(self):
         return self
@@ -17,82 +34,102 @@ class CommandDefinition:
         return self
 
     def function(self, fun_name):
-        self.function_name = fun_name
+        self._function_name = fun_name
         return self
 
     def type(self, execution_type):
-        self.execution_type = execution_type
+        self._execution_type = execution_type
         return self
 
     def name(self, name):
-        self.display_name = name
+        self._display_name = name
         return self
 
     def command(self, name):
-        self.command_name = name
+        self._command_name = name
         return self
 
     def timeout(self, timeout):
-        self.timeout = timeout
+        self._timeout = timeout
         return self
 
     def variants(self, variants):
-        self.variants += variants
+        self._variants += variants
         return self
 
     def reset_vars(self):
-        self.vars = {}
+        self._vars = {}
         return self
 
     def reset_params(self):
-        self.params = {}
+        self._params = {}
         return self
 
     def replace_vars(self, new_vars):
-        self.vars = new_vars
+        self._vars = new_vars
         return self
 
     def replace_params(self, new_params):
-        self.params = new_params
+        self._params = new_params
         return self
 
     def param(self, k, v):
-        self.params[k] = v
+        self._params[k] = v
         return self
 
     def extend_params(self, ps):
         for k, v in ps:
-            self.params[k] = v
+            self._params[k] = v
 
         return self
 
     def var(self, k, v):
-        self.vars[k] = v
+        self._vars[k] = v
         return self
 
-    def extend_vars(self, vs):
-        for k, v in vs:
-            self.vars[k] = v
+    def vars(self, vs):
+        for k in vs:
+            self._vars[k] = vs[k]
 
         return self
 
+    def to_map(self):
+        obj = {}
 
-class CommandSequence:
-    def __init__(self, cs=[]):
-        self.cmd_seq = cs
+        self._add_if_defined(obj, "_function_name")
+        self._add_if_defined(obj, "_execution_type")
+        self._add_if_defined(obj, "_display_name")
+        self._add_if_defined(obj, "_command_name")
+        self._add_if_defined(obj, "_timeout")
+        self._add_if_defined(obj, "_variants")
+        self._add_if_defined(obj, "_vars")
+        self._add_if_defined(obj, "_params")
+
+        return obj
+
+
+class CommandSequence(EvergreenBuilder):
+    def __init__(self):
+        self._cmd_seq = []
+
+    def _yaml_map(self):
+        return {}
 
     def len(self):
-        return len(self.cmd_seq)
+        return len(self._cmd_seq)
 
     def command(self):
         c = CommandDefinition()
-        self.cmd_seq.append(c)
+        self._cmd_seq.append(c)
         return c
 
     def add(self, cmd):
-        self.cmd_seq.append(cmd)
+        self._cmd_seq.append(cmd)
         return self
 
     def extend(self, cmds):
-        self.cmd_seq += cmds
+        self._cmd_seq += cmds
         return self
+
+    def to_map(self):
+        return [c.to_map() for c in self._cmd_seq]

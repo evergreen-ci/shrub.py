@@ -1,17 +1,21 @@
+from shrub.Base import EvergreenBuilder
+from shrub.Base import NAME_KEY
+from shrub.Base import RECURSE_KEY
 from shrub.Command import CommandSequence
 from shrub.Command import CommandDefinition
 
 
-class Task:
+class Task(EvergreenBuilder):
     def __init__(self, name):
         self._name = name
         self._priority = None
         self._dependencies = []
-        self._commands = CommandSequence
+        self._commands = CommandSequence()
 
-        self._yaml_map = {
-            "_priority": "priority",
-            "_dependencies": "depends_on",
+    def _yaml_map(self):
+        return {
+            "_priority": {NAME_KEY: "priority", RECURSE_KEY: False},
+            "_dependencies": {NAME_KEY: "depends_on", RECURSE_KEY: True},
         }
 
     def get_name(self):
@@ -21,7 +25,7 @@ class Task:
         self._priority = value
         return self
 
-    def command(self, cmds):
+    def commands(self, cmds):
         for c in cmds:
             self._commands.add(c.validate())
 
@@ -32,25 +36,24 @@ class Task:
         self._commands.add(c)
         return c
 
-    def dependency(self, deps):
-        self._dependencies += deps
+    def dependency(self, dep):
+        self._dependencies.append(dep)
         return self
 
-    def function(self, fns):
+    def functions(self, fns):
         for fn in fns:
-            self._commands.add(CommandDefinition(fn))
+            self._commands.add(fn)
 
         return self
 
-    def _add_if_defined(self, obj, prop):
-        value = getattr(self, prop)
-        if value and len(value) > 0:
-            obj[self._yaml_map[prop]] = value
+    def function_with_vars(self, name, var_map):
+        self._commands.add(CommandDefinition().name(name).vars(var_map))
+        return self
 
-    def to_obj(self):
+    def to_map(self):
         obj = {
             "name": self._name,
-            "commands": self._commands.to_obj()
+            "commands": self._commands.to_map(),
         }
 
         self._add_if_defined(obj, "_priority")
@@ -59,13 +62,22 @@ class Task:
         return obj
 
 
-class TaskDependency:
+class TaskDependency(EvergreenBuilder):
     def __init__(self, name, variant):
-        self.name = name
-        self.variant = variant
+        self._name = name
+        self._variant = variant
+
+    def _yaml_map(self):
+        return {}
+
+    def to_map(self):
+        return {
+            "name": self._name,
+            "variant": self._variant,
+        }
 
 
-class TaskGroup:
+class TaskGroup(EvergreenBuilder):
     def __init__(self):
         self._group_name = ""
         self._max_hosts = None
@@ -76,13 +88,14 @@ class TaskGroup:
         self._teardown_group = None
         self._timeout = None
 
-        self._yaml_map = {
-            "_max_hosts": "max_hosts",
-            "_setup_group": "setup_group",
-            "_setup_task": "setup_task",
-            "_teardown_task": "teardown_task",
-            "_teardown_group": "teardown_group",
-            "_timeout": "timeout",
+    def _yaml_map(self):
+        return {
+            "_max_hosts": {NAME_KEY: "max_hosts", RECURSE_KEY: False},
+            "_setup_group": {NAME_KEY: "setup_group", RECURSE_KEY: True},
+            "_setup_task": {NAME_KEY: "setup_task", RECURSE_KEY: True},
+            "_teardown_task": {NAME_KEY: "teardown_task", RECURSE_KEY: True},
+            "_teardown_group": {NAME_KEY: "teardown_group", RECURSE_KEY: True},
+            "_timeout": {NAME_KEY: "timeout", RECURSE_KEY: False},
         }
 
     def get_name(self):
@@ -100,16 +113,12 @@ class TaskGroup:
         self._tasks += ids
         return self
 
-    def _add_if_defined(self, obj, prop):
-        value = getattr(self, prop)
-        if value and len(value) > 0:
-            obj[self._yaml_map[prop]] = value
-
     def to_map(self):
         obj = {
             "name": self._group_name,
             "tasks": self._tasks
         }
+
         self._add_if_defined(obj, "_max_hosts")
         self._add_if_defined(obj, "_setup_group")
         self._add_if_defined(obj, "_max_hosts")

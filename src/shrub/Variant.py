@@ -1,5 +1,9 @@
+from shrub.Base import EvergreenBuilder
+from shrub.Base import NAME_KEY
+from shrub.Base import RECURSE_KEY
 
-class Variant:
+
+class Variant(EvergreenBuilder):
     def __init__(self, name):
         self._build_name = name
         self._build_display_name = None
@@ -9,13 +13,14 @@ class Variant:
         self._expansions = []
         self._display_task_specs = []
 
-        self._yaml_map = {
-            "_build_display_name": "display_name",
-            "_batch_time_secs": "batchtime",
-            "_task_specs": "tasks",
-            "_distro_runs_on": "run_on",
-            "_expansions": "expansions",
-            "_display_task_specs": "display_tasks",
+    def _yaml_map(self):
+        return {
+            "_build_display_name": {NAME_KEY: "display_name", RECURSE_KEY: False},
+            "_batch_time_secs": {NAME_KEY: "batchtime", RECURSE_KEY: False},
+            "_task_specs": {NAME_KEY: "tasks", RECURSE_KEY: True},
+            "_distro_runs_on": {NAME_KEY: "run_on", RECURSE_KEY: False},
+            "_expansions": {NAME_KEY: "expansions", RECURSE_KEY: False},
+            "_display_task_specs": {NAME_KEY: "display_tasks", RECURSE_KEY: True},
         }
 
     def get_name(self):
@@ -53,12 +58,7 @@ class Variant:
         self._display_task_specs.append(display_task)
         return self
 
-    def _add_if_defined(self, obj, prop):
-        value = getattr(self, prop)
-        if value and len(value) > 0:
-            obj[self._yaml_map[prop]] = value
-
-    def to_obj(self):
+    def to_map(self):
         obj = {}
 
         self._add_if_defined(obj, "_build_name")
