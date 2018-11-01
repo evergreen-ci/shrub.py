@@ -1,4 +1,4 @@
-from Task import Task
+from shrub.Task import Task
 
 
 def _find_name_in_list(list, name):

@@ -1,5 +1,5 @@
-from Command import CommandSequence
-from Command import Command
+from shrub.Command import CommandSequence
+from shrub.Command import CommandDefinition
 
 
 class Task:
@@ -28,7 +28,7 @@ class Task:
         return self
 
     def add_command(self):
-        c = Command()
+        c = CommandDefinition()
         self._commands.add(c)
         return c
 
@@ -59,18 +59,10 @@ class Task:
         return obj
 
 
-
-
 class TaskDependency:
     def __init__(self, name, variant):
         self.name = name
         self.variant = variant
-
-def add_to_object(obj, property, marshall_map):
-    if getattr(obj, property):
-        obj.[marshall_map[property]] = value
-
-    return obj
 
 
 class TaskGroup:
