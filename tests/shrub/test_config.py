@@ -1,8 +1,5 @@
 import pytest
 from shrub.Config import Configuration
-from shrub.Command import CommandDefinition
-from shrub.Task import Task
-from shrub.Task import TaskDependency
 
 
 class TestConfiguration:

@@ -50,25 +50,17 @@ class Variant(EvergreenBuilder):
         self._expansions[k] = v
         return self
 
-    def add_tasks(self, names):
+    def tasks(self, names):
         for name in [name for name in names if names != ""]:
             self._task_specs.append(TaskSpec(name))
 
-    def display_tasks(self, display_task):
+    def display_task(self, display_task):
         self._display_task_specs.append(display_task)
         return self
 
     def to_map(self):
         obj = {}
-
-        self._add_if_defined(obj, "_build_name")
-        self._add_if_defined(obj, "_build_display_name")
-        self._add_if_defined(obj, "_batch_time_secs")
-        self._add_if_defined(obj, "_task_specs")
-        self._add_if_defined(obj, "_distro_runs_on")
-        self._add_if_defined(obj, "_expansions")
-        self._add_if_defined(obj, "_display_task_specs")
-
+        self._add_defined_attribs(obj, self._yaml_map().keys())
         return obj
 
 

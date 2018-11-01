@@ -56,9 +56,7 @@ class Task(EvergreenBuilder):
             "commands": self._commands.to_map(),
         }
 
-        self._add_if_defined(obj, "_priority")
-        self._add_if_defined(obj, "_dependencies")
-
+        self._add_defined_attribs(obj, self._yaml_map().keys())
         return obj
 
 
@@ -118,12 +116,5 @@ class TaskGroup(EvergreenBuilder):
             "name": self._group_name,
             "tasks": self._tasks
         }
-
-        self._add_if_defined(obj, "_max_hosts")
-        self._add_if_defined(obj, "_setup_group")
-        self._add_if_defined(obj, "_max_hosts")
-        self._add_if_defined(obj, "_setup_group")
-        self._add_if_defined(obj, "_setup_task")
-        self._add_if_defined(obj, "_teardown_task")
-
+        self._add_defined_attribs(obj, self._yaml_map().keys())
         return obj
