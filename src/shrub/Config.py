@@ -1,5 +1,3 @@
-import yaml
-
 from shrub.Base import EvergreenBuilder
 from shrub.Base import NAME_KEY
 from shrub.Base import RECURSE_KEY
@@ -127,6 +125,3 @@ class Configuration(EvergreenBuilder):
         obj = {}
         self._add_defined_attribs(obj, self._yaml_map().keys())
         return obj
-
-    def to_yaml(self):
-        return yaml.dump(self.to_map(), default_flow_style=False)

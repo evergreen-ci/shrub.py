@@ -1,6 +1,8 @@
 import abc
 import collections
 
+import yaml
+
 
 RECURSE_KEY = "recurse"
 NAME_KEY = "name"
@@ -32,3 +34,6 @@ class EvergreenBuilder:
         """Add any defined attributes in the given list to the given map."""
         for attrib in attrib_list:
             self._add_if_defined(obj, attrib)
+
+    def to_yaml(self):
+        return yaml.dump(self.to_map(), default_flow_style=False)

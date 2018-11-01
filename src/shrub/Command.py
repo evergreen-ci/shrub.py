@@ -27,12 +27,6 @@ class CommandDefinition(EvergreenBuilder):
             "_params": {NAME_KEY: "params", RECURSE_KEY: False},
         }
 
-    def validate(self):
-        return self
-
-    def resolve(self):
-        return self
-
     def function(self, fun_name):
         self._function_name = fun_name
         return self
@@ -53,34 +47,12 @@ class CommandDefinition(EvergreenBuilder):
         self._timeout = timeout
         return self
 
+    def variant(self, variant):
+        self._variants.append(variant)
+        return self
+
     def variants(self, variants):
         self._variants += variants
-        return self
-
-    def reset_vars(self):
-        self._vars = {}
-        return self
-
-    def reset_params(self):
-        self._params = {}
-        return self
-
-    def replace_vars(self, new_vars):
-        self._vars = new_vars
-        return self
-
-    def replace_params(self, new_params):
-        self._params = new_params
-        return self
-
-    def param(self, k, v):
-        self._params[k] = v
-        return self
-
-    def extend_params(self, ps):
-        for k, v in ps:
-            self._params[k] = v
-
         return self
 
     def var(self, k, v):
@@ -93,18 +65,19 @@ class CommandDefinition(EvergreenBuilder):
 
         return self
 
+    def param(self, k, v):
+        self._params[k] = v
+        return self
+
+    def params(self, ps):
+        for k in ps:
+            self._params[k] = ps[k]
+
+        return self
+
     def to_map(self):
         obj = {}
-
-        self._add_if_defined(obj, "_function_name")
-        self._add_if_defined(obj, "_execution_type")
-        self._add_if_defined(obj, "_display_name")
-        self._add_if_defined(obj, "_command_name")
-        self._add_if_defined(obj, "_timeout")
-        self._add_if_defined(obj, "_variants")
-        self._add_if_defined(obj, "_vars")
-        self._add_if_defined(obj, "_params")
-
+        self._add_defined_attribs(obj, self._yaml_map().keys())
         return obj
 
 
