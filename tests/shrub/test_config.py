@@ -1,5 +1,5 @@
 import pytest
-from shrub.Config import Configuration
+from shrub.config import Configuration
 
 
 class TestConfiguration:

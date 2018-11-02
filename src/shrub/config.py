@@ -1,10 +1,10 @@
-from shrub.Base import EvergreenBuilder
-from shrub.Base import NAME_KEY
-from shrub.Base import RECURSE_KEY
-from shrub.Command import CommandSequence
-from shrub.Task import Task
-from shrub.Task import TaskGroup
-from shrub.Variant import Variant
+from shrub.base import EvergreenBuilder
+from shrub.base import NAME_KEY
+from shrub.base import RECURSE_KEY
+from shrub.command import CommandSequence
+from shrub.task import Task
+from shrub.task import TaskGroup
+from shrub.variant import Variant
 
 
 def _find_name_in_list(name_list, name):

@@ -1,6 +1,6 @@
-from shrub.Base import EvergreenBuilder
-from shrub.Base import NAME_KEY
-from shrub.Base import RECURSE_KEY
+from shrub.base import EvergreenBuilder
+from shrub.base import NAME_KEY
+from shrub.base import RECURSE_KEY
 
 
 class Variant(EvergreenBuilder):

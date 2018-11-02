@@ -1,6 +1,6 @@
-from shrub.Variant import DisplayTaskDefinition
-from shrub.Variant import TaskSpec
-from shrub.Variant import Variant
+from shrub.variant import DisplayTaskDefinition
+from shrub.variant import TaskSpec
+from shrub.variant import Variant
 
 
 class TestVariant:

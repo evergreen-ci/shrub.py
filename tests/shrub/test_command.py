@@ -1,4 +1,4 @@
-from shrub.Command import CommandDefinition
+from shrub.command import CommandDefinition
 
 
 class TestCommandDefinition:

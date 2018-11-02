@@ -1,8 +1,8 @@
-from shrub.Base import EvergreenBuilder
-from shrub.Base import NAME_KEY
-from shrub.Base import RECURSE_KEY
-from shrub.Command import CommandSequence
-from shrub.Command import CommandDefinition
+from shrub.base import EvergreenBuilder
+from shrub.base import NAME_KEY
+from shrub.base import RECURSE_KEY
+from shrub.command import CommandSequence
+from shrub.command import CommandDefinition
 
 
 class Task(EvergreenBuilder):
