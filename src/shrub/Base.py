@@ -15,9 +15,11 @@ class EvergreenBuilder:
     def _yaml_map(self):
         """A map of values to yaml decorators."""
 
-    @abc.abstractmethod
     def to_map(self):
         """Convert this object to a pythonic map."""
+        obj = {}
+        self._add_defined_attribs(obj, self._yaml_map().keys())
+        return obj
 
     def _add_if_defined(self, obj, prop):
         """Add the specified property to the given object if it exists."""
