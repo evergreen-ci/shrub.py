@@ -27,10 +27,6 @@ class Variant(EvergreenBuilder):
     def get_name(self):
         return self._build_name
 
-    def name(self, name):
-        self._build_name = name
-        return self
-
     def display_name(self, name):
         self._build_display_name = name
         return self
@@ -43,10 +39,6 @@ class Variant(EvergreenBuilder):
         self._distro_run_on = [distro]
         return self
 
-    def task_spec(self, spec):
-        self._task_specs.append(spec)
-        return self
-
     def expansions(self, expansions):
         for k in expansions:
             self._expansions[k] = expansions[k]
@@ -56,12 +48,20 @@ class Variant(EvergreenBuilder):
         self._expansions[k] = v
         return self
 
-    def tasks(self, names):
-        for name in [name for name in names if names != ""]:
-            self._task_specs.append(TaskSpec(name))
+    def task(self, t):
+        self._task_specs.append(t)
+        return self
+
+    def tasks(self, tasks):
+        self._task_specs += tasks
+        return self
 
     def display_task(self, display_task):
         self._display_task_specs.append(display_task)
+        return self
+
+    def display_tasks(self, display_tasks):
+        self._display_task_specs += display_tasks
         return self
 
 
@@ -87,8 +87,8 @@ class TaskSpec(EvergreenBuilder):
 
 
 class DisplayTaskDefinition(EvergreenBuilder):
-    def __init__(self):
-        self._name = ""
+    def __init__(self, name):
+        self._name = name
         self._components = []
 
     def _yaml_map(self):
@@ -96,10 +96,6 @@ class DisplayTaskDefinition(EvergreenBuilder):
             "_name": {NAME_KEY: "name", RECURSE_KEY: False},
             "_components": {NAME_KEY: "execution_tasks", RECURSE_KEY: False},
         }
-
-    def name(self, name):
-        self._name = name
-        return self
 
     def component(self, component):
         self._components.append(component)

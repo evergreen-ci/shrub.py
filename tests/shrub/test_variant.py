@@ -32,6 +32,27 @@ class TestVariant:
         assert 'v1' in obj['expansions']['k1']
         assert 'v2' in obj['expansions']['k2']
 
+    def test_tasks_can_be_added(self):
+        v = Variant('variant name')
+        v.task(TaskSpec('task 0')) \
+            .tasks([TaskSpec('task 1'), TaskSpec('task 2')])
+
+        obj = v.to_map()
+        assert 'task 0' == obj['tasks'][0]['name']
+        assert 'task 1' == obj['tasks'][1]['name']
+        assert 'task 2' == obj['tasks'][2]['name']
+
+    def test_display_tasks_can_be_added(self):
+        v = Variant('variant name')
+        v.display_task(DisplayTaskDefinition('display task 0'))\
+            .display_tasks([DisplayTaskDefinition('display task 1'),
+                            DisplayTaskDefinition('display task 2')])
+
+        obj = v.to_map()
+        assert 'display task 0' == obj['display_tasks'][0]['name']
+        assert 'display task 1' == obj['display_tasks'][1]['name']
+        assert 'display task 2' == obj['display_tasks'][2]['name']
+
 
 class TestTaskSpec:
     def test_task_spec(self):
@@ -47,16 +68,14 @@ class TestTaskSpec:
 
 class TestDisplayTaskDefinition:
     def test_empty_display_task(self):
-        dt = DisplayTaskDefinition()
+        dt = DisplayTaskDefinition('name')
 
         obj = dt.to_map()
-
-        assert {} == obj
+        assert {'name': 'name'} == obj
 
     def test_items_added_to_display_task(self):
-        dt = DisplayTaskDefinition()
-        dt.name('display task name')\
-            .component('comp0')\
+        dt = DisplayTaskDefinition('display task name')
+        dt.component('comp0')\
             .components(['comp1', 'comp2'])
 
         obj = dt.to_map()
