@@ -45,3 +45,19 @@ class TestTaskGroup:
         assert 'task group 0' == obj['name']
         assert 5 == obj['max_hosts']
         assert 42 == obj['timeout']
+
+    def test_changing_name(self):
+        tg = TaskGroup('task group 0')
+        tg.name('new name')
+
+        assert 'new name' == tg.get_name()
+        assert 'new name' == tg.to_map()['name']
+
+    def test_adding_tasks(self):
+        tg = TaskGroup('task group 0')
+        tg.task('task 0').tasks(['task 1', 'task 2'])
+
+        obj = tg.to_map()
+        assert 'task 0' in obj['tasks']
+        assert 'task 1' in obj['tasks']
+        assert 'task 2' in obj['tasks']

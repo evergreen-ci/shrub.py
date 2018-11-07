@@ -111,7 +111,11 @@ class TaskGroup(EvergreenBuilder):
         self._timeout = timeout
         return self
 
-    def task(self, ids):
+    def task(self, id):
+        self._tasks.append(id)
+        return self
+
+    def tasks(self, ids):
         self._tasks += ids
         return self
 
