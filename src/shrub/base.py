@@ -1,5 +1,6 @@
 import abc
 import collections
+import json
 
 import yaml
 
@@ -39,3 +40,6 @@ class EvergreenBuilder:
 
     def to_yaml(self):
         return yaml.dump(self.to_map(), default_flow_style=False)
+
+    def to_json(self):
+        return json.dumps(self.to_map(), indent=4)

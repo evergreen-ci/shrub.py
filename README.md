@@ -2,5 +2,5 @@
 
 ## Overview
 
-Based on [shurb](https://github.com/evergreen-ci/shrub/), shrub.py is a library for programatically 
+Based on [shrub](https://github.com/evergreen-ci/shrub/), shrub.py is a library for programatically 
 building Evergreen project configurations.

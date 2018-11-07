@@ -34,7 +34,6 @@ class Configuration(EvergreenBuilder):
 
     def _yaml_map(self):
         return {
-            "_functions": {NAME_KEY: "functions", RECURSE_KEY: True},
             "_tasks": {NAME_KEY: "tasks", RECURSE_KEY: True},
             "_groups": {NAME_KEY: "task_groups", RECURSE_KEY: True},
             "_variants": {NAME_KEY: "buildvariants", RECURSE_KEY: True},
@@ -67,9 +66,8 @@ class Configuration(EvergreenBuilder):
         return g
 
     def function(self, name):
-        f = _find_name_in_list(self._functions, name)
-        if f:
-            return f
+        if name in self._functions:
+            return self._functions[name]
 
         seq = CommandSequence()
         self._functions[name] = seq
@@ -85,9 +83,6 @@ class Configuration(EvergreenBuilder):
         return v
 
     def pre(self, cmds):
-        if not self._pre:
-            self._pre = CommandSequence()
-
         self._pre = cmds
         return self
 
@@ -124,4 +119,9 @@ class Configuration(EvergreenBuilder):
     def to_map(self):
         obj = {}
         self._add_defined_attribs(obj, self._yaml_map().keys())
+
+        obj['functions'] = {}
+        for k in self._functions:
+            obj['functions'][k] = self._functions[k].to_map()
+
         return obj

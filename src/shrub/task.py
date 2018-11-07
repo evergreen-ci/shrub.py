@@ -76,8 +76,8 @@ class TaskDependency(EvergreenBuilder):
 
 
 class TaskGroup(EvergreenBuilder):
-    def __init__(self):
-        self._group_name = ""
+    def __init__(self, name):
+        self._group_name = name
         self._max_hosts = None
         self._setup_group = None
         self._setup_task = None
@@ -105,6 +105,10 @@ class TaskGroup(EvergreenBuilder):
 
     def max_hosts(self, num):
         self._max_hosts = num
+        return self
+
+    def timeout(self, timeout):
+        self._timeout = timeout
         return self
 
     def task(self, ids):
