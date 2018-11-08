@@ -2,6 +2,8 @@ import pytest
 
 from shrub.operations import ArchiveFormat
 from shrub.operations import AwsCopyFile
+from shrub.operations import CmdExec
+from shrub.operations import CmdExecShell
 from shrub.operations import CmdS3Put
 from shrub.operations import CmdS3Get
 from shrub.operations import CmdS3Copy
@@ -20,6 +22,80 @@ def command_name(c):
 
 def params(c):
     return c.resolve().to_map()['params']
+
+
+class TestCmdExec:
+    def test_command_basics(self):
+        c = CmdExec()
+
+        assert c.validate()
+        assert 'subprocess.exec' == command_name(c)
+
+    def test_parameters(self):
+        c = CmdExec()
+        c.background(True) \
+            .silent(True) \
+            .continue_on_err(True) \
+            .system_log(True) \
+            .combine_output(True) \
+            .ignore_stderr(True) \
+            .ignore_stdout(True) \
+            .working_dir('/tmp') \
+            .command('echo')\
+            .binary('/bin/echo')\
+            .arg('arg 0')\
+            .args(['arg 1', 'arg 2'])\
+            .env('k 0', 'v 0')\
+            .envs({'k 1': 'v 1', 'k 2': 'v 2'})
+
+        p = params(c)
+        assert p['background']
+        assert p['silent']
+        assert p['continue_on_err']
+        assert p['system_log']
+        assert p['redirect_standard_error_to_output']
+        assert p['ignore_standard_error']
+        assert p['ignore_standard_out']
+        assert '/tmp' == p['working_dir']
+        assert 'echo' == p['command']
+        assert '/bin/echo' == p['binary']
+        assert 'arg 0' in p['args']
+        assert 'arg 1' in p['args']
+        assert 'arg 2' in p['args']
+        assert 'v 0' == p['env']['k 0']
+        assert 'v 1' == p['env']['k 1']
+        assert 'v 2' == p['env']['k 2']
+
+
+class TestCmdExecShell:
+    def test_command_basics(self):
+        c = CmdExecShell()
+
+        assert c.validate()
+        assert 'shell.exec' == command_name(c)
+
+    def test_parameters(self):
+        c = CmdExecShell()
+        c.background(True)\
+            .silent(True)\
+            .continue_on_err(True)\
+            .system_log(True)\
+            .combine_output(True)\
+            .ignore_stderr(True)\
+            .ignore_stdout(True)\
+            .working_dir('/tmp')\
+            .script('echo "Hello World"')
+
+        p = params(c)
+        assert p['background']
+        assert p['silent']
+        assert p['continue_on_err']
+        assert p['system_log']
+        assert p['redirect_standard_error_to_output']
+        assert p['ignore_standard_error']
+        assert p['ignore_standard_out']
+        assert '/tmp' == p['working_dir']
+        assert 'echo "Hello World"' == p['script']
 
 
 class TestCmdS3Put:
@@ -41,7 +117,9 @@ class TestCmdS3Put:
             .display_name('name')\
             .content_type('ct')\
             .permissions('perms')\
-            .visibility('high')
+            .visibility('high')\
+            .include_filter('*.zip')\
+            .include_filters(['*.tgz'])
 
         p = params(c)
         assert p['optional']
@@ -57,6 +135,8 @@ class TestCmdS3Put:
         assert 'var 0' in p['build_variants']
         assert 'var 1' in p['build_variants']
         assert 'var 2' in p['build_variants']
+        assert '*.zip' in p['local_file_include_filter']
+        assert '*.tgz' in p['local_file_include_filter']
 
     def test_validation(self):
         c = CmdS3Put()

@@ -48,25 +48,168 @@ class EvergreenCommand:
 
 
 class CmdExec(EvergreenCommand):
+    def __init__(self):
+        self._background = False
+        self._silent = False
+        self._continue_on_err = False
+        self._system_log = False
+        self._combine_output = False
+        self._ignore_stderr = False
+        self._ignore_stdout = False
+        self._keep_empty_args = False
+        self._working_dir = None
+        self._command = None
+        self._binary = None
+        self._args = []
+        self._env = {}
+
     def _command_type(self):
         return 'subprocess.exec'
 
     def validate(self):
         return True
 
-    def _export_params(self):
-        return {}
+    def _param_list(self):
+        return {
+            '_background': 'background',
+            '_silent': 'silent',
+            '_continue_on_err': 'continue_on_err',
+            '_system_log': 'system_log',
+            '_combine_output': 'redirect_standard_error_to_output',
+            '_ignore_stderr': 'ignore_standard_error',
+            '_ignore_stdout': 'ignore_standard_out',
+            '_working_dir': 'working_dir',
+            '_command': 'command',
+            '_binary': 'binary',
+            '_args': 'args',
+            '_env': 'env',
+        }
+
+    def background(self, background):
+        self._background = background
+        return self
+
+    def silent(self, silent):
+        self._silent = silent
+        return self
+
+    def continue_on_err(self, cont):
+        self._continue_on_err = cont
+        return self
+
+    def system_log(self, log):
+        self._system_log = log
+        return self
+
+    def combine_output(self, combine):
+        self._combine_output = combine
+        return self
+
+    def ignore_stderr(self, ignore):
+        self._ignore_stderr = ignore
+        return self
+
+    def ignore_stdout(self, ignore):
+        self._ignore_stdout = ignore
+        return self
+
+    def working_dir(self, working_dir):
+        self._working_dir = working_dir
+        return self
+
+    def command(self, command):
+        self._command = command
+        return self
+
+    def binary(self, binary):
+        self._binary = binary
+        return self
+
+    def arg(self, arg):
+        self._args.append(arg)
+        return self
+
+    def args(self, args):
+        self._args += args
+        return self
+
+    def env(self, k, v):
+        self._env[k] = v
+        return self
+
+    def envs(self, kvs):
+        for k in kvs:
+            self._env[k] = kvs[k]
+
+        return self
 
 
 class CmdExecShell(EvergreenCommand):
+    def __init__(self):
+        self._background = False
+        self._silent = False
+        self._continue_on_err = False
+        self._system_log = False
+        self._combine_output = False
+        self._ignore_stderr = False
+        self._ignore_stdout = False
+        self._working_directory = None
+        self._script = None
+
     def _command_type(self):
         return 'shell.exec'
 
     def validate(self):
         return True
 
-    def _export_params(self):
-        return {}
+    def _param_list(self):
+        return {
+            '_background': 'background',
+            '_silent': 'silent',
+            '_continue_on_err': 'continue_on_err',
+            '_system_log': 'system_log',
+            '_combine_output': 'redirect_standard_error_to_output',
+            '_ignore_stderr': 'ignore_standard_error',
+            '_ignore_stdout': 'ignore_standard_out',
+            '_working_directory': 'working_dir',
+            '_script': 'script',
+        }
+
+    def background(self, background):
+        self._background = background
+        return self
+
+    def silent(self, silent):
+        self._silent = silent
+        return self
+
+    def continue_on_err(self, cont):
+        self._continue_on_err = cont
+        return self
+
+    def system_log(self, log):
+        self._system_log = log
+        return self
+
+    def combine_output(self, combine):
+        self._combine_output = combine
+        return self
+
+    def ignore_stderr(self, ignore):
+        self._ignore_stderr = ignore
+        return self
+
+    def ignore_stdout(self, ignore):
+        self._ignore_stdout = ignore
+        return self
+
+    def working_dir(self, working_dir):
+        self._working_directory = working_dir
+        return self
+
+    def script(self, script):
+        self._script = script
+        return self
 
 
 class CmdS3Put(EvergreenCommand):
