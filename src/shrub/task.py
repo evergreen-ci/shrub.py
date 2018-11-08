@@ -25,29 +25,34 @@ class Task(EvergreenBuilder):
         self._priority = value
         return self
 
-    def commands(self, cmds):
-        for c in cmds:
-            self._commands.add(c.validate())
-
+    def command(self, cmd):
+        cmd.validate()
+        self._commands.add(cmd.resolve())
         return self
 
-    def add_command(self):
-        c = CommandDefinition()
-        self._commands.add(c)
-        return c
+    def commands(self, cmds):
+        for c in cmds:
+            c.validate()
+            self._commands.add(c.resolve())
+
+        return self
 
     def dependency(self, dep):
         self._dependencies.append(dep)
         return self
 
+    def function(self, fn):
+        self._commands.add(CommandDefinition().function(fn))
+        return self
+
     def functions(self, fns):
         for fn in fns:
-            self._commands.add(fn)
+            self.function(fn)
 
         return self
 
     def function_with_vars(self, name, var_map):
-        self._commands.add(CommandDefinition().name(name).vars(var_map))
+        self._commands.add(CommandDefinition().function(name).vars(var_map))
         return self
 
     def to_map(self):

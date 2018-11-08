@@ -1,3 +1,7 @@
+import pytest
+
+from shrub.operations import CmdResultsGoTest
+from shrub.operations import CmdGetProject
 from shrub.task import Task
 from shrub.task import TaskDependency
 from shrub.task import TaskGroup
@@ -23,6 +27,52 @@ class TestTask:
         obj = t.to_map()
         assert 3 == len(obj['depends_on'])
         assert 'dep 1' == obj['depends_on'][1]['name']
+
+    def test_adding_command(self):
+        t = Task('task 0')
+        t.command(CmdGetProject())
+
+        obj = t.to_map()
+        assert 'git.get_project' == obj['commands'][0]['command']
+
+    def test_adding_commands(self):
+        t = Task('task 0')
+        t.commands([CmdGetProject(), CmdGetProject()])
+
+        obj = t.to_map()
+        assert 2 == len(obj['commands'])
+        assert 'git.get_project' == obj['commands'][0]['command']
+
+    def test_adding_unvalidating_command(self):
+        t = Task('task 0')
+
+        with pytest.raises(ValueError):
+            t.command(CmdResultsGoTest())
+
+    def test_adding_unvalidating_commands(self):
+        t = Task('task 0')
+
+        with pytest.raises(ValueError):
+            t.commands([CmdResultsGoTest()])
+
+    def test_functions(self):
+        t = Task('task 0')
+        t.function('fn 0')
+        t.functions(['fn 1', 'fn 2'])
+
+        obj = t.to_map()
+        assert 3 == len(obj['commands'])
+        assert 'fn 0' == obj['commands'][0]['func']
+        assert 'fn 1' == obj['commands'][1]['func']
+        assert 'fn 2' == obj['commands'][2]['func']
+
+    def test_function_with_vars(self):
+        t = Task('task 0')
+        t.function_with_vars('fn 0', {'x': 'y'})
+
+        obj = t.to_map()
+        assert 'fn 0' == obj['commands'][0]['func']
+        assert 'y' == obj['commands'][0]['vars']['x']
 
 
 class TestTaskDependency:
