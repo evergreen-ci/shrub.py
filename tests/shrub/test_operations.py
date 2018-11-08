@@ -185,6 +185,38 @@ class TestCmdS3Get:
         assert 'var 2' in p['build_variants']
 
 
+class TestAwsCopyFile:
+    def test_flat_parameters(self):
+        cf = AwsCopyFile()
+        cf.optional(True)\
+            .display_name('name')\
+            .build_variant('bv 0')\
+            .build_variants(['bv 1', 'bv 2'])
+
+        obj = cf.to_map()
+        assert obj['optional']
+        assert 'name' == obj['display_name']
+        assert 'bv 0' in obj['buildvariants']
+        assert 'bv 1' in obj['buildvariants']
+        assert 'bv 2' in obj['buildvariants']
+
+    def test_source(self):
+        cf = AwsCopyFile()
+        cf.source('bucket', 'path')
+
+        obj = cf.to_map()
+        assert 'bucket' == obj['source']['bucket']
+        assert 'path' == obj['source']['path']
+
+    def test_destination(self):
+        cf = AwsCopyFile()
+        cf.destination('bucket', 'path')
+
+        obj = cf.to_map()
+        assert 'bucket' == obj['destination']['bucket']
+        assert 'path' == obj['destination']['path']
+
+
 class TestCmdS3Copy:
     def test_command_basics(self):
         c = CmdS3Copy()
