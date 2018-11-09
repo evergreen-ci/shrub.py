@@ -14,7 +14,10 @@ class TestConfiguration:
 
     def test_config_with_non_recurse_values(self):
         c = Configuration()
-        c.exec_timeout(20).batch_time(300).ignore_file("file1").ignore_files(["file2", "file3"])
+        c.exec_timeout(20)\
+            .batch_time(300)\
+            .ignore_file("file1")\
+            .ignore_files(["file2", "file3"])
         c.stepback(True).command_type("setup")
 
         obj = c.to_map()
@@ -30,7 +33,7 @@ class TestConfiguration:
 
     def test_configuration_tasks(self):
         c = Configuration()
-        t = c.task("new task")
+        c.task("new task")
 
         obj = c.to_map()
 
@@ -38,9 +41,9 @@ class TestConfiguration:
 
     def test_get_existing_task(self):
         c = Configuration()
-        t = c.task('task 0')
+        c.task('task 0')
         t1 = c.task('task 1')
-        t2 = c.task('task 2')
+        c.task('task 2')
 
         t1.priority(42)
 
@@ -49,8 +52,8 @@ class TestConfiguration:
 
     def test_task_groups(self):
         c = Configuration()
-        tg = c.task_group('tg 0')
-        tg1 = c.task_group('tg 1')
+        c.task_group('tg 0')
+        c.task_group('tg 1')
         tg2 = c.task_group('tg 2')
 
         tg2.max_hosts(5)
@@ -61,8 +64,8 @@ class TestConfiguration:
     def test_functions(self):
         c = Configuration()
         f = c.function('func 0')
-        f1 = c.function('func 1')
-        f2 = c.function('func 2')
+        c.function('func 1')
+        c.function('func 2')
 
         f.add(CommandDefinition().function('f'))
 
@@ -71,9 +74,9 @@ class TestConfiguration:
 
     def test_variants(self):
         c = Configuration()
-        v = c.variant('variant 0')
+        c.variant('variant 0')
         v1 = c.variant('variant 1')
-        v2 = c.variant('variant 2')
+        c.variant('variant 2')
 
         v1.batch_time(100)
 

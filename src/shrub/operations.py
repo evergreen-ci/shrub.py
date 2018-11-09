@@ -1,5 +1,4 @@
 import abc
-import collections
 
 from shrub.command import CommandDefinition
 
@@ -698,7 +697,8 @@ class ArchiveFormat():
     def validate(self, operation):
         valid_formats = {
             'create': [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR],
-            'extract': [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR, ARCHIVE_FORMAT_AUTO],
+            'extract': [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR,
+                        ARCHIVE_FORMAT_AUTO],
         }
 
         if self._format not in valid_formats[operation]:

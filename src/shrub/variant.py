@@ -16,12 +16,14 @@ class Variant(EvergreenBuilder):
     def _yaml_map(self):
         return {
             "_build_name": {NAME_KEY: "name", RECURSE_KEY: False},
-            "_build_display_name": {NAME_KEY: "display_name", RECURSE_KEY: False},
+            "_build_display_name": {NAME_KEY: "display_name",
+                                    RECURSE_KEY: False},
             "_batch_time_secs": {NAME_KEY: "batchtime", RECURSE_KEY: False},
             "_task_specs": {NAME_KEY: "tasks", RECURSE_KEY: True},
             "_distro_run_on": {NAME_KEY: "run_on", RECURSE_KEY: False},
             "_expansions": {NAME_KEY: "expansions", RECURSE_KEY: False},
-            "_display_task_specs": {NAME_KEY: "display_tasks", RECURSE_KEY: True},
+            "_display_task_specs": {NAME_KEY: "display_tasks",
+                                    RECURSE_KEY: True},
         }
 
     def get_name(self):
