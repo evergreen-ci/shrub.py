@@ -77,6 +77,12 @@ class Configuration(EvergreenBuilder):
         return g
 
     def function(self, name):
+        """
+        Create a new function to add to the configuration.
+
+        :param name: name of function to add.
+        :return: Command sequence for function.
+        """
         if not isinstance(name, str):
             raise TypeError("function only accepts strings")
 

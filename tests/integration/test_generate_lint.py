@@ -1,3 +1,6 @@
+import json
+import yaml
+
 from shrub.config import Configuration
 from shrub.variant import TaskSpec
 
@@ -5,6 +8,20 @@ from shrub.variant import TaskSpec
 def read_test_data_file(filename):
     with open('tests/integration/data/' + filename) as f:
         return f.read()
+
+
+def compare_json(expected, actual):
+    expected_json = json.loads(expected)
+    actual_json = json.loads(actual)
+
+    assert expected_json == actual_json
+
+
+def compare_yaml(expected, actual):
+    expected_yaml = yaml.load(expected)
+    actual_yaml = yaml.load(actual)
+
+    assert expected_yaml == actual_yaml
 
 
 class TestGenerateLint:
@@ -40,7 +57,7 @@ class TestGenerateLint:
         config_output = config.to_json().strip()
         expected_output = read_test_data_file("lint.json").strip()
 
-        assert expected_output == config_output
+        compare_json(expected_output, config_output)
 
     def test_generate_lint_yaml(self):
         config = self.gen_lint_config()
@@ -48,4 +65,4 @@ class TestGenerateLint:
         config_output = config.to_yaml().strip()
         expected_output = read_test_data_file("lint.yml").strip()
 
-        assert expected_output == config_output
+        compare_yaml(expected_output, config_output)

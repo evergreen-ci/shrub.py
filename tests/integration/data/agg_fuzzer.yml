@@ -1,0 +1,197 @@
+buildvariants:
+- display_tasks:
+  - execution_tasks:
+    - aggregation_multiversion_fuzzer_000
+    - aggregation_multiversion_fuzzer_001
+    - aggregation_multiversion_fuzzer_002
+    - aggregation_multiversion_fuzzer_003
+    - aggregation_multiversion_fuzzer_004
+    - aggregation_multiversion_fuzzer_005
+    - aggregation_multiversion_fuzzer_006
+    - aggregation_multiversion_fuzzer_007
+    - aggregation_multiversion_fuzzer_008
+    - aggregation_multiversion_fuzzer_009
+    name: aggregation_multiversion_fuzzer
+  name: linux-64
+  tasks:
+  - name: aggregation_multiversion_fuzzer_000
+  - name: aggregation_multiversion_fuzzer_001
+  - name: aggregation_multiversion_fuzzer_002
+  - name: aggregation_multiversion_fuzzer_003
+  - name: aggregation_multiversion_fuzzer_004
+  - name: aggregation_multiversion_fuzzer_005
+  - name: aggregation_multiversion_fuzzer_006
+  - name: aggregation_multiversion_fuzzer_007
+  - name: aggregation_multiversion_fuzzer_008
+  - name: aggregation_multiversion_fuzzer_009
+tasks:
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_000
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_001
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_002
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_003
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_004
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_005
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_006
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_007
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_008
+- commands:
+  - func: do setup
+  - func: do multiversion setup
+  - func: run jstestfuzz
+    vars:
+      jstestfuzz_var: --numGeneratedFiles 5
+      npm_command: agg-fuzzer
+  - func: run tests
+    vars:
+      continue_on_failure: 'false'
+      resmoke_args: --suites=generational_fuzzer
+      should_shuffle: 'false'
+      task_path_suffix: 'false'
+      timeout_secs: '1800'
+  depends_on:
+  - name: compile
+  name: aggregation_multiversion_fuzzer_009

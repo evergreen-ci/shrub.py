@@ -3,7 +3,6 @@ from shrub.base import NAME_KEY
 from shrub.base import RECURSE_KEY
 from shrub.command import CommandSequence
 from shrub.command import CommandDefinition
-from shrub.operations import EvergreenCommand
 
 
 class Task(EvergreenBuilder):
@@ -33,11 +32,10 @@ class Task(EvergreenBuilder):
         return self
 
     def command(self, cmd):
-        if not isinstance(cmd, EvergreenCommand):
-            raise TypeError("command only accepts an EvergreenCommand")
+        if not isinstance(cmd, CommandDefinition):
+            raise TypeError("command only accepts a CommandDefinition")
 
-        cmd.validate()
-        self._commands.add(cmd.resolve())
+        self._commands.add(cmd)
         return self
 
     def commands(self, cmds):
@@ -93,23 +91,24 @@ class Task(EvergreenBuilder):
 
 
 class TaskDependency(EvergreenBuilder):
-    def __init__(self, name, variant):
+    def __init__(self, name):
         if not isinstance(name, str):
             raise TypeError("TaskDependency only accepts a str")
 
-        if not isinstance(variant, str):
-            raise TypeError("TaskDependency only accepts a str")
-
         self._name = name
+        self._variant = None
+
+    def variant(self, variant):
+        if not isinstance(variant, str):
+            raise TypeError("variant only accepts a str")
+
         self._variant = variant
+        return self
 
     def _yaml_map(self):
-        return {}
-
-    def to_map(self):
         return {
-            "name": self._name,
-            "variant": self._variant,
+            "_name": {NAME_KEY: "name", RECURSE_KEY: False},
+            "_variant": {NAME_KEY: "variant", RECURSE_KEY: False},
         }
 
 

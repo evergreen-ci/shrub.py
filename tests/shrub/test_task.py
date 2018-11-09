@@ -1,6 +1,5 @@
 import pytest
 
-from shrub.operations import CmdResultsGoTest
 from shrub.operations import CmdGetProject
 from shrub.task import Task
 from shrub.task import TaskDependency
@@ -20,9 +19,9 @@ class TestTask:
 
     def test_adding_dependencies(self):
         t = Task("task 0")
-        t.dependency(TaskDependency("dep 0", "var 0"))\
-            .dependency(TaskDependency("dep 1", "var 1"))\
-            .dependency(TaskDependency("dep 2", "var 2"))
+        t.dependency(TaskDependency("dep 0"))\
+            .dependency(TaskDependency("dep 1"))\
+            .dependency(TaskDependency("dep 2"))
 
         obj = t.to_map()
         assert 3 == len(obj["depends_on"])
@@ -30,30 +29,18 @@ class TestTask:
 
     def test_adding_command(self):
         t = Task("task 0")
-        t.command(CmdGetProject())
+        t.command(CmdGetProject().resolve())
 
         obj = t.to_map()
         assert "git.get_project" == obj["commands"][0]["command"]
 
     def test_adding_commands(self):
         t = Task("task 0")
-        t.commands([CmdGetProject(), CmdGetProject()])
+        t.commands([CmdGetProject().resolve(), CmdGetProject().resolve()])
 
         obj = t.to_map()
         assert 2 == len(obj["commands"])
         assert "git.get_project" == obj["commands"][0]["command"]
-
-    def test_adding_unvalidating_command(self):
-        t = Task("task 0")
-
-        with pytest.raises(ValueError):
-            t.command(CmdResultsGoTest())
-
-    def test_adding_unvalidating_commands(self):
-        t = Task("task 0")
-
-        with pytest.raises(ValueError):
-            t.commands([CmdResultsGoTest()])
 
     def test_functions(self):
         t = Task("task 0")
@@ -126,10 +113,16 @@ class TestTask:
 
 class TestTaskDependency:
     def test_flat_values(self):
-        td = TaskDependency("dep0", "var0")
+        td = TaskDependency("dep0")
 
         obj = td.to_map()
         assert "dep0" == obj["name"]
+
+    def test_variant(self):
+        td = TaskDependency("dep 0")
+        td.variant("var0")
+
+        obj = td.to_map()
         assert "var0" == obj["variant"]
 
     def test_invalid_name(self):
@@ -137,8 +130,10 @@ class TestTaskDependency:
             TaskDependency(42, "variant")
 
     def test_invalid_variant(self):
+        td = TaskDependency("dep 0")
+
         with pytest.raises(TypeError):
-            TaskDependency("name", 42)
+            td.variant(42)
 
 
 class TestTaskGroup:
