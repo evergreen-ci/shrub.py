@@ -161,8 +161,9 @@ class Configuration(EvergreenBuilder):
         obj = {}
         self._add_defined_attribs(obj, self._yaml_map().keys())
 
-        obj["functions"] = {}
-        for k in self._functions:
-            obj["functions"][k] = self._functions[k].to_map()
+        if self._functions:
+            obj["functions"] = {}
+            for k in self._functions:
+                obj["functions"][k] = self._functions[k].to_map()
 
         return obj

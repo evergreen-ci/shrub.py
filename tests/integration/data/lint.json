@@ -1,0 +1,66 @@
+{
+    "tasks": [
+        {
+            "name": "make-lint-src",
+            "commands": [
+                {
+                    "func": "run-make",
+                    "vars": {
+                        "target": "make-lint-src"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "make-lint-test",
+            "commands": [
+                {
+                    "func": "run-make",
+                    "vars": {
+                        "target": "make-lint-test"
+                    }
+                }
+            ]
+        }
+    ],
+    "task_groups": [
+        {
+            "name": "lint group",
+            "tasks": [
+                "src",
+                "test"
+            ],
+            "max_hosts": 5,
+            "setup_group": [
+                {
+                    "type": "system",
+                    "command": "git.get_project",
+                    "params": {
+                        "directory": "src"
+                    }
+                },
+                {
+                    "func": "set-up-credentials"
+                }
+            ],
+            "teardown_group": [
+                {
+                    "func": "attach-test-results"
+                },
+                {
+                    "func": "remove-test-results"
+                }
+            ]
+        }
+    ],
+    "buildvariants": [
+        {
+            "name": "lint variant",
+            "tasks": [
+                {
+                    "name": "lint group"
+                }
+            ]
+        }
+    ]
+}

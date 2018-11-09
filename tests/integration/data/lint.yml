@@ -1,0 +1,30 @@
+buildvariants:
+- name: lint variant
+  tasks:
+  - name: lint group
+task_groups:
+- max_hosts: 5
+  name: lint group
+  setup_group:
+  - command: git.get_project
+    params:
+      directory: src
+    type: system
+  - func: set-up-credentials
+  tasks:
+  - src
+  - test
+  teardown_group:
+  - func: attach-test-results
+  - func: remove-test-results
+tasks:
+- commands:
+  - func: run-make
+    vars:
+      target: make-lint-src
+  name: make-lint-src
+- commands:
+  - func: run-make
+    vars:
+      target: make-lint-test
+  name: make-lint-test
