@@ -108,6 +108,20 @@ class TestTaskGroup:
         tg.task('task 0').tasks(['task 1', 'task 2'])
 
         obj = tg.to_map()
-        assert 'task 0' in obj['tasks']
-        assert 'task 1' in obj['tasks']
-        assert 'task 2' in obj['tasks']
+        assert "task 0" in obj["tasks"]
+        assert "task 1" in obj["tasks"]
+        assert "task 2" in obj["tasks"]
+
+    def test_setup_group(self):
+        tg = TaskGroup("task group 0")
+        tg.setup_group().function('func 0')
+
+        obj = tg.to_map()
+        assert "func 0" == obj["setup_group"][0]["func"]
+
+    def test_teardown_group(self):
+        tg = TaskGroup("task group 0")
+        tg.teardown_group().function('func 0')
+
+        obj = tg.to_map()
+        assert "func 0" == obj["teardown_group"][0]["func"]

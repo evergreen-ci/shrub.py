@@ -50,6 +50,12 @@ class TestConfiguration:
         assert 42 == c.task('task 1').to_map()["priority"]
         assert 3 == len(c.to_map()["tasks"])
 
+    def test_task_throws_exception_for_invalid_value(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.task(42)
+
     def test_task_groups(self):
         c = Configuration()
         c.task_group('tg 0')
@@ -60,6 +66,12 @@ class TestConfiguration:
 
         assert 5 == c.task_group('tg 2').to_map()['max_hosts']
         assert 3 == len(c.to_map()['task_groups'])
+
+    def test_task_group_throws_exception_for_invalid_value(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.task_group(42)
 
     def test_functions(self):
         c = Configuration()
@@ -72,6 +84,12 @@ class TestConfiguration:
         assert 'f' == c.function('func 0').to_map()[0]['func']
         assert 3 == len(c.to_map()['functions'])
 
+    def test_function_throws_exception_for_invalid_value(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.function(42)
+
     def test_variants(self):
         c = Configuration()
         c.variant('variant 0')
@@ -83,6 +101,12 @@ class TestConfiguration:
         assert 100 == c.variant('variant 1').to_map()['batchtime']
         assert 3 == len(c.to_map()['buildvariants'])
 
+    def test_variant_throws_exception_for_invalid_value(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.variant(42)
+
     def test_pre(self):
         c = Configuration()
         cs = CommandSequence()
@@ -93,6 +117,12 @@ class TestConfiguration:
         assert 'func 0' == c.to_map()['pre'][0]['func']
         assert 2 == len(c.to_map()['pre'])
 
+    def test_invalid_pre(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.pre('hello world')
+
     def test_post(self):
         c = Configuration()
         cs = CommandSequence()
@@ -102,3 +132,39 @@ class TestConfiguration:
 
         assert 'func 0' == c.to_map()['post'][0]['func']
         assert 2 == len(c.to_map()['post'])
+
+    def test_invalid_post(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.post('hello world')
+
+    def test_invalid_exec_timeout(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.exec_timeout('hello world')
+
+    def test_invalid_batch_time(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.batch_time('hello world')
+
+    def test_invalid_stepback(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.stepback('hello world')
+
+    def test_invalid_ignore_file(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.ignore_file(42)
+
+    def test_invalid_ignore_files(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.ignore_files('filename')

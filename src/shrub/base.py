@@ -26,6 +26,7 @@ class EvergreenBuilder:
         """Add the specified property to the given object if it exists."""
         value = getattr(self, prop)
         if value:
+            print('attempting to add ' + prop)
             if self._yaml_map()[prop][RECURSE_KEY]:
                 if isinstance(value, collections.Sequence):
                     value = [v.to_map() for v in value]

@@ -66,7 +66,7 @@ class CmdExec(EvergreenCommand):
         return 'subprocess.exec'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -159,7 +159,7 @@ class CmdExecShell(EvergreenCommand):
         return 'shell.exec'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -236,7 +236,7 @@ class CmdS3Put(EvergreenCommand):
         if not self._local_file and len(self._local_file_include_filter) == 0:
             raise ValueError('must specify a local file to upload')
 
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -325,7 +325,7 @@ class CmdS3Get(EvergreenCommand):
         return 's3.get'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -435,7 +435,7 @@ class CmdS3Copy(EvergreenCommand):
         return 's3Copy.copy'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -477,7 +477,7 @@ class CmdGetProject(EvergreenCommand):
         return 'git.get_project'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -513,7 +513,7 @@ class CmdResultsJSON(EvergreenCommand):
         return 'attach.results'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -533,7 +533,7 @@ class CmdResultsXunit(EvergreenCommand):
         return 'attach.xunit_results'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -561,7 +561,7 @@ class CmdResultsGoTest(EvergreenCommand):
         if self._legacy_format == self._json_format:
             raise ValueError('Invalid format specified')
 
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -669,7 +669,7 @@ class CmdAttachArtifacts(EvergreenCommand):
         return 'attach.artifacts'
 
     def validate(self):
-        return True
+        return self
 
     def _param_list(self):
         return {
@@ -704,7 +704,7 @@ class ArchiveFormat():
         if self._format not in valid_formats[operation]:
             raise ValueError('Invalid archive format: ' + self._format)
 
-        return True
+        return self
 
     def create_cmd_name(self):
         if self._format == ARCHIVE_FORMAT_ZIP:

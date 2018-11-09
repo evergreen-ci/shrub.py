@@ -124,6 +124,24 @@ class TaskGroup(EvergreenBuilder):
         self._tasks += ids
         return self
 
+    def setup_group(self):
+        if not self._setup_group:
+            self._setup_group = CommandSequence()
+
+        c = CommandDefinition()
+
+        self._setup_group.add(c)
+        return c
+
+    def teardown_group(self):
+        if not self._teardown_group:
+            self._teardown_group = CommandSequence()
+
+        c = CommandDefinition()
+
+        self._teardown_group.add(c)
+        return c
+
     def to_map(self):
         obj = {
             "name": self._group_name,

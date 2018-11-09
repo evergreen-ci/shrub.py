@@ -1,3 +1,5 @@
+import collections
+
 from shrub.base import EvergreenBuilder
 from shrub.base import NAME_KEY
 from shrub.base import RECURSE_KEY
@@ -51,11 +53,19 @@ class Variant(EvergreenBuilder):
         return self
 
     def task(self, t):
+        if not isinstance(t, TaskSpec):
+            raise TypeError('task only accepts TaskSpec objects')
+
         self._task_specs.append(t)
         return self
 
     def tasks(self, tasks):
-        self._task_specs += tasks
+        if not isinstance(tasks, collections.Sequence):
+            raise TypeError('tasks only accepts a Sequence')
+
+        for t in tasks:
+            self.task(t)
+
         return self
 
     def display_task(self, display_task):

@@ -8,6 +8,7 @@ from shrub.variant import Variant
 
 
 def _find_name_in_list(name_list, name):
+    """Call get_name() on all items in the given list to find a match."""
     for l in name_list:
         if l.get_name() == name:
             return l
@@ -16,6 +17,10 @@ def _find_name_in_list(name_list, name):
 
 
 class Configuration(EvergreenBuilder):
+    """An Evergreen configuration.
+
+    Can be converted into json or yaml.
+    """
 
     def __init__(self):
         self._functions = {}
@@ -48,6 +53,9 @@ class Configuration(EvergreenBuilder):
         }
 
     def task(self, name):
+        if not isinstance(name, str):
+            raise TypeError('task only accepts strings')
+
         t = _find_name_in_list(self._tasks, name)
         if t:
             return t
@@ -57,6 +65,9 @@ class Configuration(EvergreenBuilder):
         return t
 
     def task_group(self, name):
+        if not isinstance(name, str):
+            raise TypeError('task_group only accepts strings')
+
         g = _find_name_in_list(self._groups, name)
         if g:
             return g
@@ -66,6 +77,9 @@ class Configuration(EvergreenBuilder):
         return g
 
     def function(self, name):
+        if not isinstance(name, str):
+            raise TypeError('function only accepts strings')
+
         if name in self._functions:
             return self._functions[name]
 
@@ -74,6 +88,9 @@ class Configuration(EvergreenBuilder):
         return seq
 
     def variant(self, name):
+        if not isinstance(name, str):
+            raise TypeError('variant only accepts strings')
+
         v = _find_name_in_list(self._variants, name)
         if v:
             return v
@@ -83,37 +100,61 @@ class Configuration(EvergreenBuilder):
         return v
 
     def pre(self, cmds):
+        if not isinstance(cmds, CommandSequence):
+            raise TypeError('pre only accepts a Sequence')
+
         self._pre = cmds
         return self
 
     def post(self, cmds):
+        if not isinstance(cmds, CommandSequence):
+            raise TypeError('pre only accepts a Sequence')
+
         self._post = cmds
         return self
 
     def exec_timeout(self, duration):
+        if not isinstance(duration, int):
+            raise TypeError('exec_timeout only accepts an int')
+
         self._exec_timeout_secs = duration
         return self
 
     def batch_time(self, duration):
+        if not isinstance(duration, int):
+            raise TypeError('batch_time only accepts an int')
+
         self._batch_time_secs = duration
         return self
 
     def stepback(self, stepback):
+        if not isinstance(stepback, bool):
+            raise TypeError('stepback only accepts a bool')
+
         self._stepback = stepback
         return self
 
     def command_type(self, t):
         if t not in ["system", "setup", "task"]:
             raise ValueError("Bad Command Type")
+
         self._command_type = t
         return self
 
     def ignore_file(self, filename):
+        if not isinstance(filename, str):
+            raise TypeError('ignore_file only accepts a str')
+
         self._ignore_files.append(filename)
         return self
 
     def ignore_files(self, filenames):
-        self._ignore_files += filenames
+        if not isinstance(filenames, list):
+            raise TypeError('ignore_file only accepts a Sequence')
+
+        for f in filenames:
+            self.ignore_file(f)
+
         return self
 
     def to_map(self):

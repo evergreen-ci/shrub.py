@@ -1,3 +1,5 @@
+import pytest
+
 from shrub.variant import DisplayTaskDefinition
 from shrub.variant import TaskSpec
 from shrub.variant import Variant
@@ -41,6 +43,14 @@ class TestVariant:
         assert 'task 0' == obj['tasks'][0]['name']
         assert 'task 1' == obj['tasks'][1]['name']
         assert 'task 2' == obj['tasks'][2]['name']
+
+    def test_invalid_tasks_cannot_be_added(self):
+        v = Variant('variant name')
+        with pytest.raises(TypeError):
+            v.task("I'm not really a task")
+
+        with pytest.raises(TypeError):
+            v.tasks(TaskSpec('not array'))
 
     def test_display_tasks_can_be_added(self):
         v = Variant('variant name')
