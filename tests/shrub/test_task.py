@@ -74,6 +74,51 @@ class TestTask:
         assert "fn 0" == obj["commands"][0]["func"]
         assert "y" == obj["commands"][0]["vars"]["x"]
 
+    def test_invalid_priority(self):
+        t = Task("task 0")
+
+        with pytest.raises(TypeError):
+            t.priority("hello world")
+
+    def test_invalid_command(self):
+        t = Task("task 0")
+
+        with pytest.raises(TypeError):
+            t.command("hello world")
+
+    def test_invalid_commands(self):
+        t = Task("task 0")
+
+        with pytest.raises(TypeError):
+            t.commands("hello world")
+
+    def test_invalid_dependency(self):
+        t = Task("task 0")
+
+        with pytest.raises(TypeError):
+            t.dependency("hello world")
+
+    def test_invalid_function(self):
+        t = Task("task 0")
+
+        with pytest.raises(TypeError):
+            t.dependency(42)
+
+    def test_invalid_functions(self):
+        t = Task("task 0")
+
+        with pytest.raises(TypeError):
+            t.dependency("function")
+
+    def test_invalid_function_with_vars(self):
+        t = Task("task 0")
+
+        with pytest.raises(TypeError):
+            t.function_with_vars(42, {})
+
+        with pytest.raises(TypeError):
+            t.function_with_vars("function", 42)
+
 
 class TestTaskDependency:
     def test_flat_values(self):
@@ -82,6 +127,14 @@ class TestTaskDependency:
         obj = td.to_map()
         assert "dep0" == obj["name"]
         assert "var0" == obj["variant"]
+
+    def test_invalid_name(self):
+        with pytest.raises(TypeError):
+            TaskDependency(42, "variant")
+
+    def test_invalid_variant(self):
+        with pytest.raises(TypeError):
+            TaskDependency("name", 42)
 
 
 class TestTaskGroup:
@@ -95,13 +148,6 @@ class TestTaskGroup:
         assert "task group 0" == obj["name"]
         assert 5 == obj["max_hosts"]
         assert 42 == obj["timeout"]
-
-    def test_changing_name(self):
-        tg = TaskGroup("task group 0")
-        tg.name("new name")
-
-        assert "new name" == tg.get_name()
-        assert "new name" == tg.to_map()["name"]
 
     def test_adding_tasks(self):
         tg = TaskGroup("task group 0")
@@ -125,3 +171,31 @@ class TestTaskGroup:
 
         obj = tg.to_map()
         assert "func 0" == obj["teardown_group"][0]["func"]
+
+    def test_invalid_name(self):
+        with pytest.raises(TypeError):
+            TaskGroup(42)
+
+    def test_invalid_max_hosts(self):
+        tg = TaskGroup("task group 0")
+
+        with pytest.raises(TypeError):
+            tg.max_hosts("hello world")
+
+    def test_invalid_timeout(self):
+        tg = TaskGroup("task group 0")
+
+        with pytest.raises(TypeError):
+            tg.timeout("hello world")
+
+    def test_invalid_task(self):
+        tg = TaskGroup("task group 0")
+
+        with pytest.raises(TypeError):
+            tg.task(42)
+
+    def test_invalid_tasks(self):
+        tg = TaskGroup("task group 0")
+
+        with pytest.raises(TypeError):
+            tg.tasks("hello world")
