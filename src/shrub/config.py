@@ -54,7 +54,7 @@ class Configuration(EvergreenBuilder):
 
     def task(self, name):
         if not isinstance(name, str):
-            raise TypeError('task only accepts strings')
+            raise TypeError("task only accepts strings")
 
         t = _find_name_in_list(self._tasks, name)
         if t:
@@ -66,7 +66,7 @@ class Configuration(EvergreenBuilder):
 
     def task_group(self, name):
         if not isinstance(name, str):
-            raise TypeError('task_group only accepts strings')
+            raise TypeError("task_group only accepts strings")
 
         g = _find_name_in_list(self._groups, name)
         if g:
@@ -78,7 +78,7 @@ class Configuration(EvergreenBuilder):
 
     def function(self, name):
         if not isinstance(name, str):
-            raise TypeError('function only accepts strings')
+            raise TypeError("function only accepts strings")
 
         if name in self._functions:
             return self._functions[name]
@@ -89,7 +89,7 @@ class Configuration(EvergreenBuilder):
 
     def variant(self, name):
         if not isinstance(name, str):
-            raise TypeError('variant only accepts strings')
+            raise TypeError("variant only accepts strings")
 
         v = _find_name_in_list(self._variants, name)
         if v:
@@ -101,35 +101,35 @@ class Configuration(EvergreenBuilder):
 
     def pre(self, cmds):
         if not isinstance(cmds, CommandSequence):
-            raise TypeError('pre only accepts a Sequence')
+            raise TypeError("pre only accepts a Sequence")
 
         self._pre = cmds
         return self
 
     def post(self, cmds):
         if not isinstance(cmds, CommandSequence):
-            raise TypeError('pre only accepts a Sequence')
+            raise TypeError("pre only accepts a Sequence")
 
         self._post = cmds
         return self
 
     def exec_timeout(self, duration):
         if not isinstance(duration, int):
-            raise TypeError('exec_timeout only accepts an int')
+            raise TypeError("exec_timeout only accepts an int")
 
         self._exec_timeout_secs = duration
         return self
 
     def batch_time(self, duration):
         if not isinstance(duration, int):
-            raise TypeError('batch_time only accepts an int')
+            raise TypeError("batch_time only accepts an int")
 
         self._batch_time_secs = duration
         return self
 
     def stepback(self, stepback):
         if not isinstance(stepback, bool):
-            raise TypeError('stepback only accepts a bool')
+            raise TypeError("stepback only accepts a bool")
 
         self._stepback = stepback
         return self
@@ -143,14 +143,14 @@ class Configuration(EvergreenBuilder):
 
     def ignore_file(self, filename):
         if not isinstance(filename, str):
-            raise TypeError('ignore_file only accepts a str')
+            raise TypeError("ignore_file only accepts a str")
 
         self._ignore_files.append(filename)
         return self
 
     def ignore_files(self, filenames):
         if not isinstance(filenames, list):
-            raise TypeError('ignore_file only accepts a Sequence')
+            raise TypeError("ignore_file only accepts a Sequence")
 
         for f in filenames:
             self.ignore_file(f)
@@ -161,8 +161,8 @@ class Configuration(EvergreenBuilder):
         obj = {}
         self._add_defined_attribs(obj, self._yaml_map().keys())
 
-        obj['functions'] = {}
+        obj["functions"] = {}
         for k in self._functions:
-            obj['functions'][k] = self._functions[k].to_map()
+            obj["functions"][k] = self._functions[k].to_map()
 
         return obj

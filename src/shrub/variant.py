@@ -54,14 +54,14 @@ class Variant(EvergreenBuilder):
 
     def task(self, t):
         if not isinstance(t, TaskSpec):
-            raise TypeError('task only accepts TaskSpec objects')
+            raise TypeError("task only accepts TaskSpec objects")
 
         self._task_specs.append(t)
         return self
 
     def tasks(self, tasks):
         if not isinstance(tasks, collections.Sequence):
-            raise TypeError('tasks only accepts a Sequence')
+            raise TypeError("tasks only accepts a Sequence")
 
         for t in tasks:
             self.task(t)

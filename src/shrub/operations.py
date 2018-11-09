@@ -3,9 +3,9 @@ import abc
 from shrub.command import CommandDefinition
 
 
-ARCHIVE_FORMAT_ZIP = 'zip'
-ARCHIVE_FORMAT_TAR = 'tarball'
-ARCHIVE_FORMAT_AUTO = 'auto'
+ARCHIVE_FORMAT_ZIP = "zip"
+ARCHIVE_FORMAT_TAR = "tarball"
+ARCHIVE_FORMAT_AUTO = "auto"
 
 
 class EvergreenCommand:
@@ -63,25 +63,25 @@ class CmdExec(EvergreenCommand):
         self._env = {}
 
     def _command_type(self):
-        return 'subprocess.exec'
+        return "subprocess.exec"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_background': 'background',
-            '_silent': 'silent',
-            '_continue_on_err': 'continue_on_err',
-            '_system_log': 'system_log',
-            '_combine_output': 'redirect_standard_error_to_output',
-            '_ignore_stderr': 'ignore_standard_error',
-            '_ignore_stdout': 'ignore_standard_out',
-            '_working_dir': 'working_dir',
-            '_command': 'command',
-            '_binary': 'binary',
-            '_args': 'args',
-            '_env': 'env',
+            "_background": "background",
+            "_silent": "silent",
+            "_continue_on_err": "continue_on_err",
+            "_system_log": "system_log",
+            "_combine_output": "redirect_standard_error_to_output",
+            "_ignore_stderr": "ignore_standard_error",
+            "_ignore_stdout": "ignore_standard_out",
+            "_working_dir": "working_dir",
+            "_command": "command",
+            "_binary": "binary",
+            "_args": "args",
+            "_env": "env",
         }
 
     def background(self, background):
@@ -156,22 +156,22 @@ class CmdExecShell(EvergreenCommand):
         self._script = None
 
     def _command_type(self):
-        return 'shell.exec'
+        return "shell.exec"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_background': 'background',
-            '_silent': 'silent',
-            '_continue_on_err': 'continue_on_err',
-            '_system_log': 'system_log',
-            '_combine_output': 'redirect_standard_error_to_output',
-            '_ignore_stderr': 'ignore_standard_error',
-            '_ignore_stdout': 'ignore_standard_out',
-            '_working_directory': 'working_dir',
-            '_script': 'script',
+            "_background": "background",
+            "_silent": "silent",
+            "_continue_on_err": "continue_on_err",
+            "_system_log": "system_log",
+            "_combine_output": "redirect_standard_error_to_output",
+            "_ignore_stderr": "ignore_standard_error",
+            "_ignore_stdout": "ignore_standard_out",
+            "_working_directory": "working_dir",
+            "_script": "script",
         }
 
     def background(self, background):
@@ -227,31 +227,31 @@ class CmdS3Put(EvergreenCommand):
         self._build_variants = []
 
     def _command_type(self):
-        return 's3.put'
+        return "s3.put"
 
     def validate(self):
         if not self._aws_key and not self._aws_secret:
-            raise ValueError('must specify aws credentials')
+            raise ValueError("must specify aws credentials")
 
         if not self._local_file and len(self._local_file_include_filter) == 0:
-            raise ValueError('must specify a local file to upload')
+            raise ValueError("must specify a local file to upload")
 
         return self
 
     def _param_list(self):
         return {
-            '_optional': 'optional',
-            '_local_file': 'local_file',
-            '_local_file_include_filter': 'local_file_include_filter',
-            '_bucket': 'bucket',
-            '_remote_file': 'remote_file',
-            '_display_name': 'display_name',
-            '_content_type': 'content_type',
-            '_aws_key': 'aws_key',
-            '_aws_secret': 'aws_secret',
-            '_permissions': 'permissions',
-            '_visibility': 'visibility',
-            '_build_variants': 'build_variants',
+            "_optional": "optional",
+            "_local_file": "local_file",
+            "_local_file_include_filter": "local_file_include_filter",
+            "_bucket": "bucket",
+            "_remote_file": "remote_file",
+            "_display_name": "display_name",
+            "_content_type": "content_type",
+            "_aws_key": "aws_key",
+            "_aws_secret": "aws_secret",
+            "_permissions": "permissions",
+            "_visibility": "visibility",
+            "_build_variants": "build_variants",
         }
 
     def optional(self, opt):
@@ -322,20 +322,20 @@ class CmdS3Get(EvergreenCommand):
         self._build_variants = []
 
     def _command_type(self):
-        return 's3.get'
+        return "s3.get"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_aws_key': 'aws_key',
-            '_aws_secret': 'aws_secret',
-            '_remote_file': 'remote_file',
-            '_bucket': 'bucket',
-            '_local_file': 'local_file',
-            '_extract_to': 'extract_to',
-            '_build_variants': 'build_variants',
+            "_aws_key": "aws_key",
+            "_aws_secret": "aws_secret",
+            "_remote_file": "remote_file",
+            "_bucket": "bucket",
+            "_local_file": "local_file",
+            "_extract_to": "extract_to",
+            "_build_variants": "build_variants",
         }
 
     def aws_key(self, key):
@@ -397,30 +397,30 @@ class AwsCopyFile:
 
     def source(self, bucket, path):
         self._source = {
-            'bucket': bucket,
-            'path': path,
+            "bucket": bucket,
+            "path": path,
         }
         return self
 
     def destination(self, bucket, path):
         self._destination = {
-            'bucket': bucket,
-            'path': path,
+            "bucket": bucket,
+            "path": path,
         }
         return self
 
     def to_map(self):
         obj = {}
         if self._optional:
-            obj['optional'] = self._optional
+            obj["optional"] = self._optional
         if self._display_name:
-            obj['display_name'] = self._display_name
+            obj["display_name"] = self._display_name
         if self._build_variants:
-            obj['buildvariants'] = self._build_variants
+            obj["buildvariants"] = self._build_variants
         if self._source:
-            obj['source'] = self._source
+            obj["source"] = self._source
         if self._destination:
-            obj['destination'] = self._destination
+            obj["destination"] = self._destination
 
         return obj
 
@@ -432,21 +432,21 @@ class CmdS3Copy(EvergreenCommand):
         self._files = []
 
     def _command_type(self):
-        return 's3Copy.copy'
+        return "s3Copy.copy"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_aws_key': 'aws_key',
-            '_aws_secret': 'aws_secret',
+            "_aws_key": "aws_key",
+            "_aws_secret": "aws_secret",
         }
 
     def _export_params(self):
         obj = super(CmdS3Copy, self)._export_params()
         if self._files:
-            obj['s3_copy_files'] = [f.to_map() for f in self._files]
+            obj["s3_copy_files"] = [f.to_map() for f in self._files]
 
         return obj
 
@@ -474,16 +474,16 @@ class CmdGetProject(EvergreenCommand):
         self._revisions = {}
 
     def _command_type(self):
-        return 'git.get_project'
+        return "git.get_project"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_token': 'token',
-            '_dir': 'directory',
-            '_revisions': 'revisions',
+            "_token": "token",
+            "_dir": "directory",
+            "_revisions": "revisions",
         }
 
     def token(self, token):
@@ -510,14 +510,14 @@ class CmdResultsJSON(EvergreenCommand):
         self._file = None
 
     def _command_type(self):
-        return 'attach.results'
+        return "attach.results"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_file': 'file_location'
+            "_file": "file_location"
         }
 
     def file(self, file):
@@ -530,14 +530,14 @@ class CmdResultsXunit(EvergreenCommand):
         self._file = None
 
     def _command_type(self):
-        return 'attach.xunit_results'
+        return "attach.xunit_results"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_file': 'file'
+            "_file": "file"
         }
 
     def file(self, file):
@@ -553,19 +553,19 @@ class CmdResultsGoTest(EvergreenCommand):
 
     def _command_type(self):
         if self._json_format:
-            return 'gotest.parse_json'
+            return "gotest.parse_json"
         if self._legacy_format:
-            return 'gotest.parse_files'
+            return "gotest.parse_files"
 
     def validate(self):
         if self._legacy_format == self._json_format:
-            raise ValueError('Invalid format specified')
+            raise ValueError("Invalid format specified")
 
         return self
 
     def _param_list(self):
         return {
-            '_files': 'files'
+            "_files": "files"
         }
 
     def file(self, file):
@@ -589,14 +589,14 @@ class CmdArchiveCreate(EvergreenCommand):
         return self._archive_format.create_cmd_name()
 
     def validate(self):
-        return self._archive_format.validate('create')
+        return self._archive_format.validate("create")
 
     def _param_list(self):
         return {
-            '_target': 'target',
-            '_source_dir': 'source_dir',
-            '_include': 'include',
-            '_exclude': 'exclude_files',
+            "_target": "target",
+            "_source_dir": "source_dir",
+            "_include": "include",
+            "_exclude": "exclude_files",
         }
 
     def target(self, target):
@@ -634,13 +634,13 @@ class CmdArchiveExtract(EvergreenCommand):
         return self._archive_format.extract_cmd_name()
 
     def validate(self):
-        return self._archive_format.validate('extract')
+        return self._archive_format.validate("extract")
 
     def _param_list(self):
         return {
-            '_path': 'path',
-            '_target': 'destination',
-            '_exclude': 'exclude_files',
+            "_path": "path",
+            "_target": "destination",
+            "_exclude": "exclude_files",
         }
 
     def path(self, path):
@@ -666,15 +666,15 @@ class CmdAttachArtifacts(EvergreenCommand):
         self._files = []
 
     def _command_type(self):
-        return 'attach.artifacts'
+        return "attach.artifacts"
 
     def validate(self):
         return self
 
     def _param_list(self):
         return {
-            '_optional': 'optional',
-            '_files': 'files',
+            "_optional": "optional",
+            "_files": "files",
         }
 
     def optional(self, optional):
@@ -696,34 +696,34 @@ class ArchiveFormat():
 
     def validate(self, operation):
         valid_formats = {
-            'create': [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR],
-            'extract': [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR,
+            "create": [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR],
+            "extract": [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR,
                         ARCHIVE_FORMAT_AUTO],
         }
 
         if self._format not in valid_formats[operation]:
-            raise ValueError('Invalid archive format: ' + self._format)
+            raise ValueError("Invalid archive format: " + self._format)
 
         return self
 
     def create_cmd_name(self):
         if self._format == ARCHIVE_FORMAT_ZIP:
-            return 'archive.zip_pack'
+            return "archive.zip_pack"
 
         if self._format == ARCHIVE_FORMAT_TAR:
-            return 'archive.targz_pack'
+            return "archive.targz_pack"
 
         return self.validate()
 
     def extract_cmd_name(self):
         if self._format == ARCHIVE_FORMAT_ZIP:
-            return 'archive.zip_extract'
+            return "archive.zip_extract"
 
         if self._format == ARCHIVE_FORMAT_TAR:
-            return 'archive.targz_extract'
+            return "archive.targz_extract"
 
-        if self._format == 'auto':
-            return 'archive.auto_extract'
+        if self._format == "auto":
+            return "archive.auto_extract"
 
         return self.validate()
 
