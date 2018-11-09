@@ -63,6 +63,48 @@ class TestVariant:
         assert "display task 1" == obj["display_tasks"][1]["name"]
         assert "display task 2" == obj["display_tasks"][2]["name"]
 
+    def test_invalid_name(self):
+        with pytest.raises(TypeError):
+            Variant(42)
+
+    def test_invalid_display_name(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.display_name(42)
+
+    def test_invalid_batch_time(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.batch_time("hello World")
+
+    def test_invalid_run_on(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.run_on(42)
+
+    def test_invalid_expansion(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.expansion(42, "v")
+
+        with pytest.raises(TypeError):
+            v.expansion("k", 42)
+
+    def test_invalid_expansions(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.expansions(42)
+
+    def test_invalid_display_task(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.display_task("hello world")
+
+    def test_invalid_display_tasks(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.display_tasks("hello world")
+
 
 class TestTaskSpec:
     def test_task_spec(self):
@@ -74,6 +116,16 @@ class TestTaskSpec:
         assert "task name" == obj["name"]
         assert obj["stepback"]
         assert ["linux"] == obj["distros"]
+
+    def test_invalid_stepback(self):
+        ts = TaskSpec("task name")
+        with pytest.raises(TypeError):
+            ts.stepback("hello world")
+
+    def test_invalid_distro(self):
+        ts = TaskSpec("task name")
+        with pytest.raises(TypeError):
+            ts.distro(42)
 
 
 class TestDisplayTaskDefinition:
@@ -93,3 +145,17 @@ class TestDisplayTaskDefinition:
         assert "comp0" in obj["execution_tasks"]
         assert "comp1" in obj["execution_tasks"]
         assert "comp2" in obj["execution_tasks"]
+
+    def test_invalid_name(self):
+        with pytest.raises(TypeError):
+            DisplayTaskDefinition(42)
+
+    def test_invalid_component(self):
+        dt = DisplayTaskDefinition("display task")
+        with pytest.raises(TypeError):
+            dt.component(42)
+
+    def test_invalid_components(self):
+        dt = DisplayTaskDefinition("display task")
+        with pytest.raises(TypeError):
+            dt.components(42)

@@ -8,6 +8,9 @@ from shrub.operations import EvergreenCommand
 
 class Task(EvergreenBuilder):
     def __init__(self, name):
+        if not isinstance(name, str):
+            raise TypeError("Task only accepts a str")
+
         self._name = name
         self._priority = None
         self._dependencies = []

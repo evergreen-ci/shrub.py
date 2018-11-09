@@ -119,6 +119,10 @@ class TestTask:
         with pytest.raises(TypeError):
             t.function_with_vars("function", 42)
 
+    def test_invalid_name(self):
+        with pytest.raises(TypeError):
+            Task(42)
+
 
 class TestTaskDependency:
     def test_flat_values(self):
