@@ -14,6 +14,8 @@ from shrub.operations import CmdResultsGoTest
 from shrub.operations import CmdArchiveCreate
 from shrub.operations import CmdArchiveExtract
 from shrub.operations import CmdAttachArtifacts
+from shrub.operations import CmdExpansionsUpdate
+from shrub.operations import CmdExpansionsWrite
 
 
 def command_name(c):
@@ -22,6 +24,70 @@ def command_name(c):
 
 def params(c):
     return c.resolve().to_map()["params"]
+
+
+class TestCmdExpansionsUpdates:
+    def test_command_basics(self):
+        c = CmdExpansionsUpdate()
+
+        c.validate()
+        assert "expansions.update" == command_name(c)
+
+    def test_params(self):
+        c = CmdExpansionsUpdate()
+        c.ignore_missing_file().file("file")\
+            .update("k 0", "v 0") \
+            .updates({
+                "k 1": "v 1",
+                "k 2": "v 2",
+            })
+
+        p = params(c)
+        assert p["ignore_missing_file"]
+        assert "file" == p["file"]
+        assert "v 0" == p["updates"]["k 0"]
+        assert "v 1" == p["updates"]["k 1"]
+        assert "v 1" == p["updates"]["k 1"]
+
+    def test_invalid_update(self):
+        c = CmdExpansionsUpdate()
+
+        with pytest.raises(TypeError):
+            c.update(1, "v")
+
+    def test_invalid_updates(self):
+        c = CmdExpansionsUpdate()
+
+        with pytest.raises(TypeError):
+            c.updates("hello")
+
+    def test_invalid_file(self):
+        c = CmdExpansionsUpdate()
+
+        with pytest.raises(TypeError):
+            c.file(42)
+
+
+class TestCmdExpansionWrite:
+    def test_command_basics(self):
+        c = CmdExpansionsWrite()
+
+        c.validate()
+        assert "expansions.write" == command_name(c)
+
+    def test_params(self):
+        c = CmdExpansionsWrite()
+        c.redacted().file("file")
+
+        p = params(c)
+        assert p["redacted"]
+        assert "file" == p["file"]
+
+    def test_invalid_file(self):
+        c = CmdExpansionsWrite()
+
+        with pytest.raises(TypeError):
+            c.file(42)
 
 
 class TestCmdExec:
@@ -368,6 +434,16 @@ class TestCmdArchiveCreate:
         assert "exclude 0" in p["exclude_files"]
         assert "exclude 1" in p["exclude_files"]
         assert "exclude 2" in p["exclude_files"]
+
+    def test_invalid_target(self):
+        c = CmdArchiveCreate(ArchiveFormat.zip())
+        with pytest.raises(TypeError):
+            c.target(42)
+
+    def test_invalid_source_dir(self):
+        c = CmdArchiveCreate(ArchiveFormat.zip())
+        with pytest.raises(TypeError):
+            c.source_dir(42)
 
 
 class TestCmdArchiveExtract:

@@ -46,6 +46,82 @@ class EvergreenCommand:
         return cmd.params(self._export_params())
 
 
+class CmdExpansionsUpdate(EvergreenCommand):
+    def __init__(self):
+        self._updates = {}
+        self._file = None
+        self._ignore_missing_file = False
+
+    def _command_type(self):
+        return "expansions.update"
+
+    def validate(self):
+        return self
+
+    def _param_list(self):
+        return {
+            "_updates": "updates",
+            "_file": "file",
+            "_ignore_missing_file": "ignore_missing_file",
+        }
+
+    def update(self, k, v):
+        if not isinstance(k, str):
+            raise TypeError('update expects a str')
+
+        self._updates[k] = v
+        return self
+
+    def updates(self, kvs):
+        if not isinstance(kvs, dict):
+            raise TypeError('updates expects a dict')
+
+        for k in kvs:
+            self.update(k, kvs[k])
+
+        return self
+
+    def file(self, f):
+        if not isinstance(f, str):
+            raise TypeError('file expects a str')
+
+        self._file = f
+        return self
+
+    def ignore_missing_file(self):
+        self._ignore_missing_file = True
+        return self
+
+
+class CmdExpansionsWrite(EvergreenCommand):
+    def __init__(self):
+        self._file = None
+        self._redacted = False
+
+    def _command_type(self):
+        return "expansions.write"
+
+    def validate(self):
+        return self
+
+    def _param_list(self):
+        return {
+            "_file": "file",
+            "_redacted": "redacted",
+        }
+
+    def file(self, f):
+        if not isinstance(f, str):
+            raise TypeError('file expects a str')
+
+        self._file = f
+        return self
+
+    def redacted(self):
+        self._redacted = True
+        return self
+
+
 class CmdExec(EvergreenCommand):
     def __init__(self):
         self._background = False
@@ -600,10 +676,16 @@ class CmdArchiveCreate(EvergreenCommand):
         }
 
     def target(self, target):
+        if not isinstance(target, str):
+            raise TypeError('target expects a str')
+
         self._target = target
         return self
 
     def source_dir(self, source_dir):
+        if not isinstance(source_dir, str):
+            raise TypeError('source_dir expects a str')
+
         self._source_dir = source_dir
         return self
 
