@@ -323,6 +323,38 @@ class CmdExecShell(EvergreenCommand):
         return self
 
 
+class CmdTimeoutUpdate(EvergreenCommand):
+    def __init__(self):
+        self._exec_timeout = None
+        self._timeout = None
+
+    def _command_type(self):
+        return "timeout.update"
+
+    def validate(self):
+        return self
+
+    def _param_list(self):
+        return {
+            "_exec_timeout": "exec_timeout_secs",
+            "_timeout": "timeout_secs",
+        }
+
+    def exec_timeout(self, timeout):
+        if not isinstance(timeout, int):
+            raise TypeError("Expected timeout to be int")
+
+        self._exec_timeout = timeout
+        return self
+
+    def timeout(self, timeout):
+        if not isinstance(timeout, int):
+            raise TypeError("Expected timeout to be int")
+
+        self._timeout = timeout
+        return self
+
+
 class CmdS3Put(EvergreenCommand):
     def __init__(self):
         self._optional = False
@@ -834,6 +866,70 @@ class CmdHostCreate(EvergreenCommand):
 
         self._vpc_id = vpc
         return self
+
+
+class CmdHostList(EvergreenCommand):
+    def __init__(self):
+        self._num_hosts = None
+        self._path = None
+        self._silent = False
+        self._timeout = False
+        self._wait = False
+
+    def _command_type(self):
+        return "host.list"
+
+    def validate(self):
+        return self
+
+    def _param_list(self):
+        return {
+            "_num_hosts": "num_hosts",
+            "_path": "path",
+            "_silent": "silent",
+            "_timeout": "timeout_seconds",
+            "_wait": "wait"
+        }
+
+    def num_hosts(self, n):
+        if not isinstance(n, int):
+            raise TypeError("Expected num_hosts to be int")
+
+        self._num_hosts = n
+        return self
+
+    def path(self, path):
+        if not isinstance(path, str):
+            raise TypeError("Expected path to be a str")
+
+        self._path = path
+        return self
+
+    def silent(self):
+        self._silent = True
+        return self
+
+    def timeout(self, timeout):
+        if not isinstance(timeout, int):
+            raise TypeError("Expected timeout to be int")
+
+        self._timeout = timeout
+        return self
+
+    def wait(self):
+        self._wait = True
+        return self
+
+
+class CmdManifestLoad(EvergreenCommand):
+    def _command_type(self):
+        return "manifest.load"
+
+    def validate(self):
+        return self
+
+    def _param_list(self):
+        return {}
 
 
 class CmdResultsJSON(EvergreenCommand):

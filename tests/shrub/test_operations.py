@@ -12,12 +12,15 @@ from shrub.operations import CmdExpansionsWrite
 from shrub.operations import CmdGenerateTasks
 from shrub.operations import CmdGetProject
 from shrub.operations import CmdHostCreate
+from shrub.operations import CmdHostList
+from shrub.operations import CmdManifestLoad
 from shrub.operations import CmdResultsGoTest
 from shrub.operations import CmdResultsJSON
 from shrub.operations import CmdResultsXunit
 from shrub.operations import CmdS3Copy
 from shrub.operations import CmdS3Get
 from shrub.operations import CmdS3Put
+from shrub.operations import CmdTimeoutUpdate
 
 
 def command_name(c):
@@ -323,6 +326,55 @@ class TestCmdHostCreate:
 
         with pytest.raises(TypeError):
             c.vpc(42)
+
+
+class TestCmdHostList:
+    def test_command_basics(self):
+        c = CmdHostList()
+
+        assert c.validate()
+        assert "host.list" == command_name(c)
+
+    def test_params(self):
+        c = CmdHostList()
+        c.num_hosts(5)\
+            .path("path")\
+            .timeout(300)\
+            .silent()\
+            .wait()
+
+        p = params(c)
+        assert 5 == p["num_hosts"]
+        assert "path" == p["path"]
+        assert 300 == p["timeout_seconds"]
+        assert p["silent"]
+        assert p["wait"]
+
+    def test_invalid_num_hosts(self):
+        c = CmdHostList()
+
+        with pytest.raises(TypeError):
+            c.num_hosts("hello world")
+
+    def test_invalid_path(self):
+        c = CmdHostList()
+
+        with pytest.raises(TypeError):
+            c.path(42)
+
+    def test_invalid_timeout(self):
+        c = CmdHostList()
+
+        with pytest.raises(TypeError):
+            c.timeout("hello world")
+
+
+class TestCmdManifestLoad:
+    def test_command_basics(self):
+        c = CmdManifestLoad()
+
+        assert c.validate()
+        assert "manifest.load" == command_name(c)
 
 
 class TestCmdExec:
@@ -736,3 +788,32 @@ class TestCmdAttachArtifacts:
         assert "file 0" in p["files"]
         assert "file 1" in p["files"]
         assert "file 2" in p["files"]
+
+
+class TestTimeoutUpdate:
+    def test_command_basics(self):
+        c = CmdTimeoutUpdate()
+
+        assert c.validate()
+        assert "timeout.update" == command_name(c)
+
+    def test_params(self):
+        c = CmdTimeoutUpdate()
+        c.exec_timeout(100)
+        c.timeout(60)
+
+        p = params(c)
+        assert 100 == p["exec_timeout_secs"]
+        assert 60 == p["timeout_secs"]
+
+    def test_invalid_exec_timeout(self):
+        c = CmdTimeoutUpdate()
+
+        with pytest.raises(TypeError):
+            c.exec_timeout("hello")
+
+    def test_invalid_timeout(self):
+        c = CmdTimeoutUpdate()
+
+        with pytest.raises(TypeError):
+            c.timeout("hello")
