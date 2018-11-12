@@ -2,20 +2,22 @@ import pytest
 
 from shrub.operations import ArchiveFormat
 from shrub.operations import AwsCopyFile
-from shrub.operations import CmdExec
-from shrub.operations import CmdExecShell
-from shrub.operations import CmdS3Put
-from shrub.operations import CmdS3Get
-from shrub.operations import CmdS3Copy
-from shrub.operations import CmdGetProject
-from shrub.operations import CmdResultsJSON
-from shrub.operations import CmdResultsXunit
-from shrub.operations import CmdResultsGoTest
 from shrub.operations import CmdArchiveCreate
 from shrub.operations import CmdArchiveExtract
 from shrub.operations import CmdAttachArtifacts
+from shrub.operations import CmdExec
+from shrub.operations import CmdExecShell
 from shrub.operations import CmdExpansionsUpdate
 from shrub.operations import CmdExpansionsWrite
+from shrub.operations import CmdGenerateTasks
+from shrub.operations import CmdGetProject
+from shrub.operations import CmdHostCreate
+from shrub.operations import CmdResultsGoTest
+from shrub.operations import CmdResultsJSON
+from shrub.operations import CmdResultsXunit
+from shrub.operations import CmdS3Copy
+from shrub.operations import CmdS3Get
+from shrub.operations import CmdS3Put
 
 
 def command_name(c):
@@ -88,6 +90,239 @@ class TestCmdExpansionWrite:
 
         with pytest.raises(TypeError):
             c.file(42)
+
+
+class TestCmdGenerateTasks:
+    def test_command_basics(self):
+        c = CmdGenerateTasks()
+
+        assert c.validate()
+        assert "generate.tasks" == command_name(c)
+
+    def test_files(self):
+        c = CmdGenerateTasks()
+        c.file("file")
+
+        p = params(c)
+        assert "file" == p["files"][0]
+
+    def test_invalid_file(self):
+        c = CmdGenerateTasks()
+
+        with pytest.raises(TypeError):
+            c.file(42)
+
+
+class TestCmdHostCreate:
+    def test_command_basics(self):
+        c = CmdHostCreate()
+
+        assert "host.create" == command_name(c)
+
+    def test_validate(self):
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.ami("ami")
+            c.distro("distro")
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.ami("ami")
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.ami("ami")
+            c.instance_type('type')
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.ami("ami")
+            c.instance_type('type')
+            c.security_group_id("id")
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.distro("distro")
+            c.aws_id("id")
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.distro("distro")
+            c.aws_id("id")
+            c.aws_secret("secret")
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.distro("distro")
+            c.aws_secret("secret")
+            c.validate()
+
+        with pytest.raises(ValueError):
+            c = CmdHostCreate()
+            c.distro("distro")
+            c.key_name("key")
+            c.validate()
+
+        c = CmdHostCreate()
+        c.distro("distro")
+        c.validate()
+
+    def test_parameters(self):
+        c = CmdHostCreate()
+        c.ami("ami")\
+            .aws_id("aws_id")\
+            .aws_secret("aws secret")\
+            .distro("distro")\
+            .instance_type("type")\
+            .key_name("key")\
+            .num_hosts(5)\
+            .provider("ec2")\
+            .region("east")\
+            .retries(5)\
+            .scope("build")\
+            .security_group_id("sec group")\
+            .spot()\
+            .subnet_id("subnet 0")\
+            .timeout_setup(100)\
+            .timeout_teardown(200)\
+            .userdata_file("file 1")\
+            .vpc("vpc id")
+
+        p = params(c)
+        assert "ami" == p["ami"]
+        assert "aws_id" == p["aws_access_key_id"]
+        assert "aws secret" == p["aws_secret_access_key"]
+        assert "distro" == p["distro"]
+        assert "type" == p["instance_type"]
+        assert "key" == p["key_name"]
+        assert 5 == p["num_hosts"]
+        assert "ec2" == p["provider"]
+        assert "east" == p["region"]
+        assert 5 == p["retries"]
+        assert "build" == p["scope"]
+        assert "sec group" == p["security_group_ids"][0]
+        assert p["spot"]
+        assert "subnet 0" == p["subnet_id"]
+        assert 100 == p["timeout_setup_secs"]
+        assert 200 == p["timeout_teardown_secs"]
+        assert "file 1" == p["userdata_file"]
+        assert "vpc id" == p["vpc_id"]
+
+    def test_block_device(self):
+        c = CmdHostCreate()
+        c.block_device("name", "100", "200", "id")
+
+        p = params(c)["ebs_block_device"]
+        assert "name" == p["device_name"]
+        assert "100" == p["ebs_iops"]
+        assert "200" == p["ebs_size"]
+        assert "id" == p["ebs_snapshot_id"]
+
+    def test_invalid_ami(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.ami(42)
+
+    def test_invalid_aws_id(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.aws_id(42)
+
+    def test_invalid_aws_secret(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.aws_secret(42)
+
+    def test_invalid_distro(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.distro(42)
+
+    def test_invalid_num_hosts(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.num_hosts("string")
+
+        with pytest.raises(ValueError):
+            c.num_hosts(-5)
+
+        with pytest.raises(ValueError):
+            c.num_hosts(10000000)
+
+    def test_invalid_provider(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(ValueError):
+            c.provider("me")
+
+    def test_invalid_region(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.region(42)
+
+    def test_invalid_retries(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.retries("hello")
+
+    def test_invalid_scope(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(ValueError):
+            c.scope("hello")
+
+    def test_invalid_timeout_setup(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.timeout_setup("string")
+
+        with pytest.raises(ValueError):
+            c.timeout_setup(-5)
+
+        with pytest.raises(ValueError):
+            c.timeout_setup(10000000)
+
+    def test_invalid_timeout_teardown(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.timeout_teardown("string")
+
+        with pytest.raises(ValueError):
+            c.timeout_teardown(-5)
+
+        with pytest.raises(ValueError):
+            c.timeout_teardown(10000000)
+
+    def test_invalid_userdata_file(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.userdata_file(42)
+
+    def test_invalid_vpc(self):
+        c = CmdHostCreate()
+
+        with pytest.raises(TypeError):
+            c.vpc(42)
 
 
 class TestCmdExec:

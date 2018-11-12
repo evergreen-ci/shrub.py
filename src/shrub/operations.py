@@ -6,6 +6,19 @@ from shrub.command import CommandDefinition
 ARCHIVE_FORMAT_ZIP = "zip"
 ARCHIVE_FORMAT_TAR = "tarball"
 ARCHIVE_FORMAT_AUTO = "auto"
+MIN_N_HOSTS = 1
+MAX_N_HOSTS = 10
+TIMEOUT_SETUP_MIN = 60
+TIMEOUT_SETUP_MAX = 600
+TIMEOUT_TEARDOWN_MIN = 60
+TIMEOUT_TEARDOWN_MAX = 604800
+
+
+def _is_outside_of(value, min, max):
+    if value < min or value > max:
+        return True
+
+    return False
 
 
 class EvergreenCommand:
@@ -216,6 +229,29 @@ class CmdExec(EvergreenCommand):
         for k in kvs:
             self._env[k] = kvs[k]
 
+        return self
+
+
+class CmdGenerateTasks(EvergreenCommand):
+    def __init__(self):
+        self._files = []
+
+    def _command_type(self):
+        return "generate.tasks"
+
+    def validate(self):
+        return self
+
+    def _param_list(self):
+        return {
+            "_files": "files",
+        }
+
+    def file(self, f):
+        if not isinstance(f, str):
+            raise TypeError("file expects str")
+
+        self._files.append(f)
         return self
 
 
@@ -578,6 +614,225 @@ class CmdGetProject(EvergreenCommand):
         for k in revs:
             self._revisions[k] = revs[k]
 
+        return self
+
+
+class CmdHostCreate(EvergreenCommand):
+    def __init__(self):
+        self._ami = None
+        self._aws_key_id = None
+        self._aws_key_secret = None
+        self._distro = None
+        self._ebs_block_device = {}
+        self._instance_type = None
+        self._key_name = None
+        self._num_hosts = None
+        self._provider = "ec2"
+        self._region = None
+        self._retries = None
+        self._scope = None
+        self._security_groups = []
+        self._spot = False
+        self._subnet_id = None
+        self._timeout_setup = None
+        self._timeout_teardown = None
+        self._userdata_file = None
+        self._vpc_id = None
+
+    def _command_type(self):
+        return "host.create"
+
+    def validate(self):
+        if not self._ami and not self._distro:
+            raise ValueError("Must set 'ami' or 'distro'")
+
+        if self._ami:
+            if self._distro:
+                raise ValueError("Must not set both 'ami' and 'distro'")
+
+            if not self._instance_type:
+                raise ValueError("'instance_type' must be set if 'ami' is set")
+
+            if not self._security_groups:
+                raise ValueError(
+                    "'security_group_ids' must be set if 'ami' is set")
+
+            if not self._vpc_id:
+                raise ValueError("'vpc' must be set if 'ami' is set")
+
+        if self._aws_key_id:
+            if not self._aws_key_secret:
+                raise ValueError("'aws_secret' must be set if 'aws_id' is set")
+
+            if not self._key_name:
+                raise ValueError("'key_name' must be set if 'aws_id' is set")
+
+        if self._aws_key_secret:
+            if not self._aws_key_id:
+                raise ValueError("'aws_id' must be set if 'aws_secret' is set")
+
+        if self._key_name and not self._aws_key_id:
+            raise ValueError(
+                "'key_name' must not be set if 'aws_id' or 'aws_secret' is not"
+            )
+
+        return self
+
+    def _param_list(self):
+        return {
+            "_ami": "ami",
+            "_aws_key_id": "aws_access_key_id",
+            "_aws_key_secret": "aws_secret_access_key",
+            "_distro": "distro",
+            "_ebs_block_device": "ebs_block_device",
+            "_instance_type": "instance_type",
+            "_key_name": "key_name",
+            "_num_hosts": "num_hosts",
+            "_provider": "provider",
+            "_region": "region",
+            "_retries": "retries",
+            "_scope": "scope",
+            "_security_groups": "security_group_ids",
+            "_spot": "spot",
+            "_subnet_id": "subnet_id",
+            "_timeout_setup": "timeout_setup_secs",
+            "_timeout_teardown": "timeout_teardown_secs",
+            "_userdata_file": "userdata_file",
+            "_vpc_id": "vpc_id",
+        }
+
+    def ami(self, ami):
+        if not isinstance(ami, str):
+            raise TypeError("Expected ami to be str")
+
+        self._ami = ami
+        return self
+
+    def aws_id(self, aws_id):
+        if not isinstance(aws_id, str):
+            raise TypeError("Expected aws_id to be str")
+
+        self._aws_key_id = aws_id
+        return self
+
+    def aws_secret(self, aws_secret):
+        if not isinstance(aws_secret, str):
+            raise TypeError("Expected aws_secret to be str")
+
+        self._aws_key_secret = aws_secret
+        return self
+
+    def distro(self, distro):
+        if not isinstance(distro, str):
+            raise TypeError("Expected distro to be str")
+
+        self._distro = distro
+        return self
+
+    def block_device(self, name, iops, size, snaphshot_id):
+        self._ebs_block_device = {
+            "device_name": name,
+            "ebs_iops": iops,
+            "ebs_size": size,
+            "ebs_snapshot_id": snaphshot_id,
+        }
+        return self
+
+    def instance_type(self, it):
+        self._instance_type = it
+        return self
+
+    def key_name(self, key):
+        self._key_name = key
+        return self
+
+    def num_hosts(self, n):
+        if not isinstance(n, int):
+            raise TypeError("Expected num_hosts to be an int")
+
+        if _is_outside_of(n, MIN_N_HOSTS, MAX_N_HOSTS):
+            raise ValueError("Expected num_hosts to be between {} and {}"
+                             .format(MIN_N_HOSTS, MAX_N_HOSTS))
+
+        self._num_hosts = n
+        return self
+
+    def provider(self, provider):
+        if provider not in ["ec2"]:
+            raise ValueError("provider must be 'ec2'")
+
+        self._provider = provider
+        return self
+
+    def region(self, region):
+        if not isinstance(region, str):
+            raise TypeError("Expected region to be a str")
+
+        self._region = region
+        return self
+
+    def retries(self, n):
+        if not isinstance(n, int):
+            raise TypeError("Expected retries to be an int")
+
+        self._retries = n
+        return self
+
+    def scope(self, scope):
+        if scope not in ["task", "build"]:
+            raise ValueError("scope must be 'task' or 'build'")
+
+        self._scope = scope
+        return self
+
+    def security_group_id(self, id):
+        self._security_groups.append(id)
+        return self
+
+    def spot(self):
+        self._spot = True
+        return self
+
+    def subnet_id(self, id):
+        self._subnet_id = id
+        return self
+
+    def timeout_setup(self, timeout):
+        if not isinstance(timeout, int):
+            raise TypeError("Expected timeout to be int")
+
+        if _is_outside_of(timeout, TIMEOUT_SETUP_MIN, TIMEOUT_SETUP_MAX):
+            raise ValueError("Expected timeout to be between {} and {}".format(
+                TIMEOUT_SETUP_MIN, TIMEOUT_SETUP_MAX
+            ))
+
+        self._timeout_setup = timeout
+        return self
+
+    def timeout_teardown(self, timeout):
+        if not isinstance(timeout, int):
+            raise TypeError("Expected timeout to be int")
+
+        if _is_outside_of(timeout, TIMEOUT_TEARDOWN_MIN, TIMEOUT_TEARDOWN_MAX):
+            raise ValueError("Expected timeout to be between {} and {}".format(
+                TIMEOUT_TEARDOWN_MIN, TIMEOUT_TEARDOWN_MAX
+            ))
+
+        self._timeout_teardown = timeout
+        return self
+
+    def userdata_file(self, file):
+        if not isinstance(file, str):
+            raise TypeError("Expected userdata_file to be str")
+
+        self._userdata_file = file
+        return self
+
+    def vpc(self, vpc):
+        if not isinstance(vpc, str):
+            raise TypeError("Expected vpc to be str")
+
+        self._vpc_id = vpc
         return self
 
 
