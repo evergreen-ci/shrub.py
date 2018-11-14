@@ -4,6 +4,7 @@ from shrub.base import RECURSE_KEY
 
 
 class CommandDefinition(EvergreenBuilder):
+    """An evergreen command."""
 
     def __init__(self):
         self._function_name = None
@@ -28,6 +29,12 @@ class CommandDefinition(EvergreenBuilder):
         }
 
     def function(self, fun_name):
+        """
+        Function to call  for command.
+
+        :param fun_name: name of function to call.
+        :return: instance of command definition.
+        """
         if not isinstance(fun_name, str):
             raise TypeError("function only accepts a str")
 
@@ -35,6 +42,12 @@ class CommandDefinition(EvergreenBuilder):
         return self
 
     def type(self, execution_type):
+        """
+        Type of command to execute.
+
+        :param execution_type: type of command.
+        :return: instance of command definition.
+        """
         if not isinstance(execution_type, str):
             raise TypeError("type only accepts a str")
 
@@ -42,6 +55,12 @@ class CommandDefinition(EvergreenBuilder):
         return self
 
     def name(self, name):
+        """
+        Display name of command.
+
+        :param name: display name.
+        :return: instance of command definition.
+        """
         if not isinstance(name, str):
             raise TypeError("name only accepts a str")
 
@@ -49,6 +68,12 @@ class CommandDefinition(EvergreenBuilder):
         return self
 
     def command(self, name):
+        """
+        Command name to execute.
+
+        :param name: name of command.
+        :return: instance of command definition.
+        """
         if not isinstance(name, str):
             raise TypeError("command only accepts a str")
 
@@ -56,6 +81,12 @@ class CommandDefinition(EvergreenBuilder):
         return self
 
     def timeout(self, timeout):
+        """
+        Timeout of command.
+
+        :param timeout: timeout.
+        :return: instance of command definition.
+        """
         if not isinstance(timeout, int):
             raise TypeError("timeout only accepts an int")
 
@@ -78,14 +109,27 @@ class CommandDefinition(EvergreenBuilder):
 
         return self
 
-    def var(self, k, v):
-        if not isinstance(k, str):
+    def var(self, name, value):
+        """
+        Define a variable to pass to command.
+
+        :param name: name of variable.
+        :param value: value of variable.
+        :return: instance of command definition.
+        """
+        if not isinstance(name, str):
             raise TypeError("var only accepts a str")
 
-        self._vars[k] = v
+        self._vars[name] = value
         return self
 
     def vars(self, vs):
+        """
+        Define a dictionary of variables to pass to command.
+
+        :param vs: dictionary of variables.
+        :return: instance of command definition.
+        """
         if not isinstance(vs, dict):
             raise TypeError("vars only accepts a dict")
 
@@ -94,14 +138,27 @@ class CommandDefinition(EvergreenBuilder):
 
         return self
 
-    def param(self, k, v):
-        if not isinstance(k, str):
+    def param(self, name, value):
+        """
+        Define parameter to pass to command.
+
+        :param name: name of parameter.
+        :param value: value of parameter.
+        :return: instance of command definition.
+        """
+        if not isinstance(name, str):
             raise TypeError("param only accepts a str")
 
-        self._params[k] = v
+        self._params[name] = value
         return self
 
     def params(self, ps):
+        """
+        Define a dictionary of parameters to pass to command.
+
+        :param ps: dictionary of parameters.
+        :return: instance of command definition.
+        """
         if not isinstance(ps, dict):
             raise TypeError("params only accepts a dict")
 
@@ -110,13 +167,9 @@ class CommandDefinition(EvergreenBuilder):
 
         return self
 
-    def to_map(self):
-        obj = {}
-        self._add_defined_attribs(obj, self._yaml_map().keys())
-        return obj
-
 
 class CommandSequence(EvergreenBuilder):
+    """Define a sequence of commands to execute in evergreen."""
     def __init__(self):
         self._cmd_seq = []
 
@@ -124,28 +177,49 @@ class CommandSequence(EvergreenBuilder):
         return {}
 
     def len(self):
+        """
+        Number of commands in sequence.
+        :return: number of commands in sequence.
+        """
         return len(self._cmd_seq)
 
     def command(self):
+        """
+        Add a new CommandDefinition to the sequence.
+        :return: new CommandDefinition.
+        """
         c = CommandDefinition()
         self._cmd_seq.append(c)
         return c
 
-    def add(self, cmd):
-        if not isinstance(cmd, CommandDefinition):
+    def add(self, cmd_def):
+        """
+        Add CommandDefinition to the sequence.
+
+        :param cmd_def: CommandDefinition to add.
+        :return: instance of command sequence.
+        """
+        if not isinstance(cmd_def, CommandDefinition):
             raise TypeError("add only accepts a CommandDefinition")
 
-        self._cmd_seq.append(cmd)
+        self._cmd_seq.append(cmd_def)
         return self
 
-    def extend(self, cmds):
-        if not isinstance(cmds, list):
+    def extend(self, cmd_def_list):
+        """
+        Add a list of CommandDefinitions to the sequence.
+
+        :param cmd_def_list: list of CommandDefinitions.
+        :return: instance of command sequence.
+        """
+        if not isinstance(cmd_def_list, list):
             raise TypeError("extend only accepts a list")
 
-        for c in cmds:
+        for c in cmd_def_list:
             self.add(c)
 
         return self
 
     def to_map(self):
+        """Convert this object to a list of python dict."""
         return [c.to_map() for c in self._cmd_seq]

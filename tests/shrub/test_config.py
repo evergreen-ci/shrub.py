@@ -18,7 +18,7 @@ class TestConfiguration:
             .batch_time(300)\
             .ignore_file("file1")\
             .ignore_files(["file2", "file3"])
-        c.stepback(True).command_type("setup")
+        c.stepback().command_type("setup")
 
         obj = c.to_map()
 
@@ -150,12 +150,6 @@ class TestConfiguration:
 
         with pytest.raises(TypeError):
             c.batch_time("hello world")
-
-    def test_invalid_stepback(self):
-        c = Configuration()
-
-        with pytest.raises(TypeError):
-            c.stepback("hello world")
 
     def test_invalid_ignore_file(self):
         c = Configuration()

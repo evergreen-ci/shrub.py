@@ -53,6 +53,13 @@ class Configuration(EvergreenBuilder):
         }
 
     def task(self, name):
+        """
+        Get a task from the task list by name. If the task name is not found,
+        create a new task and insert it into the task list.
+
+        :param name: name of task.
+        :return: task specified.
+        """
         if not isinstance(name, str):
             raise TypeError("task only accepts strings")
 
@@ -65,6 +72,14 @@ class Configuration(EvergreenBuilder):
         return t
 
     def task_group(self, name):
+        """
+        Get a task group from the task group list by name. If the task group
+        name is not found, create a new group task and insert it into the task
+        group list.
+
+        :param name: name of task group.
+        :return: task group specified.
+        """
         if not isinstance(name, str):
             raise TypeError("task_group only accepts strings")
 
@@ -78,7 +93,9 @@ class Configuration(EvergreenBuilder):
 
     def function(self, name):
         """
-        Create a new function to add to the configuration.
+        Get a function from the functions by name. If the function does not
+        already exist, return a CommandSequence for a new function under the
+        specified name.
 
         :param name: name of function to add.
         :return: Command sequence for function.
@@ -94,6 +111,14 @@ class Configuration(EvergreenBuilder):
         return seq
 
     def variant(self, name):
+        """
+        Get a variant the variant list by name. If the variant
+        name is not found, create a new variant and insert it into the
+        variant list.
+
+        :param name: name of variant.
+        :return: variant specified.
+        """
         if not isinstance(name, str):
             raise TypeError("variant only accepts strings")
 
@@ -105,21 +130,39 @@ class Configuration(EvergreenBuilder):
         self._variants.append(v)
         return v
 
-    def pre(self, cmds):
-        if not isinstance(cmds, CommandSequence):
+    def pre(self, cmd_seq):
+        """
+        Sets the pre commands to the specified CommandSequence.
+
+        :param cmd_seq: CommandSequence to use.
+        :return: instance of config.
+        """
+        if not isinstance(cmd_seq, CommandSequence):
             raise TypeError("pre only accepts a Sequence")
 
-        self._pre = cmds
+        self._pre = cmd_seq
         return self
 
-    def post(self, cmds):
-        if not isinstance(cmds, CommandSequence):
+    def post(self, cmd_seq):
+        """
+        Sets the post commands to the specified CommandSequence.
+
+        :param cmd_seq: CommandSequence to use.
+        :return: instance of config.
+        """
+        if not isinstance(cmd_seq, CommandSequence):
             raise TypeError("pre only accepts a Sequence")
 
-        self._post = cmds
+        self._post = cmd_seq
         return self
 
     def exec_timeout(self, duration):
+        """
+        Sets the exec_timeout.
+
+        :param duration: timeout to set (in sec).
+        :return: instance of config.
+        """
         if not isinstance(duration, int):
             raise TypeError("exec_timeout only accepts an int")
 
@@ -127,43 +170,71 @@ class Configuration(EvergreenBuilder):
         return self
 
     def batch_time(self, duration):
+        """
+        Sets the batch time.
+
+        :param duration: batch time to set (in sec).
+        :return: instance of config.
+        """
         if not isinstance(duration, int):
             raise TypeError("batch_time only accepts an int")
 
         self._batch_time_secs = duration
         return self
 
-    def stepback(self, stepback):
-        if not isinstance(stepback, bool):
-            raise TypeError("stepback only accepts a bool")
+    def stepback(self):
+        """
+        Enables stepback for this config.
 
-        self._stepback = stepback
+        :return: instance of config.
+        """
+        self._stepback = True
         return self
 
-    def command_type(self, t):
-        if t not in ["system", "setup", "task"]:
+    def command_type(self, type):
+        """
+        Specify the command type. Possible values are ["system",
+        "setup", "task"].
+
+        :param type: command type to set.
+        :return: instance of config.
+        """
+        if type not in ["system", "setup", "task"]:
             raise ValueError("Bad Command Type")
 
-        self._command_type = t
+        self._command_type = type
         return self
 
-    def ignore_file(self, filename):
-        if not isinstance(filename, str):
+    def ignore_file(self, file_pattern):
+        """
+        Append new file pattern to list of patterns to ignore.
+
+        :param file_pattern: file pattern to ignore.
+        :return: instance of config.
+        """
+        if not isinstance(file_pattern, str):
             raise TypeError("ignore_file only accepts a str")
 
-        self._ignore_files.append(filename)
+        self._ignore_files.append(file_pattern)
         return self
 
-    def ignore_files(self, filenames):
-        if not isinstance(filenames, list):
+    def ignore_files(self, file_patterns):
+        """
+        Append a list of file pattern to list of patterns to ignore.
+
+        :param file_patterns: list of file patterns to ignore.
+        :return: instance of config.
+        """
+        if not isinstance(file_patterns, list):
             raise TypeError("ignore_file only accepts a Sequence")
 
-        for f in filenames:
+        for f in file_patterns:
             self.ignore_file(f)
 
         return self
 
     def to_map(self):
+        """Convert this object to a python dict."""
         obj = {}
         self._add_defined_attribs(obj, self._yaml_map().keys())
 

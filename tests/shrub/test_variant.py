@@ -108,19 +108,14 @@ class TestVariant:
 
 class TestTaskSpec:
     def test_task_spec(self):
-        ts = TaskSpec("task name")
-        ts.stepback(True)
-        ts.distro("linux")
+        ts = TaskSpec("task name")\
+            .stepback()\
+            .distro("linux")
 
         obj = ts.to_map()
         assert "task name" == obj["name"]
         assert obj["stepback"]
         assert ["linux"] == obj["distros"]
-
-    def test_invalid_stepback(self):
-        ts = TaskSpec("task name")
-        with pytest.raises(TypeError):
-            ts.stepback("hello world")
 
     def test_invalid_distro(self):
         ts = TaskSpec("task name")
@@ -137,8 +132,8 @@ class TestDisplayTaskDefinition:
 
     def test_items_added_to_display_task(self):
         dt = DisplayTaskDefinition("display task name")
-        dt.component("comp0")\
-            .components(["comp1", "comp2"])
+        dt.execution_task("comp0")\
+            .execution_tasks(["comp1", "comp2"])
 
         obj = dt.to_map()
         assert "display task name" == obj["name"]
@@ -153,9 +148,9 @@ class TestDisplayTaskDefinition:
     def test_invalid_component(self):
         dt = DisplayTaskDefinition("display task")
         with pytest.raises(TypeError):
-            dt.component(42)
+            dt.execution_task(42)
 
     def test_invalid_components(self):
         dt = DisplayTaskDefinition("display task")
         with pytest.raises(TypeError):
-            dt.components(42)
+            dt.execution_tasks(42)

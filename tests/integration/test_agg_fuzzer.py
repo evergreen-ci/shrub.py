@@ -58,7 +58,7 @@ class TestAggregationFuzzer:
             ])
 
         dt = DisplayTaskDefinition("aggregation_multiversion_fuzzer")\
-            .components(task_names)
+            .execution_tasks(task_names)
         c.variant("linux-64").tasks(task_specs).display_task(dt)
 
         return c

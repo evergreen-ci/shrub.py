@@ -17,7 +17,7 @@ class EvergreenBuilder:
         """A map of values to yaml decorators."""
 
     def to_map(self):
-        """Convert this object to a pythonic map."""
+        """Convert this object to a python dict."""
         obj = {}
         self._add_defined_attribs(obj, self._yaml_map().keys())
         return obj
@@ -39,7 +39,15 @@ class EvergreenBuilder:
             self._add_if_defined(obj, attrib)
 
     def to_yaml(self):
+        """
+        Convert this object into a yaml configuration.
+        :return: yaml string describing this configuration.
+        """
         return yaml.dump(self.to_map(), default_flow_style=False)
 
     def to_json(self):
+        """
+        Convert this object into a json configuration.
+        :return: json string describing this configuration.
+        """
         return json.dumps(self.to_map(), indent=4)
