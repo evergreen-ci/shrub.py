@@ -15,6 +15,7 @@ class Task(EvergreenBuilder):
         self._name = name
         self._priority = None
         self._dependencies = []
+        self._requires = []
         self._commands = CommandSequence()
 
     def _yaml_map(self):
@@ -23,6 +24,7 @@ class Task(EvergreenBuilder):
             "_commands": {NAME_KEY: "commands", RECURSE_KEY: True},
             "_priority": {NAME_KEY: "priority", RECURSE_KEY: False},
             "_dependencies": {NAME_KEY: "depends_on", RECURSE_KEY: True},
+            "_requires": {NAME_KEY: "requires", RECURSE_KEY: True},
         }
 
     def get_name(self):
@@ -81,6 +83,19 @@ class Task(EvergreenBuilder):
             raise TypeError("dependency only accepts a TaskDependency")
 
         self._dependencies.append(dep)
+        return self
+
+    def requires(self, dep):
+        """
+        Add a requires to this task.
+
+        :param dep: TaskDependency to add.
+        :return: instance of task being modified.
+        """
+        if not isinstance(dep, TaskDependency):
+            raise TypeError("requires only accepts a TaskDependency")
+
+        self._requires.append(dep)
         return self
 
     def function(self, fn):

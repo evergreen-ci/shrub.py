@@ -27,6 +27,16 @@ class TestTask:
         assert 3 == len(obj["depends_on"])
         assert "dep 1" == obj["depends_on"][1]["name"]
 
+    def test_adding_requires(self):
+        t = Task("task 0")
+        t.requires(TaskDependency("dep 0")) \
+            .requires(TaskDependency("dep 1")) \
+            .requires(TaskDependency("dep 2"))
+
+        obj = t.to_map()
+        assert 3 == len(obj["requires"])
+        assert "dep 1" == obj["requires"][1]["name"]
+
     def test_adding_command(self):
         t = Task("task 0")
         t.command(CmdGetProject().resolve())
