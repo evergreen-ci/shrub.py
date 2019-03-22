@@ -608,10 +608,11 @@ class TestCmdS3Copy:
             .display_name("f1 name") \
             .source("bucket 2", "path 2") \
             .destination("bucket 3", "path 3")
-        c.aws_key("aws key").optional().aws_secret("aws secret")\
-            .file(f0).files([f1])
+        c.aws_key("aws key").aws_secret("aws secret")\
+            .file(f0).files([f1]).optional()
 
         p = params(c)
+        assert "optional" in p
         assert p["optional"]
 
 
