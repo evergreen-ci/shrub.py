@@ -592,10 +592,27 @@ class TestCmdS3Copy:
         p = params(c)
         assert "aws key" == p["aws_key"]
         assert "aws secret" == p["aws_secret"]
+        assert "optional" not in p
         assert "bucket 0" == p["s3_copy_files"][0]["source"]["bucket"]
         assert "path 0" == p["s3_copy_files"][0]["source"]["path"]
         assert "bucket 3" == p["s3_copy_files"][1]["destination"]["bucket"]
         assert "path 3" == p["s3_copy_files"][1]["destination"]["path"]
+
+    def test_optional_parameter(self):
+        c = CmdS3Copy()
+        f0 = AwsCopyFile() \
+            .display_name("f0 name") \
+            .source("bucket 0", "path 0") \
+            .destination("bucket 1", "path 1")
+        f1 = AwsCopyFile() \
+            .display_name("f1 name") \
+            .source("bucket 2", "path 2") \
+            .destination("bucket 3", "path 3")
+        c.aws_key("aws key").optional().aws_secret("aws secret")\
+            .file(f0).files([f1])
+
+        p = params(c)
+        assert p["optional"]
 
 
 class TestCmdGetProject:
