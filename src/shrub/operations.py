@@ -574,6 +574,7 @@ class CmdS3Copy(EvergreenCommand):
         self._aws_key = None
         self._aws_secret = None
         self._files = []
+        self._optional = None
 
     def _command_type(self):
         return "s3Copy.copy"
@@ -585,6 +586,7 @@ class CmdS3Copy(EvergreenCommand):
         return {
             "_aws_key": "aws_key",
             "_aws_secret": "aws_secret",
+            "_optional": "optional",
         }
 
     def _export_params(self):
@@ -608,6 +610,10 @@ class CmdS3Copy(EvergreenCommand):
 
     def files(self, files):
         self._files += files
+        return self
+
+    def optional(self):
+        self._optional = True
         return self
 
 
