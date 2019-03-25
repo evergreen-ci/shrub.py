@@ -560,7 +560,7 @@ class AwsCopyFile:
         if self._display_name:
             obj["display_name"] = self._display_name
         if self._build_variants:
-            obj["buildvariants"] = self._build_variants
+            obj["build_variants"] = self._build_variants
         if self._source:
             obj["source"] = self._source
         if self._destination:

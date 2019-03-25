@@ -15,7 +15,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="shrub.py",
-    version="0.2.1",
+    version="0.2.2",
     description="Library for creating evergreen configurations",
     long_description=long_description,
     long_description_content_type="text/markdown",

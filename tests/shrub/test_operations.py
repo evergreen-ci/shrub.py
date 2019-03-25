@@ -549,9 +549,9 @@ class TestAwsCopyFile:
         obj = cf.to_map()
         assert obj["optional"]
         assert "name" == obj["display_name"]
-        assert "bv 0" in obj["buildvariants"]
-        assert "bv 1" in obj["buildvariants"]
-        assert "bv 2" in obj["buildvariants"]
+        assert "bv 0" in obj["build_variants"]
+        assert "bv 1" in obj["build_variants"]
+        assert "bv 2" in obj["build_variants"]
 
     def test_source(self):
         cf = AwsCopyFile()
