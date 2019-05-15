@@ -1,0 +1,72 @@
+buildvariants:
+- display_name: Ubuntu 16.04
+  name: ubuntu1604
+  run_on:
+  - ubuntu1604-test
+  tasks:
+  - name: unit_tests
+
+
+functions:
+  create virtualenv:
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        set -o errexit
+        virtualenv --python=/opt/mongodbtoolchain/v3/bin/python3 venv
+        . venv/bin/activate
+        pip install -r requirements.txt
+
+  run yapf:
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        set -o errexit
+        . venv/bin/activate
+
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
+
+        yapf-junit --target-dir ${target_directory} --out-file junit-yapf.xml --yapf-config .style.yapf
+
+  upload code coverage:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          set -o errexit
+          . venv/bin/activate
+
+          coverage combine
+          COVERALLS_REPO_TOKEN=${coveralls_repo_token} coveralls
+
+pre:
+- command: git.get_project
+  params:
+    directory: src
+- func: create virtualenv
+
+post:
+- command: attach.xunit_results
+  params:
+    file: src/junit-*.xml
+
+tasks:
+- name: unit_tests
+  commands:
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        set -o errexit
+        . venv/bin/activate
+
+        tox
+
+- name: yapf_src
+  commands:
+  - func: run yapf
+    vars:
+      target_directory: src
