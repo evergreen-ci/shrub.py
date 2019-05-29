@@ -44,3 +44,10 @@ would generate json used by ```generate.tasks```:
         
         c.to_json()
 ```
+
+## Run tests
+
+```
+pip install tox
+tox
+```

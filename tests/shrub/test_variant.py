@@ -57,7 +57,7 @@ class TestVariant:
         v.module("enterprise")
 
         obj = v.to_map()
-        assert "enterprise" == obj["modules"]
+        assert ["enterprise"] == obj["modules"]
 
     def test_modules_can_be_added(self):
         v = Variant("variant name")
