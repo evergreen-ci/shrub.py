@@ -22,6 +22,7 @@ class Variant(EvergreenBuilder):
         self._distro_run_on = []
         self._expansions = {}
         self._display_task_specs = []
+        self._modules = []
 
     def _yaml_map(self):
         return {
@@ -34,6 +35,7 @@ class Variant(EvergreenBuilder):
             "_expansions": {NAME_KEY: "expansions", RECURSE_KEY: False},
             "_display_task_specs": {NAME_KEY: "display_tasks",
                                     RECURSE_KEY: True},
+            "_modules": {NAME_KEY: "modules", RECURSE_KEY: False},
         }
 
     def get_name(self):
@@ -138,6 +140,33 @@ class Variant(EvergreenBuilder):
         for t in task_spec_list:
             self.task(t)
 
+        return self
+
+    def module(self, module):
+        """
+        Add a Module to this build variant.
+
+        :param module: module to add.
+        :return: instance of variant.
+        """
+        if not isinstance(module, str):
+            raise TypeError("module only accepts a str")
+
+        self._modules.append(module)
+        return self
+
+    def modules(self, modules):
+        """
+        Sets the modules for this build variant.
+
+        :param modules: array of modules to set.
+        :return: instance of variant.
+        """
+        if not isinstance(modules, list):
+            raise TypeError("modules only accepts a list")
+
+        for module in modules:
+            self.module(module)
         return self
 
     def display_task(self, display_task):
