@@ -52,6 +52,29 @@ class TestVariant:
         with pytest.raises(TypeError):
             v.tasks(TaskSpec("not array"))
 
+    def test_module_can_be_added(self):
+        v = Variant("variant name")
+        v.module("enterprise")
+
+        obj = v.to_map()
+        assert "enterprise" == obj["modules"]
+
+    def test_modules_can_be_added(self):
+        v = Variant("variant name")
+        v.modules(["enterprise", "enterprise2"])
+
+        obj = v.to_map()
+        assert "enterprise" in obj["modules"]
+        assert "enterprise2" in obj["modules"]
+
+    def test_invalid_modules_cannot_be_added(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.module(25)
+
+        with pytest.raises(TypeError):
+            v.modules(TaskSpec("not array"))
+
     def test_display_tasks_can_be_added(self):
         v = Variant("variant name")
         v.display_task(DisplayTaskDefinition("display task 0"))\
