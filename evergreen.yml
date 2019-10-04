@@ -5,6 +5,7 @@ buildvariants:
   - ubuntu1604-test
   tasks:
   - name: unit_tests
+  - name: check_formatting
 
 
 functions:
@@ -16,31 +17,8 @@ functions:
         set -o errexit
         virtualenv --python=/opt/mongodbtoolchain/v3/bin/python3 venv
         . venv/bin/activate
+
         pip install -r requirements.txt
-
-  run yapf:
-  - command: shell.exec
-    params:
-      working_dir: src
-      script: |
-        set -o errexit
-        . venv/bin/activate
-
-        export LC_ALL=C.UTF-8
-        export LANG=C.UTF-8
-
-        yapf-junit --target-dir ${target_directory} --out-file junit-yapf.xml --yapf-config .style.yapf
-
-  upload code coverage:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          set -o errexit
-          . venv/bin/activate
-
-          coverage combine
-          COVERALLS_REPO_TOKEN=${coveralls_repo_token} coveralls
 
 pre:
 - command: git.get_project
@@ -65,8 +43,13 @@ tasks:
 
         tox
 
-- name: yapf_src
+- name: check_formatting
   commands:
-  - func: run yapf
-    vars:
-      target_directory: src
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          set -o errexit
+          . venv/bin/activate
+
+          black --check --diff src

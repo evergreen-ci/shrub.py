@@ -1,3 +1,4 @@
+black
 pyyaml
 pytest
 pytest-flake8

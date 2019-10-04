@@ -170,6 +170,7 @@ class CommandDefinition(EvergreenBuilder):
 
 class CommandSequence(EvergreenBuilder):
     """Define a sequence of commands to execute in evergreen."""
+
     def __init__(self):
         self._cmd_seq = []
 

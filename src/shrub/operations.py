@@ -80,14 +80,14 @@ class CmdExpansionsUpdate(EvergreenCommand):
 
     def update(self, k, v):
         if not isinstance(k, str):
-            raise TypeError('update expects a str')
+            raise TypeError("update expects a str")
 
         self._updates[k] = v
         return self
 
     def updates(self, kvs):
         if not isinstance(kvs, dict):
-            raise TypeError('updates expects a dict')
+            raise TypeError("updates expects a dict")
 
         for k in kvs:
             self.update(k, kvs[k])
@@ -96,7 +96,7 @@ class CmdExpansionsUpdate(EvergreenCommand):
 
     def file(self, f):
         if not isinstance(f, str):
-            raise TypeError('file expects a str')
+            raise TypeError("file expects a str")
 
         self._file = f
         return self
@@ -118,14 +118,11 @@ class CmdExpansionsWrite(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_file": "file",
-            "_redacted": "redacted",
-        }
+        return {"_file": "file", "_redacted": "redacted"}
 
     def file(self, f):
         if not isinstance(f, str):
-            raise TypeError('file expects a str')
+            raise TypeError("file expects a str")
 
         self._file = f
         return self
@@ -243,9 +240,7 @@ class CmdGenerateTasks(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_files": "files",
-        }
+        return {"_files": "files"}
 
     def file(self, f):
         if not isinstance(f, str):
@@ -335,10 +330,7 @@ class CmdTimeoutUpdate(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_exec_timeout": "exec_timeout_secs",
-            "_timeout": "timeout_secs",
-        }
+        return {"_exec_timeout": "exec_timeout_secs", "_timeout": "timeout_secs"}
 
     def exec_timeout(self, timeout):
         if not isinstance(timeout, int):
@@ -540,17 +532,11 @@ class AwsCopyFile:
         return self
 
     def source(self, bucket, path):
-        self._source = {
-            "bucket": bucket,
-            "path": path,
-        }
+        self._source = {"bucket": bucket, "path": path}
         return self
 
     def destination(self, bucket, path):
-        self._destination = {
-            "bucket": bucket,
-            "path": path,
-        }
+        self._destination = {"bucket": bucket, "path": path}
         return self
 
     def to_map(self):
@@ -583,11 +569,7 @@ class CmdS3Copy(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_aws_key": "aws_key",
-            "_aws_secret": "aws_secret",
-            "_optional": "optional",
-        }
+        return {"_aws_key": "aws_key", "_aws_secret": "aws_secret", "_optional": "optional"}
 
     def _export_params(self):
         obj = super(CmdS3Copy, self)._export_params()
@@ -630,11 +612,7 @@ class CmdGetProject(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_token": "token",
-            "_dir": "directory",
-            "_revisions": "revisions",
-        }
+        return {"_token": "token", "_dir": "directory", "_revisions": "revisions"}
 
     def token(self, token):
         self._token = token
@@ -692,8 +670,7 @@ class CmdHostCreate(EvergreenCommand):
                 raise ValueError("'instance_type' must be set if 'ami' is set")
 
             if not self._security_groups:
-                raise ValueError(
-                    "'security_group_ids' must be set if 'ami' is set")
+                raise ValueError("'security_group_ids' must be set if 'ami' is set")
 
             if not self._vpc_id:
                 raise ValueError("'vpc' must be set if 'ami' is set")
@@ -710,9 +687,7 @@ class CmdHostCreate(EvergreenCommand):
                 raise ValueError("'aws_id' must be set if 'aws_secret' is set")
 
         if self._key_name and not self._aws_key_id:
-            raise ValueError(
-                "'key_name' must not be set if 'aws_id' or 'aws_secret' is not"
-            )
+            raise ValueError("'key_name' must not be set if 'aws_id' or 'aws_secret' is not")
 
         return self
 
@@ -789,8 +764,9 @@ class CmdHostCreate(EvergreenCommand):
             raise TypeError("Expected num_hosts to be an int")
 
         if _is_outside_of(n, MIN_N_HOSTS, MAX_N_HOSTS):
-            raise ValueError("Expected num_hosts to be between {} and {}"
-                             .format(MIN_N_HOSTS, MAX_N_HOSTS))
+            raise ValueError(
+                "Expected num_hosts to be between {} and {}".format(MIN_N_HOSTS, MAX_N_HOSTS)
+            )
 
         self._num_hosts = n
         return self
@@ -840,9 +816,11 @@ class CmdHostCreate(EvergreenCommand):
             raise TypeError("Expected timeout to be int")
 
         if _is_outside_of(timeout, TIMEOUT_SETUP_MIN, TIMEOUT_SETUP_MAX):
-            raise ValueError("Expected timeout to be between {} and {}".format(
-                TIMEOUT_SETUP_MIN, TIMEOUT_SETUP_MAX
-            ))
+            raise ValueError(
+                "Expected timeout to be between {} and {}".format(
+                    TIMEOUT_SETUP_MIN, TIMEOUT_SETUP_MAX
+                )
+            )
 
         self._timeout_setup = timeout
         return self
@@ -852,9 +830,11 @@ class CmdHostCreate(EvergreenCommand):
             raise TypeError("Expected timeout to be int")
 
         if _is_outside_of(timeout, TIMEOUT_TEARDOWN_MIN, TIMEOUT_TEARDOWN_MAX):
-            raise ValueError("Expected timeout to be between {} and {}".format(
-                TIMEOUT_TEARDOWN_MIN, TIMEOUT_TEARDOWN_MAX
-            ))
+            raise ValueError(
+                "Expected timeout to be between {} and {}".format(
+                    TIMEOUT_TEARDOWN_MIN, TIMEOUT_TEARDOWN_MAX
+                )
+            )
 
         self._timeout_teardown = timeout
         return self
@@ -894,7 +874,7 @@ class CmdHostList(EvergreenCommand):
             "_path": "path",
             "_silent": "silent",
             "_timeout": "timeout_seconds",
-            "_wait": "wait"
+            "_wait": "wait",
         }
 
     def num_hosts(self, n):
@@ -949,9 +929,7 @@ class CmdResultsJSON(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_file": "file_location"
-        }
+        return {"_file": "file_location"}
 
     def file(self, file):
         self._file = file
@@ -969,9 +947,7 @@ class CmdResultsXunit(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_file": "file"
-        }
+        return {"_file": "file"}
 
     def file(self, file):
         self._file = file
@@ -997,9 +973,7 @@ class CmdResultsGoTest(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_files": "files"
-        }
+        return {"_files": "files"}
 
     def file(self, file):
         self._files.append(file)
@@ -1034,14 +1008,14 @@ class CmdArchiveCreate(EvergreenCommand):
 
     def target(self, target):
         if not isinstance(target, str):
-            raise TypeError('target expects a str')
+            raise TypeError("target expects a str")
 
         self._target = target
         return self
 
     def source_dir(self, source_dir):
         if not isinstance(source_dir, str):
-            raise TypeError('source_dir expects a str')
+            raise TypeError("source_dir expects a str")
 
         self._source_dir = source_dir
         return self
@@ -1076,11 +1050,7 @@ class CmdArchiveExtract(EvergreenCommand):
         return self._archive_format.validate("extract")
 
     def _param_list(self):
-        return {
-            "_path": "path",
-            "_target": "destination",
-            "_exclude": "exclude_files",
-        }
+        return {"_path": "path", "_target": "destination", "_exclude": "exclude_files"}
 
     def path(self, path):
         self._path = path
@@ -1111,10 +1081,7 @@ class CmdAttachArtifacts(EvergreenCommand):
         return self
 
     def _param_list(self):
-        return {
-            "_optional": "optional",
-            "_files": "files",
-        }
+        return {"_optional": "optional", "_files": "files"}
 
     def optional(self, optional):
         self._optional = optional
@@ -1129,15 +1096,14 @@ class CmdAttachArtifacts(EvergreenCommand):
         return self
 
 
-class ArchiveFormat():
+class ArchiveFormat:
     def __init__(self, archive_format):
         self._format = archive_format
 
     def validate(self, operation):
         valid_formats = {
             "create": [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR],
-            "extract": [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR,
-                        ARCHIVE_FORMAT_AUTO],
+            "extract": [ARCHIVE_FORMAT_ZIP, ARCHIVE_FORMAT_TAR, ARCHIVE_FORMAT_AUTO],
         }
 
         if self._format not in valid_formats[operation]:
