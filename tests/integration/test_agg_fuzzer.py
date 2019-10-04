@@ -21,8 +21,8 @@ def compare_json(expected, actual):
 
 
 def compare_yaml(expected, actual):
-    expected_yaml = yaml.load(expected)
-    actual_yaml = yaml.load(actual)
+    expected_yaml = yaml.safe_load(expected)
+    actual_yaml = yaml.safe_load(actual)
 
     assert expected_yaml == actual_yaml
 
