@@ -6,7 +6,7 @@ from shrub.variant import TaskSpec
 
 
 def read_test_data_file(filename):
-    with open('tests/integration/data/' + filename) as f:
+    with open("tests/integration/data/" + filename) as f:
         return f.read()
 
 
@@ -40,8 +40,7 @@ class TestGenerateLint:
             tasks.append(t)
 
         group = config.task_group(task_group_name).max_hosts(max_hosts)
-        group.setup_group().type("system") \
-            .command("git.get_project").param("directory", "src")
+        group.setup_group().type("system").command("git.get_project").param("directory", "src")
         group.setup_group().function("set-up-credentials")
         group.teardown_group().function("attach-test-results")
         group.teardown_group().function("remove-test-results")

@@ -5,7 +5,7 @@ buildvariants:
   - ubuntu1604-test
   tasks:
   - name: unit_tests
-  - name: check_formatting
+  - name: deploy
 
 
 functions:
@@ -15,10 +15,28 @@ functions:
       working_dir: src
       script: |
         set -o errexit
-        virtualenv --python=/opt/mongodbtoolchain/v3/bin/python3 venv
+        set -o verbose
+
+        /opt/mongodbtoolchain/v3/bin/python3 -m venv venv
         . venv/bin/activate
 
-        pip install -r requirements.txt
+        pip install poetry
+        poetry install
+
+  deploy:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          set -o errexit
+          . venv/bin/activate
+
+          if [ "${is_patch|false}" = "true" ]; then
+            # Do not deploy on patches.
+            exit 0
+          fi
+
+          poetry publish --build --username ${pypi_user} --password ${pypi_password}
 
 pre:
 - command: git.get_project
@@ -39,17 +57,15 @@ tasks:
       working_dir: src
       script: |
         set -o errexit
+        set -o verbose
+
         . venv/bin/activate
 
-        tox
+        poetry run pytest --junitxml=junit-test-output.xml
 
-- name: check_formatting
+- name: deploy
+  patchable: false
+  depends_on:
+    - name: unit_tests
   commands:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          set -o errexit
-          . venv/bin/activate
-
-          black --check --diff src
+    - func: deploy

@@ -1,3 +1,26 @@
+[tool.poetry]
+name = "shrub.py"
+version = "0.3.0"
+description = "Library for creating evergreen configurations"
+authors = [
+    "David Bradford <david.bradford@mongodb.com>",
+    "Lydia Stepanek <lydia.stepanek@mongodb.com>",
+]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/evergreen-ci/shrub.py"
+packages = [
+    { include = "shrub", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+PyYaml = "^5.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.3"
+pytest-black = "^0.3.7"
+pytest-flake8 = "^1.0"
+
 [tool.black]
 line-length = 100
-target-version = ['py27', 'py37']

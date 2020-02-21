@@ -1,5 +1,0 @@
-black
-pyyaml
-pytest
-pytest-flake8
-tox

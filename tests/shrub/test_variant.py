@@ -14,9 +14,7 @@ class TestVariant:
 
     def test_flat_values_in_map(self):
         v = Variant("variant name")
-        v.display_name("display name") \
-            .run_on("distro") \
-            .batch_time(100)
+        v.display_name("display name").run_on("distro").batch_time(100)
 
         obj = v.to_map()
         assert "variant name" == obj["name"]
@@ -36,8 +34,7 @@ class TestVariant:
 
     def test_tasks_can_be_added(self):
         v = Variant("variant name")
-        v.task(TaskSpec("task 0")) \
-            .tasks([TaskSpec("task 1"), TaskSpec("task 2")])
+        v.task(TaskSpec("task 0")).tasks([TaskSpec("task 1"), TaskSpec("task 2")])
 
         obj = v.to_map()
         assert "task 0" == obj["tasks"][0]["name"]
@@ -77,9 +74,9 @@ class TestVariant:
 
     def test_display_tasks_can_be_added(self):
         v = Variant("variant name")
-        v.display_task(DisplayTaskDefinition("display task 0"))\
-            .display_tasks([DisplayTaskDefinition("display task 1"),
-                            DisplayTaskDefinition("display task 2")])
+        v.display_task(DisplayTaskDefinition("display task 0")).display_tasks(
+            [DisplayTaskDefinition("display task 1"), DisplayTaskDefinition("display task 2")]
+        )
 
         obj = v.to_map()
         assert "display task 0" == obj["display_tasks"][0]["name"]
@@ -131,9 +128,7 @@ class TestVariant:
 
 class TestTaskSpec:
     def test_task_spec(self):
-        ts = TaskSpec("task name")\
-            .stepback()\
-            .distro("linux")
+        ts = TaskSpec("task name").stepback().distro("linux")
 
         obj = ts.to_map()
         assert "task name" == obj["name"]
@@ -155,8 +150,7 @@ class TestDisplayTaskDefinition:
 
     def test_items_added_to_display_task(self):
         dt = DisplayTaskDefinition("display task name")
-        dt.execution_task("comp0")\
-            .execution_tasks(["comp1", "comp2"])
+        dt.execution_task("comp0").execution_tasks(["comp1", "comp2"])
 
         obj = dt.to_map()
         assert "display task name" == obj["name"]

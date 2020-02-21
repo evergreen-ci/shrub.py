@@ -40,12 +40,9 @@ class TestCmdExpansionsUpdates:
 
     def test_params(self):
         c = CmdExpansionsUpdate()
-        c.ignore_missing_file().file("file")\
-            .update("k 0", "v 0") \
-            .updates({
-                "k 1": "v 1",
-                "k 2": "v 2",
-            })
+        c.ignore_missing_file().file("file").update("k 0", "v 0").updates(
+            {"k 1": "v 1", "k 2": "v 2"}
+        )
 
         p = params(c)
         assert p["ignore_missing_file"]
@@ -141,13 +138,13 @@ class TestCmdHostCreate:
         with pytest.raises(ValueError):
             c = CmdHostCreate()
             c.ami("ami")
-            c.instance_type('type')
+            c.instance_type("type")
             c.validate()
 
         with pytest.raises(ValueError):
             c = CmdHostCreate()
             c.ami("ami")
-            c.instance_type('type')
+            c.instance_type("type")
             c.security_group_id("id")
             c.validate()
 
@@ -182,24 +179,23 @@ class TestCmdHostCreate:
 
     def test_parameters(self):
         c = CmdHostCreate()
-        c.ami("ami")\
-            .aws_id("aws_id")\
-            .aws_secret("aws secret")\
-            .distro("distro")\
-            .instance_type("type")\
-            .key_name("key")\
-            .num_hosts(5)\
-            .provider("ec2")\
-            .region("east")\
-            .retries(5)\
-            .scope("build")\
-            .security_group_id("sec group")\
-            .spot()\
-            .subnet_id("subnet 0")\
-            .timeout_setup(100)\
-            .timeout_teardown(200)\
-            .userdata_file("file 1")\
-            .vpc("vpc id")
+        c.ami("ami").aws_id("aws_id").aws_secret("aws secret").distro("distro").instance_type(
+            "type"
+        ).key_name("key").num_hosts(5).provider("ec2").region("east").retries(5).scope(
+            "build"
+        ).security_group_id(
+            "sec group"
+        ).spot().subnet_id(
+            "subnet 0"
+        ).timeout_setup(
+            100
+        ).timeout_teardown(
+            200
+        ).userdata_file(
+            "file 1"
+        ).vpc(
+            "vpc id"
+        )
 
         p = params(c)
         assert "ami" == p["ami"]
@@ -337,11 +333,7 @@ class TestCmdHostList:
 
     def test_params(self):
         c = CmdHostList()
-        c.num_hosts(5)\
-            .path("path")\
-            .timeout(300)\
-            .silent()\
-            .wait()
+        c.num_hosts(5).path("path").timeout(300).silent().wait()
 
         p = params(c)
         assert 5 == p["num_hosts"]
@@ -386,20 +378,19 @@ class TestCmdExec:
 
     def test_parameters(self):
         c = CmdExec()
-        c.background(True) \
-            .silent(True) \
-            .continue_on_err(True) \
-            .system_log(True) \
-            .combine_output(True) \
-            .ignore_stderr(True) \
-            .ignore_stdout(True) \
-            .working_dir("/tmp") \
-            .command("echo")\
-            .binary("/bin/echo")\
-            .arg("arg 0")\
-            .args(["arg 1", "arg 2"])\
-            .env("k 0", "v 0")\
-            .envs({"k 1": "v 1", "k 2": "v 2"})
+        c.background(True).silent(True).continue_on_err(True).system_log(True).combine_output(
+            True
+        ).ignore_stderr(True).ignore_stdout(True).working_dir("/tmp").command("echo").binary(
+            "/bin/echo"
+        ).arg(
+            "arg 0"
+        ).args(
+            ["arg 1", "arg 2"]
+        ).env(
+            "k 0", "v 0"
+        ).envs(
+            {"k 1": "v 1", "k 2": "v 2"}
+        )
 
         p = params(c)
         assert p["background"]
@@ -429,15 +420,9 @@ class TestCmdExecShell:
 
     def test_parameters(self):
         c = CmdExecShell()
-        c.background(True)\
-            .silent(True)\
-            .continue_on_err(True)\
-            .system_log(True)\
-            .combine_output(True)\
-            .ignore_stderr(True)\
-            .ignore_stdout(True)\
-            .working_dir("/tmp")\
-            .script("echo Hello World")
+        c.background(True).silent(True).continue_on_err(True).system_log(True).combine_output(
+            True
+        ).ignore_stderr(True).ignore_stdout(True).working_dir("/tmp").script("echo Hello World")
 
         p = params(c)
         assert p["background"]
@@ -459,20 +444,23 @@ class TestCmdS3Put:
 
     def test_parameters(self):
         c = CmdS3Put()
-        c.aws_key("key") \
-            .aws_secret("secret") \
-            .optional(True)\
-            .remote_file("remote") \
-            .bucket("bucket") \
-            .local_file("local") \
-            .build_variant("var 0") \
-            .build_variants(["var 1", "var 2"])\
-            .display_name("name")\
-            .content_type("ct")\
-            .permissions("perms")\
-            .visibility("high")\
-            .include_filter("*.zip")\
-            .include_filters(["*.tgz"])
+        c.aws_key("key").aws_secret("secret").optional(True).remote_file("remote").bucket(
+            "bucket"
+        ).local_file("local").build_variant("var 0").build_variants(
+            ["var 1", "var 2"]
+        ).display_name(
+            "name"
+        ).content_type(
+            "ct"
+        ).permissions(
+            "perms"
+        ).visibility(
+            "high"
+        ).include_filter(
+            "*.zip"
+        ).include_filters(
+            ["*.tgz"]
+        )
 
         p = params(c)
         assert p["optional"]
@@ -517,14 +505,9 @@ class TestCmdS3Get:
 
     def test_parameters(self):
         c = CmdS3Get()
-        c.aws_key("key")\
-            .aws_secret("secret")\
-            .remote_file("remote")\
-            .bucket("bucket")\
-            .local_file("local")\
-            .extract_to("extract")\
-            .build_variant("var 0")\
-            .build_variants(["var 1", "var 2"])
+        c.aws_key("key").aws_secret("secret").remote_file("remote").bucket("bucket").local_file(
+            "local"
+        ).extract_to("extract").build_variant("var 0").build_variants(["var 1", "var 2"])
 
         p = params(c)
         assert "key" == p["aws_key"]
@@ -541,10 +524,9 @@ class TestCmdS3Get:
 class TestAwsCopyFile:
     def test_flat_parameters(self):
         cf = AwsCopyFile()
-        cf.optional(True)\
-            .display_name("name")\
-            .build_variant("bv 0")\
-            .build_variants(["bv 1", "bv 2"])
+        cf.optional(True).display_name("name").build_variant("bv 0").build_variants(
+            ["bv 1", "bv 2"]
+        )
 
         obj = cf.to_map()
         assert obj["optional"]
@@ -579,14 +561,18 @@ class TestCmdS3Copy:
 
     def test_parameters(self):
         c = CmdS3Copy()
-        f0 = AwsCopyFile()\
-            .display_name("f0 name")\
-            .source("bucket 0", "path 0")\
+        f0 = (
+            AwsCopyFile()
+            .display_name("f0 name")
+            .source("bucket 0", "path 0")
             .destination("bucket 1", "path 1")
-        f1 = AwsCopyFile()\
-            .display_name("f1 name")\
-            .source("bucket 2", "path 2")\
+        )
+        f1 = (
+            AwsCopyFile()
+            .display_name("f1 name")
+            .source("bucket 2", "path 2")
             .destination("bucket 3", "path 3")
+        )
         c.aws_key("aws key").aws_secret("aws secret").file(f0).files([f1])
 
         p = params(c)
@@ -600,16 +586,19 @@ class TestCmdS3Copy:
 
     def test_optional_parameter(self):
         c = CmdS3Copy()
-        f0 = AwsCopyFile() \
-            .display_name("f0 name") \
-            .source("bucket 0", "path 0") \
+        f0 = (
+            AwsCopyFile()
+            .display_name("f0 name")
+            .source("bucket 0", "path 0")
             .destination("bucket 1", "path 1")
-        f1 = AwsCopyFile() \
-            .display_name("f1 name") \
-            .source("bucket 2", "path 2") \
+        )
+        f1 = (
+            AwsCopyFile()
+            .display_name("f1 name")
+            .source("bucket 2", "path 2")
             .destination("bucket 3", "path 3")
-        c.aws_key("aws key").aws_secret("aws secret")\
-            .file(f0).files([f1]).optional()
+        )
+        c.aws_key("aws key").aws_secret("aws secret").file(f0).files([f1]).optional()
 
         p = params(c)
         assert "optional" in p
@@ -625,10 +614,9 @@ class TestCmdGetProject:
 
     def test_parameters(self):
         c = CmdGetProject()
-        c.token("token")\
-            .directory("src")\
-            .revision("k 0", "v 0")\
-            .revisions({"k 1": "v 1", "k 2": "v 2"})
+        c.token("token").directory("src").revision("k 0", "v 0").revisions(
+            {"k 1": "v 1", "k 2": "v 2"}
+        )
 
         p = params(c)
         assert "token" == p["token"]
@@ -722,12 +710,9 @@ class TestCmdArchiveCreate:
 
     def test_parameters(self):
         c = CmdArchiveCreate(ArchiveFormat.zip())
-        c.target("target")\
-            .source_dir("src")\
-            .include("include 0")\
-            .includes(["include 1", "include 2"])\
-            .exclude("exclude 0")\
-            .excludes(["exclude 1", "exclude 2"])
+        c.target("target").source_dir("src").include("include 0").includes(
+            ["include 1", "include 2"]
+        ).exclude("exclude 0").excludes(["exclude 1", "exclude 2"])
 
         p = params(c)
 
@@ -776,10 +761,7 @@ class TestCmdArchiveExtract:
 
     def test_parameters(self):
         c = CmdArchiveExtract(ArchiveFormat.zip())
-        c.path("path")\
-            .target("target")\
-            .exclude("exclude 0")\
-            .excludes(["exclude 1", "exclude 2"])
+        c.path("path").target("target").exclude("exclude 0").excludes(["exclude 1", "exclude 2"])
 
         p = params(c)
 
