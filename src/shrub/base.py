@@ -9,9 +9,7 @@ RECURSE_KEY = "recurse"
 NAME_KEY = "name"
 
 
-class EvergreenBuilder:
-    __metaclass__ = abc.ABCMeta
-
+class EvergreenBuilder(abc.ABC):
     @abc.abstractmethod
     def _yaml_map(self):
         """A map of values to yaml decorators."""
@@ -27,7 +25,7 @@ class EvergreenBuilder:
         value = getattr(self, prop)
         if value:
             if self._yaml_map()[prop][RECURSE_KEY]:
-                if isinstance(value, collections.Sequence):
+                if isinstance(value, collections.abc.Sequence):
                     value = [v.to_map() for v in value]
                 else:
                     value = value.to_map()

@@ -1,27 +1,5 @@
-import json
-import yaml
-
 from shrub.config import Configuration
 from shrub.variant import TaskSpec
-
-
-def read_test_data_file(filename):
-    with open("tests/integration/data/" + filename) as f:
-        return f.read()
-
-
-def compare_json(expected, actual):
-    expected_json = json.loads(expected)
-    actual_json = json.loads(actual)
-
-    assert expected_json == actual_json
-
-
-def compare_yaml(expected, actual):
-    expected_yaml = yaml.safe_load(expected)
-    actual_yaml = yaml.safe_load(actual)
-
-    assert expected_yaml == actual_yaml
 
 
 class TestGenerateLint:
@@ -37,7 +15,7 @@ class TestGenerateLint:
         for t in targets:
             name = "make-lint-" + t
             config.task(name).function_with_vars("run-make", {"target": name})
-            tasks.append(t)
+            tasks.append(name)
 
         group = config.task_group(task_group_name).max_hosts(max_hosts)
         group.setup_group().type("system").command("git.get_project").param("directory", "src")
@@ -50,18 +28,16 @@ class TestGenerateLint:
 
         return config
 
-    def test_generate_lint_json(self):
+    def test_generate_lint_json(self, compare_json):
         config = self.gen_lint_config()
 
         config_output = config.to_json().strip()
-        expected_output = read_test_data_file("lint.json").strip()
 
-        compare_json(expected_output, config_output)
+        compare_json("lint.json", config_output)
 
-    def test_generate_lint_yaml(self):
+    def test_generate_lint_yaml(self, compare_yaml):
         config = self.gen_lint_config()
 
         config_output = config.to_yaml().strip()
-        expected_output = read_test_data_file("lint.yml").strip()
 
-        compare_yaml(expected_output, config_output)
+        compare_yaml("lint.yml", config_output)

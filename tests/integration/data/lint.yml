@@ -12,8 +12,8 @@ task_groups:
     type: system
   - func: set-up-credentials
   tasks:
-  - src
-  - test
+  - make-lint-src
+  - make-lint-test
   teardown_group:
   - func: attach-test-results
   - func: remove-test-results
