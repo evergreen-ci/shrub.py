@@ -6,7 +6,6 @@ from shrub.command import CommandSequence
 
 
 class TestConfiguration:
-
     def test_invalid_config_throws_exception(self):
         c = Configuration()
         with pytest.raises(ValueError):
@@ -14,10 +13,7 @@ class TestConfiguration:
 
     def test_config_with_non_recurse_values(self):
         c = Configuration()
-        c.exec_timeout(20)\
-            .batch_time(300)\
-            .ignore_file("file1")\
-            .ignore_files(["file2", "file3"])
+        c.exec_timeout(20).batch_time(300).ignore_file("file1").ignore_files(["file2", "file3"])
         c.stepback().command_type("setup")
 
         obj = c.to_map()

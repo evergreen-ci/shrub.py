@@ -7,7 +7,6 @@ from shrub.task import TaskGroup
 
 
 class TestTask:
-
     def test_task_with_flat_values(self):
         t = Task("task 0")
         t.priority(42)
@@ -19,9 +18,9 @@ class TestTask:
 
     def test_adding_dependencies(self):
         t = Task("task 0")
-        t.dependency(TaskDependency("dep 0"))\
-            .dependency(TaskDependency("dep 1"))\
-            .dependency(TaskDependency("dep 2"))
+        t.dependency(TaskDependency("dep 0")).dependency(TaskDependency("dep 1")).dependency(
+            TaskDependency("dep 2")
+        )
 
         obj = t.to_map()
         assert 3 == len(obj["depends_on"])
@@ -29,9 +28,9 @@ class TestTask:
 
     def test_adding_requires(self):
         t = Task("task 0")
-        t.requires(TaskDependency("dep 0")) \
-            .requires(TaskDependency("dep 1")) \
-            .requires(TaskDependency("dep 2"))
+        t.requires(TaskDependency("dep 0")).requires(TaskDependency("dep 1")).requires(
+            TaskDependency("dep 2")
+        )
 
         obj = t.to_map()
         assert 3 == len(obj["requires"])
@@ -149,8 +148,7 @@ class TestTaskDependency:
 class TestTaskGroup:
     def test_flat_value(self):
         tg = TaskGroup("task group 0")
-        tg.max_hosts(5)\
-            .timeout(42)
+        tg.max_hosts(5).timeout(42)
 
         obj = tg.to_map()
         assert "task group 0" == tg.get_name()

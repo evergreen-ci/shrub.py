@@ -41,24 +41,28 @@ class TestAggregationFuzzer:
             task_names.append(name)
             task_specs.append(TaskSpec(name))
             t = c.task(name)
-            t.dependency(TaskDependency("compile")).commands([
-                CommandDefinition().function("do setup"),
-                CommandDefinition().function("do multiversion setup"),
-                CommandDefinition().function("run jstestfuzz").vars({
-                    "jstestfuzz_var": "--numGeneratedFiles 5",
-                    "npm_command": "agg-fuzzer",
-                }),
-                CommandDefinition().function("run tests").vars({
-                    "continue_on_failure": "false",
-                    "resmoke_args": "--suites=generational_fuzzer",
-                    "should_shuffle": "false",
-                    "task_path_suffix": "false",
-                    "timeout_secs": "1800",
-                })
-            ])
+            t.dependency(TaskDependency("compile")).commands(
+                [
+                    CommandDefinition().function("do setup"),
+                    CommandDefinition().function("do multiversion setup"),
+                    CommandDefinition()
+                    .function("run jstestfuzz")
+                    .vars({"jstestfuzz_var": "--numGeneratedFiles 5", "npm_command": "agg-fuzzer"}),
+                    CommandDefinition()
+                    .function("run tests")
+                    .vars(
+                        {
+                            "continue_on_failure": "false",
+                            "resmoke_args": "--suites=generational_fuzzer",
+                            "should_shuffle": "false",
+                            "task_path_suffix": "false",
+                            "timeout_secs": "1800",
+                        }
+                    ),
+                ]
+            )
 
-        dt = DisplayTaskDefinition("aggregation_multiversion_fuzzer")\
-            .execution_tasks(task_names)
+        dt = DisplayTaskDefinition("aggregation_multiversion_fuzzer").execution_tasks(task_names)
         c.variant("linux-64").tasks(task_specs).display_task(dt)
 
         return c

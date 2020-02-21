@@ -12,11 +12,9 @@ class TestCommandDefinition:
 
     def test_flat_values_in_map(self):
         cd = CommandDefinition()
-        cd.function("function name") \
-            .type("test") \
-            .name("display name") \
-            .command("command name") \
-            .timeout(300)
+        cd.function("function name").type("test").name("display name").command(
+            "command name"
+        ).timeout(300)
 
         obj = cd.to_map()
         assert "function name" == obj["func"]
@@ -90,7 +88,7 @@ class TestCommandDefinition:
     def test_invalid_var(self):
         cd = CommandDefinition()
         with pytest.raises(TypeError):
-            cd.var(42, 'v')
+            cd.var(42, "v")
 
     def test_invalid_vars(self):
         cd = CommandDefinition()
@@ -100,7 +98,7 @@ class TestCommandDefinition:
     def test_invalid_param(self):
         cd = CommandDefinition()
         with pytest.raises(TypeError):
-            cd.param(42, 'v')
+            cd.param(42, "v")
 
     def test_invalid_params(self):
         cd = CommandDefinition()
@@ -109,7 +107,6 @@ class TestCommandDefinition:
 
 
 class TestCommandSequence:
-
     def test_invalid_add(self):
         cs = CommandSequence()
         with pytest.raises(TypeError):
