@@ -2,9 +2,11 @@
 
 A python based Evergreen project config generation library
 
+[![PyPI version](https://badge.fury.io/py/shrub.py.svg)](https://pypi.org/project/shrub.py/)
+
 ## Overview
 
-Based on [shrub](https://github.com/evergreen-ci/shrub/), shrub.py is a library for programatically 
+Based on [shrub](https://github.com/evergreen-ci/shrub/), shrub.py is a library for programatically
 building Evergreen project configurations described [here](https://github.com/evergreen-ci/evergreen/wiki/Project-Files).
 
 ## Example
@@ -24,7 +26,7 @@ def define_task(index):
         [
             FunctionCall("do setup"),
             FunctionCall(
-                "run test generator", 
+                "run test generator",
                 {"parameter_1": "value 1", "parameter_2": "value 2"}
             ),
             FunctionCall("run tests")
