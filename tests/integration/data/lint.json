@@ -27,8 +27,8 @@
         {
             "name": "lint group",
             "tasks": [
-                "src",
-                "test"
+                "make-lint-src",
+                "make-lint-test"
             ],
             "max_hosts": 5,
             "setup_group": [

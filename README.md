@@ -1,4 +1,6 @@
-# shrub.py -- A python based Evergreen project config generation library
+# shrub.py
+
+A python based Evergreen project config generation library
 
 ## Overview
 
@@ -11,43 +13,33 @@ The following snippet will create a set of parallel tasks reported under a singl
 would generate json used by ```generate.tasks```:
 
 ```
-        n_tasks = 10
-        c = Configuration()
+from shrub.v2 import ShrubProject, Task, BuildVariant
 
-        task_names = []
-        task_specs = []
+n_tasks = 10
+def define_task(index):
+    name = f"task_name_{index}"
 
-        for i in range(n_tasks):
-            name = "aggregation_multiversion_fuzzer_{0:03d}".format(i)
-            task_names.append(name)
-            task_specs.append(TaskSpec(name))
-            t = c.task(name)
-            t.dependency(TaskDependency("compile")).commands([
-                CommandDefinition().function("do setup"),
-                CommandDefinition().function("do multiversion setup"),
-                CommandDefinition().function("run jstestfuzz").vars({
-                    "jstestfuzz_var": "--numGeneratedFiles 5",
-                    "npm_command": "agg-fuzzer",
-                }),
-                CommandDefinition().function("run tests").vars({
-                    "continue_on_failure": "false",
-                    "resmoke_args": "--suites=generational_fuzzer",
-                    "should_shuffle": "false",
-                    "task_path_suffix": "false",
-                    "timeout_secs": "1800",
-                })
-            ])
+    return Task(
+        name,
+        [
+            FunctionCall("do setup"),
+            FunctionCall(
+                "run test generator", 
+                {"parameter_1": "value 1", "parameter_2": "value 2"}
+            ),
+            FunctionCall("run tests")
+        ],
+    ).dependency("compile")
 
-        dt = DisplayTaskDefinition("aggregation_multiversion_fuzzer")\
-            .components(task_names)
-        c.variant("linux-64").tasks(task_specs).display_task(dt)
-        
-        c.to_json()
+tasks = {define_task(i) for i in range(n_tasks)}
+variant = BuildVariant("linux-64").display_task("test_suite", tasks)
+project = ShrubProject({variant})
+
+project.json()
 ```
 
 ## Run tests
 
 ```
-pip install tox
-tox
+poetry run pytest
 ```
