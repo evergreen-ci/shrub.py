@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import Any, Dict, Optional, Set, FrozenSet, Sequence, List
 
-from shrub.v2.task import Task, TaskGroup, RunnableTask, RunnableTaskSet
+from shrub.v2.task import Task, TaskGroup, RunnableTask, ExistingTask
 
 
 @dataclass(frozen=True)
@@ -13,7 +13,7 @@ class _DisplayTask(object):
     """Representation of a Display Task."""
 
     display_name: str
-    execution_tasks: FrozenSet[Task]
+    execution_tasks: FrozenSet[RunnableTask]
 
     def as_dict(self) -> Dict[str, Any]:
         """Get a dictionary of this display task."""
@@ -47,6 +47,7 @@ class BuildVariant(object):
         self.batch_time = batch_time
         self.tasks: Set[Task] = set()
         self.task_groups: Set[TaskGroup] = set()
+        self.existing_tasks: Set[ExistingTask] = set()
         self.display_tasks: Set[_DisplayTask] = set()
         self.expansions: Dict[str, Any] = expansions if expansions else {}
         self.task_to_distro_map: Dict[str, Sequence[str]] = {}
@@ -111,16 +112,64 @@ class BuildVariant(object):
                 self.task_to_distro_map[task_group.name] = distros
         return self
 
-    def display_task(self, display_name: str, execution_tasks: Set[Task]) -> BuildVariant:
+    def add_existing_task(
+        self, existing_task: ExistingTask, distros: Optional[Sequence[str]] = None
+    ) -> BuildVariant:
+        """
+        Add the given existing task to the set of tasks in this build variant.
+
+        :param existing_task: Task to add to build variant.
+        :param distros: Distros to run task group on.
+        :return: This build variant.
+        """
+        self.existing_tasks.add(existing_task)
+        if distros:
+            self.task_to_distro_map[existing_task.name] = distros
+        return self
+
+    def add_existing_tasks(
+        self, existing_tasks: Set[ExistingTask], distros: Optional[Sequence[str]] = None
+    ) -> BuildVariant:
+        """
+        Add the given set of existing tasks to this build variant.
+
+        :param existing_tasks: Set of existing tasks to add to build variant.
+        :param distros: Distros to run task on.
+        :return: This build variant.
+        """
+        self.existing_tasks.update(existing_tasks)
+        if distros:
+            for task in existing_tasks:
+                self.task_to_distro_map[task.name] = distros
+        return self
+
+    def display_task(
+        self,
+        display_name: str,
+        execution_tasks: Optional[Set[Task]] = None,
+        execution_task_groups: Optional[Set[TaskGroup]] = None,
+        execution_existing_tasks: Optional[Set[ExistingTask]] = None,
+    ) -> BuildVariant:
         """
         Add a new display task to this build variant.
 
         :param display_name: Name of display task.
         :param execution_tasks: Set of tasks that should be part of the display task.
+        :param execution_task_groups: Set of task groups that should be part of the display task.
+        :param execution_existing_tasks: Set of existing tasks that should be part of the display
+               task.
         :return: This build variant configuration.
         """
-        self.tasks.update(execution_tasks)
-        self.display_tasks.add(_DisplayTask(display_name, frozenset(execution_tasks)))
+        all_runnable_tasks: Set[RunnableTask] = set()
+        if execution_tasks:
+            self.tasks.update(execution_tasks)
+            all_runnable_tasks.update(execution_tasks)
+        if execution_task_groups:
+            self.task_groups.update(execution_task_groups)
+            all_runnable_tasks.update(execution_task_groups)
+        if execution_existing_tasks:
+            all_runnable_tasks.update(execution_existing_tasks)
+        self.display_tasks.add(_DisplayTask(display_name, frozenset(all_runnable_tasks)))
         return self
 
     def all_tasks(self) -> Set[Task]:
@@ -138,7 +187,7 @@ class BuildVariant(object):
         """
         return task.task_spec(self.task_to_distro_map.get(task.name))
 
-    def __get_task_specs(self, task_list: RunnableTaskSet) -> List[Dict[str, Any]]:
+    def __get_task_specs(self, task_list: FrozenSet[RunnableTask]) -> List[Dict[str, Any]]:
         """
         Get a dictionary representation of task specs for the tasks given.
 
@@ -151,7 +200,9 @@ class BuildVariant(object):
         """Get the dictionary representation of this build variant."""
         obj: Dict[str, Any] = {
             "name": self.name,
-            "tasks": self.__get_task_specs(self.tasks) + self.__get_task_specs(self.task_groups),
+            "tasks": self.__get_task_specs(frozenset(self.tasks))
+            + self.__get_task_specs(frozenset(self.task_groups))
+            + self.__get_task_specs(frozenset(self.existing_tasks)),
         }
         if self.display_tasks:
             obj["display_tasks"] = sorted(

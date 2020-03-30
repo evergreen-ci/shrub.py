@@ -1,6 +1,7 @@
 """Unit tests for shrub.v2.variant."""
+from itertools import chain
 
-from shrub.v2 import Task
+from shrub.v2 import Task, TaskGroup, ExistingTask
 
 import shrub.v2.variant as under_test
 
@@ -56,3 +57,33 @@ class TestBuildVariant:
         assert len(d["display_tasks"]) == 1
         assert d["display_tasks"][0]["name"] == "display"
         assert len(d["display_tasks"][0]["execution_tasks"]) == n_tasks
+
+    def test_display_task_with_different_task_types(self):
+        bv = under_test.BuildVariant("build variant")
+
+        n_tasks = 5
+        tasks = {Task(f"task {i}", []) for i in range(n_tasks)}
+        n_task_groups = 3
+        task_groups = {TaskGroup(f"task group {i}", []) for i in range(n_task_groups)}
+        n_existing_tasks = 4
+        existing_tasks = {ExistingTask(f"existing task {i}") for i in range(n_existing_tasks)}
+
+        bv.display_task(
+            "display",
+            execution_tasks=tasks,
+            execution_task_groups=task_groups,
+            execution_existing_tasks=existing_tasks,
+        )
+
+        d = bv.as_dict()
+
+        assert d["name"] == "build variant"
+        assert len(d["tasks"]) == n_tasks + n_task_groups  # Existing tasks should already exist.
+        assert len(d["display_tasks"]) == 1
+        display_task = d["display_tasks"][0]
+        assert display_task["name"] == "display"
+        assert len(display_task["execution_tasks"]) == n_tasks + n_task_groups + n_existing_tasks
+
+        all_generated_execution_tasks = {t for t in display_task["execution_tasks"]}
+        for task in chain(tasks, task_groups, existing_tasks):
+            assert task.name in all_generated_execution_tasks

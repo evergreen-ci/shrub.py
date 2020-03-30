@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1 - 2020-03-30
+- Add support for adding existing tasks to v2 API.
+
 ## 1.0.0 - 2020-03-26
 - Implement v2 api to be more pythonic and provide type hints.
 
