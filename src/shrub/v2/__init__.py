@@ -6,6 +6,7 @@ from shrub.v2.command import (
     git_get_project,
 )
 from shrub.v2.task import (
+    ExistingTask,
     Task,
     TaskDependency,
     TaskGroup,

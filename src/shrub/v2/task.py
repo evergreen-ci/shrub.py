@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Sequence, Set, Union
+from typing import Any, Dict, Optional, Sequence, Set
 
 from shrub.v2.command import ShrubCommand
 from shrub.v2.dict_creation_util import add_if_exists, add_existing_from_dict
@@ -25,36 +25,11 @@ class TaskDependency(object):
         return obj
 
 
-class Task(object):
-    """A representation of an evergreen task."""
+class RunnableTask(object):
+    """A task that can be run by an Evergreen Build Variant."""
 
-    def __init__(
-        self,
-        name: str,
-        commands: Sequence[ShrubCommand],
-        dependencies: Optional[Set[TaskDependency]] = None,
-    ) -> None:
-        """
-        Create a new evergreen task.
-
-        :param name: Name of task.
-        :param commands: List of commands comprising the task.
-        :param dependencies: Any dependencies the task has.
-        """
+    def __init__(self, name: str) -> None:
         self.name = name
-        self.commands = commands
-        self.dependencies = dependencies if dependencies else set()
-
-    def dependency(self, task_name: str, build_variant: Optional[str] = None) -> Task:
-        """
-        Add a dependency on the task.
-
-        :param task_name: Name of task to depend on.
-        :param build_variant: Name of build variant to where dependent task is run.
-        :return: this task.
-        """
-        self.dependencies.add(TaskDependency(task_name, build_variant))
-        return self
 
     def task_spec(self, distros: Optional[Sequence[str]] = None) -> Dict[str, Any]:
         """
@@ -72,6 +47,38 @@ class Task(object):
 
         return obj
 
+
+class Task(RunnableTask):
+    """A representation of an evergreen task."""
+
+    def __init__(
+        self,
+        name: str,
+        commands: Sequence[ShrubCommand],
+        dependencies: Optional[Set[TaskDependency]] = None,
+    ) -> None:
+        """
+        Create a new evergreen task.
+
+        :param name: Name of task.
+        :param commands: List of commands comprising the task.
+        :param dependencies: Any dependencies the task has.
+        """
+        super().__init__(name)
+        self.commands = commands
+        self.dependencies = dependencies if dependencies else set()
+
+    def dependency(self, task_name: str, build_variant: Optional[str] = None) -> Task:
+        """
+        Add a dependency on the task.
+
+        :param task_name: Name of task to depend on.
+        :param build_variant: Name of build variant to where dependent task is run.
+        :return: this task.
+        """
+        self.dependencies.add(TaskDependency(task_name, build_variant))
+        return self
+
     def as_dict(self) -> Dict[str, Any]:
         """Get a dictionary representation of this task."""
         obj = {
@@ -85,7 +92,7 @@ class Task(object):
         return obj
 
 
-class TaskGroup(object):
+class TaskGroup(RunnableTask):
     """A representation of an evergreen task group."""
 
     def __init__(
@@ -107,7 +114,7 @@ class TaskGroup(object):
         :param tasks: List of tasks comprising task group.
         :param max_hosts: Number of hosts across which to distribute the tasks in this group.
         """
-        self.name = name
+        super().__init__(name)
         self.tasks = tasks
         self.max_hosts = max_hosts
         self.setup_group = setup_group
@@ -116,22 +123,6 @@ class TaskGroup(object):
         self.teardown_task = teardown_task
         self.setup_group_can_fail_task = setup_group_can_fail_task
         self.setup_group_timeout_secs = setup_group_timeout_secs
-
-    def task_spec(self, distros: Optional[Sequence[str]] = None) -> Dict[str, Any]:
-        """
-        Create a task spec for this task group.
-
-        A task spec describes how the task should be added to a build variant.
-
-        :param distros: What distros the task should run on.
-        :return: Dictionary representing task spec.
-        """
-        obj: Dict[str, Any] = {
-            "name": self.name,
-        }
-        add_if_exists(obj, "distros", distros)
-
-        return obj
 
     @staticmethod
     def __cmd_list_as_dict(cmd_list: Optional[Sequence[ShrubCommand]]) -> Optional[Sequence[Dict]]:
@@ -164,5 +155,13 @@ class TaskGroup(object):
         return obj
 
 
-RunnableTask = Union[Task, TaskGroup]
-RunnableTaskSet = Union[Set[Task], Set[TaskGroup]]
+class ExistingTask(RunnableTask):
+    """A task that already exists in the evergreen configuration."""
+
+    def __init__(self, name: str) -> None:
+        """
+        Create a reference to an existing task.
+
+        :param name: Name of existing task.
+        """
+        super().__init__(name)
