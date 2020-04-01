@@ -73,6 +73,7 @@ class TestBuildVariant:
             execution_tasks=tasks,
             execution_task_groups=task_groups,
             execution_existing_tasks=existing_tasks,
+            distros=["the distro"],
         )
 
         d = bv.as_dict()
@@ -87,3 +88,20 @@ class TestBuildVariant:
         all_generated_execution_tasks = {t for t in display_task["execution_tasks"]}
         for task in chain(tasks, task_groups, existing_tasks):
             assert task.name in all_generated_execution_tasks
+
+        for task in d["tasks"]:
+            assert "the distro" in task["distros"]
+
+    def test_run_on_option(self):
+        bv = under_test.BuildVariant("build variant", run_on=["distro 1"])
+
+        d = bv.as_dict()
+
+        assert "distro 1" in d["run_on"]
+
+    def test_modules_option(self):
+        bv = under_test.BuildVariant("build variant", modules=["module 1"])
+
+        d = bv.as_dict()
+
+        assert "module 1" in d["modules"]
