@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2 - 2020-04-01
+- Add support for specifying distros on display tasks.
+- Add build variant options for 'run_on' and 'modules'.
+
 ## 1.0.1 - 2020-03-30
 - Add support for adding existing tasks to v2 API.
 

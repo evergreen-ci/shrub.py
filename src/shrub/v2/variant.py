@@ -6,6 +6,7 @@ from itertools import chain
 from typing import Any, Dict, Optional, Set, FrozenSet, Sequence, List
 
 from shrub.v2.task import Task, TaskGroup, RunnableTask, ExistingTask
+from shrub.v2.dict_creation_util import add_existing_from_dict
 
 
 @dataclass(frozen=True)
@@ -31,7 +32,9 @@ class BuildVariant(object):
         name: str,
         display_name: Optional[str] = None,
         batch_time: Optional[int] = None,
-        expansions: Dict[str, Any] = None,
+        expansions: Optional[Dict[str, Any]] = None,
+        run_on: Optional[Sequence[str]] = None,
+        modules: Optional[Sequence[str]] = None,
     ) -> None:
         """
         Create a new build variant.
@@ -41,6 +44,8 @@ class BuildVariant(object):
         :param batch_time: Interval of time in minutes that evergreen should wait before activating
             this variant.
         :param expansions: A set of key-value expansions pairs.
+        :param run_on: Which distros the tasks should run on.
+        :param modules: Which modules to include in this build variant.
         """
         self.name = name
         self.display_name = display_name if display_name else name
@@ -50,6 +55,8 @@ class BuildVariant(object):
         self.existing_tasks: Set[ExistingTask] = set()
         self.display_tasks: Set[_DisplayTask] = set()
         self.expansions: Dict[str, Any] = expansions if expansions else {}
+        self.run_on = run_on
+        self.modules = modules
         self.task_to_distro_map: Dict[str, Sequence[str]] = {}
 
     def add_task(self, task: Task, distros: Optional[Sequence[str]] = None) -> BuildVariant:
@@ -149,6 +156,7 @@ class BuildVariant(object):
         execution_tasks: Optional[Set[Task]] = None,
         execution_task_groups: Optional[Set[TaskGroup]] = None,
         execution_existing_tasks: Optional[Set[ExistingTask]] = None,
+        distros: Optional[Sequence[str]] = None,
     ) -> BuildVariant:
         """
         Add a new display task to this build variant.
@@ -158,14 +166,15 @@ class BuildVariant(object):
         :param execution_task_groups: Set of task groups that should be part of the display task.
         :param execution_existing_tasks: Set of existing tasks that should be part of the display
                task.
+        :param distros: Distros to run tasks on.
         :return: This build variant configuration.
         """
         all_runnable_tasks: Set[RunnableTask] = set()
         if execution_tasks:
-            self.tasks.update(execution_tasks)
+            self.add_tasks(execution_tasks, distros)
             all_runnable_tasks.update(execution_tasks)
         if execution_task_groups:
-            self.task_groups.update(execution_task_groups)
+            self.add_task_groups(execution_task_groups, distros)
             all_runnable_tasks.update(execution_task_groups)
         if execution_existing_tasks:
             all_runnable_tasks.update(execution_existing_tasks)
@@ -204,11 +213,14 @@ class BuildVariant(object):
             + self.__get_task_specs(frozenset(self.task_groups))
             + self.__get_task_specs(frozenset(self.existing_tasks)),
         }
+
         if self.display_tasks:
             obj["display_tasks"] = sorted(
                 [dt.as_dict() for dt in self.display_tasks], key=lambda d: d["name"]
             )
-        if self.expansions:
-            obj["expansions"] = self.expansions
+
+        add_existing_from_dict(
+            obj, {"expansions": self.expansions, "run_on": self.run_on, "modules": self.modules}
+        )
 
         return obj
