@@ -48,7 +48,7 @@ class BuildVariant(object):
         :param modules: Which modules to include in this build variant.
         """
         self.name = name
-        self.display_name = display_name if display_name else name
+        self.display_name = display_name
         self.batch_time = batch_time
         self.tasks: Set[Task] = set()
         self.task_groups: Set[TaskGroup] = set()
@@ -220,7 +220,14 @@ class BuildVariant(object):
             )
 
         add_existing_from_dict(
-            obj, {"expansions": self.expansions, "run_on": self.run_on, "modules": self.modules}
+            obj,
+            {
+                "expansions": self.expansions,
+                "run_on": self.run_on,
+                "modules": self.modules,
+                "display_name": self.display_name,
+                "batch_time": self.batch_time,
+            },
         )
 
         return obj

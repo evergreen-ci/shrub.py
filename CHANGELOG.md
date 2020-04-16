@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3 - 2020-04-16
+- Fix missing display names from build variants.
+
 ## 1.0.2 - 2020-04-01
 - Add support for specifying distros on display tasks.
 - Add build variant options for 'run_on' and 'modules'.
