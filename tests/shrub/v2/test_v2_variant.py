@@ -105,3 +105,11 @@ class TestBuildVariant:
         d = bv.as_dict()
 
         assert "module 1" in d["modules"]
+
+    def test_display_name(self):
+        display_name = "Variant Name"
+        bv = under_test.BuildVariant("build variant", display_name=display_name)
+
+        d = bv.as_dict()
+
+        assert d["display_name"] == display_name
