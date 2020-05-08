@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0 - 2020-05-08
+* Add python 3.6 support.
+
 ## 1.0.3 - 2020-04-16
 - Fix missing display names from build variants.
 

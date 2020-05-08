@@ -1,6 +1,4 @@
 """Configuration for commands in shrub."""
-from __future__ import annotations
-
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Any, Dict, Optional, Sequence, Union
@@ -80,7 +78,7 @@ class BuiltInCommand(ShrubCommand):
         self.params = params
         self.command_type: Optional[CommandType] = None
 
-    def set_type(self, command_type: CommandType) -> BuiltInCommand:
+    def set_type(self, command_type: CommandType) -> "BuiltInCommand":
         """
         Set the type command should report as.
 
