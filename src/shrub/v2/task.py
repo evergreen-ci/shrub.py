@@ -1,6 +1,4 @@
 """Configuration for tasks in evergreen."""
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Sequence, Set
 
@@ -68,7 +66,7 @@ class Task(RunnableTask):
         self.commands = commands
         self.dependencies = dependencies if dependencies else set()
 
-    def dependency(self, task_name: str, build_variant: Optional[str] = None) -> Task:
+    def dependency(self, task_name: str, build_variant: Optional[str] = None) -> "Task":
         """
         Add a dependency on the task.
 

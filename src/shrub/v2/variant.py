@@ -1,6 +1,4 @@
 """Shrub configuration for an evergreen build variant."""
-from __future__ import annotations
-
 from dataclasses import dataclass
 from itertools import chain
 from typing import Any, Dict, Optional, Set, FrozenSet, Sequence, List
@@ -59,7 +57,7 @@ class BuildVariant(object):
         self.modules = modules
         self.task_to_distro_map: Dict[str, Sequence[str]] = {}
 
-    def add_task(self, task: Task, distros: Optional[Sequence[str]] = None) -> BuildVariant:
+    def add_task(self, task: Task, distros: Optional[Sequence[str]] = None) -> "BuildVariant":
         """
         Add the given task to this build variant.
 
@@ -74,7 +72,7 @@ class BuildVariant(object):
 
     def add_tasks(
         self, task_set: Set[Task], distros: Optional[Sequence[str]] = None
-    ) -> BuildVariant:
+    ) -> "BuildVariant":
         """
         Add the given set of tasks to this build variant.
 
@@ -90,7 +88,7 @@ class BuildVariant(object):
 
     def add_task_group(
         self, task_group: TaskGroup, distros: Optional[Sequence[str]] = None
-    ) -> BuildVariant:
+    ) -> "BuildVariant":
         """
         Add the given task group to the set of tasks in this build variant.
 
@@ -105,7 +103,7 @@ class BuildVariant(object):
 
     def add_task_groups(
         self, task_group_set: Set[TaskGroup], distros: Optional[Sequence[str]] = None
-    ) -> BuildVariant:
+    ) -> "BuildVariant":
         """
         Add the given set of task groups to this build variant.
 
@@ -121,7 +119,7 @@ class BuildVariant(object):
 
     def add_existing_task(
         self, existing_task: ExistingTask, distros: Optional[Sequence[str]] = None
-    ) -> BuildVariant:
+    ) -> "BuildVariant":
         """
         Add the given existing task to the set of tasks in this build variant.
 
@@ -136,7 +134,7 @@ class BuildVariant(object):
 
     def add_existing_tasks(
         self, existing_tasks: Set[ExistingTask], distros: Optional[Sequence[str]] = None
-    ) -> BuildVariant:
+    ) -> "BuildVariant":
         """
         Add the given set of existing tasks to this build variant.
 
@@ -157,7 +155,7 @@ class BuildVariant(object):
         execution_task_groups: Optional[Set[TaskGroup]] = None,
         execution_existing_tasks: Optional[Set[ExistingTask]] = None,
         distros: Optional[Sequence[str]] = None,
-    ) -> BuildVariant:
+    ) -> "BuildVariant":
         """
         Add a new display task to this build variant.
 

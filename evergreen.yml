@@ -1,8 +1,8 @@
 buildvariants:
-- display_name: Ubuntu 16.04
-  name: ubuntu1604
+- display_name: Ubuntu 18.04
+  name: ubuntu1804
   run_on:
-  - ubuntu1604-test
+  - ubuntu1804
   tasks:
   - name: unit_tests
   - name: deploy
@@ -17,7 +17,7 @@ functions:
         set -o errexit
         set -o verbose
 
-        /opt/mongodbtoolchain/v3/bin/python3 -m venv venv
+        virtualenv --python=python3 venv
         . venv/bin/activate
 
         pip install poetry

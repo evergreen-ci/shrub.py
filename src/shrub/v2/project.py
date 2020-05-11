@@ -1,6 +1,4 @@
 """Top-level container for shrub configuration."""
-from __future__ import annotations
-
 import json
 from typing import Any, Dict, Optional, Set
 
@@ -23,11 +21,11 @@ class ShrubProject(object):
         self.build_variants = build_variants if build_variants else set()
 
     @classmethod
-    def empty(cls) -> ShrubProject:
+    def empty(cls) -> "ShrubProject":
         """Create an empty shrub project."""
         return cls()
 
-    def add_build_variant(self, variant: BuildVariant) -> ShrubProject:
+    def add_build_variant(self, variant: BuildVariant) -> "ShrubProject":
         """
         Add the given build variant configuration to this project.
 
