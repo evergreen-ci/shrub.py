@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1 - 2020-09-16
+- Fix a bug where 'exec_timeout_secs' set the wrong key.
+
 ## 1.1.0 - 2020-05-08
 * Add python 3.6 support.
 
