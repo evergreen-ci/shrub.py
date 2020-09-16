@@ -45,7 +45,7 @@ class Configuration(EvergreenBuilder):
             "_pre": {NAME_KEY: "pre", RECURSE_KEY: True},
             "_post": {NAME_KEY: "post", RECURSE_KEY: True},
             "_timeout": {NAME_KEY: "timeout", RECURSE_KEY: False},
-            "_exec_timeout_secs": {NAME_KEY: "timeout", RECURSE_KEY: False},
+            "_exec_timeout_secs": {NAME_KEY: "exec_timeout_secs", RECURSE_KEY: False},
             "_batch_time_secs": {NAME_KEY: "batchtime", RECURSE_KEY: False},
             "_stepback": {NAME_KEY: "stepback", RECURSE_KEY: False},
             "_command_type": {NAME_KEY: "command_type", RECURSE_KEY: False},

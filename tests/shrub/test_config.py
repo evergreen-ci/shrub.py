@@ -18,7 +18,7 @@ class TestConfiguration:
 
         obj = c.to_map()
 
-        assert obj["timeout"] == 20
+        assert obj["exec_timeout_secs"] == 20
         assert obj["batchtime"] == 300
         assert "file1" in obj["ignore"]
         assert "file2" in obj["ignore"]
