@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shrub.py"
-version = "1.1.0"
+version = "1.1.1"
 description = "Library for creating evergreen configurations"
 authors = [
     "David Bradford <david.bradford@mongodb.com>",
@@ -16,7 +16,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6"
 PyYaml = "^5.1"
-dataclasses = {version = "^0.7", python = "3.6"}
+dataclasses = {version = "^0.7", python = "3.6.*"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.3"
