@@ -23,7 +23,7 @@ dataclasses = {version = "^0.7", python = "3.6.*"}
 pytest = "^5.3"
 pytest-black = "^0.3.7"
 pytest-flake8 = "^1.0"
-pytest-mypy = "^0.5.0"
+pytest-mypy = "^0.8.0"
 
 [tool.black]
 line-length = 100
