@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.2 - 2021-02-04
+- Add py.typed for PEP 561 compliance.
+
 ## 1.1.1 - 2020-09-16
 - Fix a bug where 'exec_timeout_secs' set the wrong key.
 
