@@ -9,7 +9,7 @@ from shrub.variant import Variant
 
 def _find_name_in_list(name_list, name):
     """Call get_name() on all items in the given list to find a match."""
-    for l in name_list:
+    for l in name_list:  # noqa: E741
         if l.get_name() == name:
             return l
 
