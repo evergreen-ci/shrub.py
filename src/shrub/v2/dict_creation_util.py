@@ -11,7 +11,8 @@ def add_if_exists(obj: Dict[str, Any], key_name: str, key_value: Optional[Any]) 
     :param key_value: Value to add.
     :return: Updated dictionary.
     """
-    if key_value is not None and not (isinstance(key_value, Sized) and len(key_value) == 0):
+    is_empty_list = isinstance(key_value, Sized) and len(key_value) == 0
+    if key_value is not None and not is_empty_list:
         obj[key_name] = key_value
 
     return obj
