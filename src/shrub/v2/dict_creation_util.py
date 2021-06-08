@@ -1,5 +1,5 @@
 """Utilities for working with dictionaries."""
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Sized
 
 
 def add_if_exists(obj: Dict[str, Any], key_name: str, key_value: Optional[Any]) -> Dict[str, Any]:
@@ -11,7 +11,7 @@ def add_if_exists(obj: Dict[str, Any], key_name: str, key_value: Optional[Any]) 
     :param key_value: Value to add.
     :return: Updated dictionary.
     """
-    if key_value:
+    if key_value is not None and not (isinstance(key_value, Sized) and len(key_value) == 0):
         obj[key_name] = key_value
 
     return obj

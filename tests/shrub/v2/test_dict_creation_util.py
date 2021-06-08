@@ -18,6 +18,13 @@ class TestAddIfExists:
 
         assert obj == {"key": "value"}
 
+    def test_false_values_should_be_added(self):
+        obj = {}
+
+        under_test.add_if_exists(obj, "key", False)
+
+        assert obj == {"key": False}
+
 
 class TestAddExistingFromDict:
     def test_add_a_mix_of_items(self):

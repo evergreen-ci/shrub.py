@@ -25,7 +25,7 @@ class TestBuildVariant:
         assert d["tasks"][1]["name"] == "task 2"
         assert "distros" not in d["tasks"][1]
 
-    def test_tasks_with_with_distros(self):
+    def test_tasks_with_distros(self):
         bv = under_test.BuildVariant("build variant")
 
         task_1 = Task("task 1", [])
@@ -42,6 +42,24 @@ class TestBuildVariant:
         assert d["tasks"][0]["distros"][0] == "distro 1"
         assert d["tasks"][1]["name"] == "task 2"
         assert d["tasks"][1]["distros"][0] == "distro 2"
+
+    def test_tasks_with_activate(self):
+        bv = under_test.BuildVariant("build variant")
+
+        task_1 = Task("task 1", [])
+        task_2 = Task("task 2", [])
+
+        bv.add_task(task_1, activate=True)
+        bv.add_tasks({task_2}, activate=False)
+
+        d = bv.as_dict()
+
+        assert d["name"] == "build variant"
+        assert len(d["tasks"]) == 2
+        assert d["tasks"][0]["name"] == "task 1"
+        assert d["tasks"][0]["activate"] is True
+        assert d["tasks"][1]["name"] == "task 2"
+        assert d["tasks"][1]["activate"] is False
 
     def test_display_tasks(self):
         bv = under_test.BuildVariant("build variant")
@@ -113,3 +131,10 @@ class TestBuildVariant:
         d = bv.as_dict()
 
         assert d["display_name"] == display_name
+
+    def test_activate(self):
+        bv = under_test.BuildVariant("build variant", activate=False)
+
+        d = bv.as_dict()
+
+        assert d["activate"] is False

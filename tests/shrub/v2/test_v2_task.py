@@ -51,7 +51,24 @@ class TestTaskSpec:
     def test_spec_on_distro(self):
         task = under_test.Task("task_name", [])
 
-        spec = task.task_spec("a distro")
+        spec = task.task_spec(["a distro"])
 
         assert spec["name"] == "task_name"
         assert "a distro" in spec["distros"]
+
+    def test_spec_with_activate(self):
+        task = under_test.Task("task_name", [])
+
+        spec = task.task_spec(activate=False)
+
+        assert spec["name"] == "task_name"
+        assert spec["activate"] is False
+
+    def test_spec_with_distro_and_activate(self):
+        task = under_test.Task("task_name", [])
+
+        spec = task.task_spec(distros=["my distro"], activate=False)
+
+        assert spec["name"] == "task_name"
+        assert spec["activate"] is False
+        assert "my distro" in spec["distros"]
