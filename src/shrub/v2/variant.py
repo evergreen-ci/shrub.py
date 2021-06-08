@@ -33,6 +33,7 @@ class BuildVariant(object):
         expansions: Optional[Dict[str, Any]] = None,
         run_on: Optional[Sequence[str]] = None,
         modules: Optional[Sequence[str]] = None,
+        activate: Optional[bool] = None,
     ) -> None:
         """
         Create a new build variant.
@@ -44,6 +45,7 @@ class BuildVariant(object):
         :param expansions: A set of key-value expansions pairs.
         :param run_on: Which distros the tasks should run on.
         :param modules: Which modules to include in this build variant.
+        :param activate: Should the build variant be scheduled by default.
         """
         self.name = name
         self.display_name = display_name
@@ -55,35 +57,49 @@ class BuildVariant(object):
         self.expansions: Dict[str, Any] = expansions if expansions else {}
         self.run_on = run_on
         self.modules = modules
+        self.activate = activate
         self.task_to_distro_map: Dict[str, Sequence[str]] = {}
+        self.task_to_activate_map: Dict[str, bool] = {}
 
-    def add_task(self, task: Task, distros: Optional[Sequence[str]] = None) -> "BuildVariant":
+    def add_task(
+        self, task: Task, distros: Optional[Sequence[str]] = None, activate: Optional[bool] = None
+    ) -> "BuildVariant":
         """
         Add the given task to this build variant.
 
         :param task: Task to add to build variant.
         :param distros: Distros to run task on.
+        :param activate: Should task be scheduled when created.
         :return: This build variant.
         """
         self.tasks.add(task)
         if distros:
             self.task_to_distro_map[task.name] = distros
+        if activate is not None:
+            self.task_to_activate_map[task.name] = activate
         return self
 
     def add_tasks(
-        self, task_set: Set[Task], distros: Optional[Sequence[str]] = None
+        self,
+        task_set: Set[Task],
+        distros: Optional[Sequence[str]] = None,
+        activate: Optional[bool] = None,
     ) -> "BuildVariant":
         """
         Add the given set of tasks to this build variant.
 
         :param task_set: Set of tasks to add to build variant.
         :param distros: Distros to run task on.
+        :param activate: Should task be scheduled when created.
         :return: This build variant.
         """
         self.tasks.update(task_set)
         if distros:
             for task in task_set:
                 self.task_to_distro_map[task.name] = distros
+        if activate is not None:
+            for task in task_set:
+                self.task_to_activate_map[task.name] = activate
         return self
 
     def add_task_group(
@@ -192,7 +208,9 @@ class BuildVariant(object):
         :param task: Task to run.
         :return: Task spec for running task.
         """
-        return task.task_spec(self.task_to_distro_map.get(task.name))
+        return task.task_spec(
+            self.task_to_distro_map.get(task.name), self.task_to_activate_map.get(task.name)
+        )
 
     def __get_task_specs(self, task_list: FrozenSet[RunnableTask]) -> List[Dict[str, Any]]:
         """
@@ -225,6 +243,7 @@ class BuildVariant(object):
                 "modules": self.modules,
                 "display_name": self.display_name,
                 "batch_time": self.batch_time,
+                "activate": self.activate,
             },
         )
 

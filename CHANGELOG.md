@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.3 - 2021-06-8
+- Add 'activate' support to build variants and tasks.
+
 ## 1.1.2 - 2021-02-04
 - Add py.typed for PEP 561 compliance.
 

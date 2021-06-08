@@ -29,19 +29,23 @@ class RunnableTask(object):
     def __init__(self, name: str) -> None:
         self.name = name
 
-    def task_spec(self, distros: Optional[Sequence[str]] = None) -> Dict[str, Any]:
+    def task_spec(
+        self, distros: Optional[Sequence[str]] = None, activate: Optional[bool] = None
+    ) -> Dict[str, Any]:
         """
         Create a task spec for this task.
 
         A task spec describes how the task should be added to a build variant.
 
         :param distros: What distros the task should run on.
+        :param activate: Should task be scheduled when created.
         :return: Dictionary representing task spec.
         """
         obj: Dict[str, Any] = {
             "name": self.name,
         }
         add_if_exists(obj, "distros", distros)
+        add_if_exists(obj, "activate", activate)
 
         return obj
 
