@@ -48,18 +48,22 @@ class TestBuildVariant:
 
         task_1 = Task("task 1", [])
         task_2 = Task("task 2", [])
+        task_3 = Task("task 3", [])
 
         bv.add_task(task_1, activate=True)
         bv.add_tasks({task_2}, activate=False)
+        bv.display_task("my display task", execution_tasks={task_3}, activate=False)
 
         d = bv.as_dict()
 
         assert d["name"] == "build variant"
-        assert len(d["tasks"]) == 2
+        assert len(d["tasks"]) == 3
         assert d["tasks"][0]["name"] == "task 1"
         assert d["tasks"][0]["activate"] is True
         assert d["tasks"][1]["name"] == "task 2"
         assert d["tasks"][1]["activate"] is False
+        assert d["tasks"][2]["name"] == "task 3"
+        assert d["tasks"][2]["activate"] is False
 
     def test_display_tasks(self):
         bv = under_test.BuildVariant("build variant")

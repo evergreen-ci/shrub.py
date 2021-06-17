@@ -1,6 +1,9 @@
 # Changelog
 
-## 1.1.3 - 2021-06-8
+## 1.1.4 - 2021-06-17
+- Add 'activate' support to for tasks in display tasks.
+
+## 1.1.3 - 2021-06-08
 - Add 'activate' support to build variants and tasks.
 
 ## 1.1.2 - 2021-02-04

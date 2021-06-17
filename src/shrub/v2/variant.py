@@ -171,6 +171,7 @@ class BuildVariant(object):
         execution_task_groups: Optional[Set[TaskGroup]] = None,
         execution_existing_tasks: Optional[Set[ExistingTask]] = None,
         distros: Optional[Sequence[str]] = None,
+        activate: Optional[bool] = None,
     ) -> "BuildVariant":
         """
         Add a new display task to this build variant.
@@ -181,11 +182,12 @@ class BuildVariant(object):
         :param execution_existing_tasks: Set of existing tasks that should be part of the display
                task.
         :param distros: Distros to run tasks on.
+        :param activate: Should task be scheduled when created.
         :return: This build variant configuration.
         """
         all_runnable_tasks: Set[RunnableTask] = set()
         if execution_tasks:
-            self.add_tasks(execution_tasks, distros)
+            self.add_tasks(execution_tasks, distros, activate)
             all_runnable_tasks.update(execution_tasks)
         if execution_task_groups:
             self.add_task_groups(execution_task_groups, distros)
