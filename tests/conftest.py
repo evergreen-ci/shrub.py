@@ -1,6 +1,7 @@
 """Test configuration."""
 import json
 import os
+from pathlib import Path
 
 import pytest
 import yaml
@@ -31,3 +32,8 @@ def compare_json():
 @pytest.fixture()
 def compare_yaml():
     return lambda filename, actual: compare_format(filename, actual, yaml.safe_load)
+
+
+@pytest.fixture()
+def sample_files_location():
+    return Path(SAMPLE_DATA_PATH)
