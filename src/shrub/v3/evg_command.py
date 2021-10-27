@@ -151,7 +151,7 @@ class RegistrySettings(BaseModel):
 
 
 class EvgCommandType(str, Enum):
-    """How failure should be represented."""
+    """How a failure should be represented."""
 
     TEST = "test"
     SYSTEM = "system"

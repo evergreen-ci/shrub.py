@@ -43,6 +43,6 @@ class EvgTaskGroup(BaseModel):
         Get a reference to this task group.
 
         :param distros: List of distros this task should be run on.
-        :return: Reference to this task.
+        :return: Reference to this task group.
         """
         return EvgTaskRef(name=self.name, distros=distros)
