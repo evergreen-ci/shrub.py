@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.0 - 2021-10-25
+- Add support for pydantic model based workflow.
+
 ## 1.1.4 - 2021-06-17
 - Add 'activate' support to for tasks in display tasks.
 
