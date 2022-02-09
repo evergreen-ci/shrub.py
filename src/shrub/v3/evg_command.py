@@ -1,6 +1,7 @@
 """Evergreen models for commands."""
 from enum import Enum
-from typing import Any, Dict, Optional, Union, List, Literal
+from typing import Any, Dict, Optional, Union, List
+from typing_extensions import Literal
 
 from pydantic import BaseModel, Field
 

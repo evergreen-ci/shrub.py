@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.1 - 2022-2-9
+- Add support for Python 3.7 by using typing extensions.
+
 ## 3.0.0 - 2021-10-25
 - Add support for pydantic model based workflow.
 
