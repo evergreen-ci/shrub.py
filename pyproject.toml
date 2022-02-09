@@ -20,7 +20,7 @@ PyYaml = "^5.1"
 dataclasses = {version = "^0.7", python = "3.6.*"}
 pydantic = "^1.8"
 git-url-parse = "^1"
-typing-extensions = "^4.0.1"
+typing-extensions = "^4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0"
