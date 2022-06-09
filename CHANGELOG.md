@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.2 - 2022-6-9
+- Add support for tags on the build variant level
+
 ## 3.0.1 - 2022-2-9
 - Add support for Python 3.7 by using typing extensions.
 
