@@ -42,3 +42,4 @@ class BuildVariant(BaseModel):
     expansions: Optional[Dict[str, str]] = None
     stepback: Optional[bool] = None
     modules: Optional[List[str]] = None
+    tags: Optional[List[str]] = None
