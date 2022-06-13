@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shrub.py"
-version = "3.0.1"
+version = "3.0.2"
 description = "Library for creating evergreen configurations"
 authors = [
     "David Bradford <david.bradford@mongodb.com>",
