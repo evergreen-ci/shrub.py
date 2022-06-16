@@ -13,6 +13,7 @@ AvailableCommands = Literal[
     "attach.artifacts",
     "attach.results",
     "attach.xunit_results",
+    "downstream_expansions.set",
     "expansions.update",
     "expansions.write",
     "generate.tasks",
@@ -324,6 +325,21 @@ def attach_xunit_results(
         command="attach.xunit_results",
         params={"file": file, "files": files},
         command_type=command_type,
+    )
+
+
+def downstream_expansions_set(
+    file: Optional[str] = None, command_type: Optional[EvgCommandType] = None,
+) -> BuiltInCommand:
+    """
+    Command used by parent patches to pass key-value pairs to its children patches. 
+
+    :param file: File containg key-value pairs for the child.
+    :param command_type: How failures should be reported.
+    :return:  downstream_expansions.set command.
+    """
+    return BuiltInCommand(
+        command="downstream_expansions.set", params={"file": file}, command_type=command_type,
     )
 
 
