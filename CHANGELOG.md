@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.3 - 2022-6-16
+- Added command for setting downstream expansions  
+
 ## 3.0.2 - 2022-6-9
 - Add support for tags on the build variant level
 
