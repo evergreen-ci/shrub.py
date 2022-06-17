@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.4 - 2022-6-17
+- Added check for version update
+
 ## 3.0.3 - 2022-6-16
 - Added command for setting downstream expansions  
 
