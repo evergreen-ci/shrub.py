@@ -23,7 +23,10 @@ class EvergreenBuilder(abc.ABC):
     def _add_if_defined(self, obj, prop):
         """Add the specified property to the given object if it exists."""
         value = getattr(self, prop)
-        if value:
+
+        # We can't just use the falsiness of value because false is a value
+        # with semantic meaning different from undefined in some keys.
+        if value is not None and value != [] and value != {}:
             if self._yaml_map()[prop][RECURSE_KEY]:
                 if isinstance(value, collections.abc.Sequence):
                     value = [v.to_map() for v in value]

@@ -23,6 +23,7 @@ class Variant(EvergreenBuilder):
         self._expansions = {}
         self._display_task_specs = []
         self._modules = []
+        self._activate = []
 
     def _yaml_map(self):
         return {
@@ -34,6 +35,7 @@ class Variant(EvergreenBuilder):
             "_expansions": {NAME_KEY: "expansions", RECURSE_KEY: False},
             "_display_task_specs": {NAME_KEY: "display_tasks", RECURSE_KEY: True},
             "_modules": {NAME_KEY: "modules", RECURSE_KEY: False},
+            "_activate": {NAME_KEY: "activate", RECURSE_KEY: False},
         }
 
     def get_name(self):
@@ -195,6 +197,19 @@ class Variant(EvergreenBuilder):
 
         return self
 
+    def activate(self, activate):
+        """
+        Specify whether the tasks in this variant should be activated.
+
+        :param activate: whether to activate tasks in this variant.
+        :return: instance of task spec.
+        """
+        if not isinstance(activate, bool) and activate is not None:
+            raise TypeError("activate only accepts a bool or None")
+
+        self._activate = activate
+        return self
+
 
 class TaskSpec(EvergreenBuilder):
     """A spec for adding a task to a variant."""
@@ -208,12 +223,14 @@ class TaskSpec(EvergreenBuilder):
         self._name = name
         self._stepback = None
         self._distro = []
+        self._activate = None
 
     def _yaml_map(self):
         return {
             "_name": {NAME_KEY: "name", RECURSE_KEY: False},
             "_stepback": {NAME_KEY: "stepback", RECURSE_KEY: False},
             "_distro": {NAME_KEY: "distros", RECURSE_KEY: False},
+            "_activate": {NAME_KEY: "activate", RECURSE_KEY: False},
         }
 
     def stepback(self):
@@ -235,6 +252,19 @@ class TaskSpec(EvergreenBuilder):
             raise TypeError("distro only accepts a str")
 
         self._distro = [distro]
+        return self
+
+    def activate(self, activate):
+        """
+        Specify whether this task should be activated.
+
+        :param activate: whether to activate this task.
+        :return: instance of task spec.
+        """
+        if not isinstance(activate, bool) and activate is not None:
+            raise TypeError("activate only accepts a bool or None")
+
+        self._activate = activate
         return self
 
 
