@@ -23,7 +23,7 @@ class Variant(EvergreenBuilder):
         self._expansions = {}
         self._display_task_specs = []
         self._modules = []
-        self._activate = []
+        self._activate = None
 
     def _yaml_map(self):
         return {
