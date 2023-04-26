@@ -125,6 +125,23 @@ class TestVariant:
         with pytest.raises(TypeError):
             v.display_tasks("hello world")
 
+    def test_variant_activate(self):
+        v = Variant("variant name")
+        obj = v.to_map()
+        assert "activate" not in obj
+
+        v.activate(True)
+        obj = v.to_map()
+        assert obj["activate"] is True
+
+        v.activate(False)
+        obj = v.to_map()
+        assert obj["activate"] is False
+
+        v.activate(None)
+        obj = v.to_map()
+        assert "activate" not in obj
+
 
 class TestTaskSpec:
     def test_task_spec(self):
@@ -134,6 +151,23 @@ class TestTaskSpec:
         assert "task name" == obj["name"]
         assert obj["stepback"]
         assert ["linux"] == obj["distros"]
+
+    def test_task_spec_activate(self):
+        ts = TaskSpec("task name")
+        obj = ts.to_map()
+        assert "activate" not in obj
+
+        ts.activate(True)
+        obj = ts.to_map()
+        assert obj["activate"] is True
+
+        ts.activate(False)
+        obj = ts.to_map()
+        assert obj["activate"] is False
+
+        ts.activate(None)
+        obj = ts.to_map()
+        assert "activate" not in obj
 
     def test_invalid_distro(self):
         ts = TaskSpec("task name")

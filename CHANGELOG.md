@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.5 - 2023-04-26
+- Added activate field to v1 API
+
 ## 3.0.4 - 2022-6-17
 - Added check for version update
 

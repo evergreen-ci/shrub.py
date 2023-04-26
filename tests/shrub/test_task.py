@@ -119,6 +119,23 @@ class TestTask:
         with pytest.raises(TypeError):
             Task(42)
 
+    def test_task_activate(self):
+        t = Task("task name")
+        obj = t.to_map()
+        assert "activate" not in obj
+
+        t.activate(True)
+        obj = t.to_map()
+        assert obj["activate"] is True
+
+        t.activate(False)
+        obj = t.to_map()
+        assert obj["activate"] is False
+
+        t.activate(None)
+        obj = t.to_map()
+        assert "activate" not in obj
+
 
 class TestTaskDependency:
     def test_flat_values(self):

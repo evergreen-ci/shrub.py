@@ -17,6 +17,7 @@ class Task(EvergreenBuilder):
         self._dependencies = []
         self._requires = []
         self._commands = CommandSequence()
+        self._activate = None
 
     def _yaml_map(self):
         return {
@@ -25,6 +26,7 @@ class Task(EvergreenBuilder):
             "_priority": {NAME_KEY: "priority", RECURSE_KEY: False},
             "_dependencies": {NAME_KEY: "depends_on", RECURSE_KEY: True},
             "_requires": {NAME_KEY: "requires", RECURSE_KEY: True},
+            "_activate": {NAME_KEY: "activate", RECURSE_KEY: False},
         }
 
     def get_name(self):
@@ -142,6 +144,19 @@ class Task(EvergreenBuilder):
             raise TypeError("function_with_vars only accepts a dict")
 
         self._commands.add(CommandDefinition().function(fn).vars(var_map))
+        return self
+
+    def activate(self, activate):
+        """
+        Specify whether this task should be activated.
+
+        :param activate: whether to activate this task.
+        :return: instance of task spec.
+        """
+        if not isinstance(activate, bool) and activate is not None:
+            raise TypeError("activate only accepts a bool or None")
+
+        self._activate = activate
         return self
 
 
