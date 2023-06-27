@@ -142,6 +142,20 @@ class TestVariant:
         obj = v.to_map()
         assert "activate" not in obj
 
+    def test_variant_cron(self):
+        v = Variant("variant name")
+        obj = v.to_map()
+        assert "cron" not in obj
+
+        v.cron("0 * * * *")
+        obj = v.to_map()
+        assert obj["cron"] == "0 * * * *"
+
+    def test_variant_invalid_cron(self):
+        v = Variant("variant name")
+        with pytest.raises(TypeError):
+            v.cron(5)
+
 
 class TestTaskSpec:
     def test_task_spec(self):
@@ -173,6 +187,20 @@ class TestTaskSpec:
         ts = TaskSpec("task name")
         with pytest.raises(TypeError):
             ts.distro(42)
+
+    def test_task_spec_cron(self):
+        ts = TaskSpec("task name")
+        obj = ts.to_map()
+        assert "cron" not in obj
+
+        ts.cron("0 * * * *")
+        obj = ts.to_map()
+        assert obj["cron"] == "0 * * * *"
+
+    def test_task_spec_invalid_cron(self):
+        ts = TaskSpec("task name")
+        with pytest.raises(TypeError):
+            ts.cron(5)
 
 
 class TestDisplayTaskDefinition:

@@ -37,7 +37,11 @@ class TestGenerateLintV3:
         )
 
         variant = BuildVariant(name=variant_name, tasks=[task_group.get_task_ref()])
-        project = EvgProject(buildvariants=[variant], tasks=tasks, task_groups=[task_group],)
+        project = EvgProject(
+            buildvariants=[variant],
+            tasks=tasks,
+            task_groups=[task_group],
+        )
         return project
 
     def test_generate_lint_json(self, compare_json):

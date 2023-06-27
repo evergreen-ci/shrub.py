@@ -24,6 +24,7 @@ class Variant(EvergreenBuilder):
         self._display_task_specs = []
         self._modules = []
         self._activate = None
+        self._cron = None
 
     def _yaml_map(self):
         return {
@@ -36,6 +37,7 @@ class Variant(EvergreenBuilder):
             "_display_task_specs": {NAME_KEY: "display_tasks", RECURSE_KEY: True},
             "_modules": {NAME_KEY: "modules", RECURSE_KEY: False},
             "_activate": {NAME_KEY: "activate", RECURSE_KEY: False},
+            "_cron": {NAME_KEY: "cron", RECURSE_KEY: False},
         }
 
     def get_name(self):
@@ -210,6 +212,19 @@ class Variant(EvergreenBuilder):
         self._activate = activate
         return self
 
+    def cron(self, cron):
+        """
+        Specify a crontab value for when this variant should be activated.
+
+        :param cron: The timing on crontab format for when this should be activated
+        :return: instance of task spec
+        """
+        if not isinstance(cron, str):
+            raise TypeError("cron only accepts a string")
+
+        self._cron = cron
+        return self
+
 
 class TaskSpec(EvergreenBuilder):
     """A spec for adding a task to a variant."""
@@ -224,6 +239,7 @@ class TaskSpec(EvergreenBuilder):
         self._stepback = None
         self._distro = []
         self._activate = None
+        self._cron = None
 
     def _yaml_map(self):
         return {
@@ -231,6 +247,7 @@ class TaskSpec(EvergreenBuilder):
             "_stepback": {NAME_KEY: "stepback", RECURSE_KEY: False},
             "_distro": {NAME_KEY: "distros", RECURSE_KEY: False},
             "_activate": {NAME_KEY: "activate", RECURSE_KEY: False},
+            "_cron": {NAME_KEY: "cron", RECURSE_KEY: False},
         }
 
     def stepback(self):
@@ -265,6 +282,19 @@ class TaskSpec(EvergreenBuilder):
             raise TypeError("activate only accepts a bool or None")
 
         self._activate = activate
+        return self
+
+    def cron(self, cron):
+        """
+        Specify a crontab value for when this task should be activated.
+
+        :param cron: The timing on crontab format for when this should be activated
+        :return: instance of task spec
+        """
+        if not isinstance(cron, str):
+            raise TypeError("cron only accepts a string")
+
+        self._cron = cron
         return self
 
 

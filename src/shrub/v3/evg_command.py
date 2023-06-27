@@ -198,13 +198,13 @@ class BuiltInCommand(BaseModel):
         super().__init__(**kwargs)
 
     class Config:
-
         allow_population_by_field_name = True
         use_enum_values = True
 
 
 EvgCommand = Union[
-    FunctionCall, BuiltInCommand,
+    FunctionCall,
+    BuiltInCommand,
 ]
 
 
@@ -292,7 +292,8 @@ def attach_artifacts(
 
 
 def attach_results(
-    file_location: str, command_type: Optional[EvgCommandType] = None,
+    file_location: str,
+    command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:
     """
     Command to attach test results to the task results.
@@ -329,17 +330,20 @@ def attach_xunit_results(
 
 
 def downstream_expansions_set(
-    file: Optional[str] = None, command_type: Optional[EvgCommandType] = None,
+    file: Optional[str] = None,
+    command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:
     """
-    Command used by parent patches to pass key-value pairs to its children patches. 
+    Command used by parent patches to pass key-value pairs to its children patches.
 
     :param file: File containg key-value pairs for the child.
     :param command_type: How failures should be reported.
     :return:  downstream_expansions.set command.
     """
     return BuiltInCommand(
-        command="downstream_expansions.set", params={"file": file}, command_type=command_type,
+        command="downstream_expansions.set",
+        params={"file": file},
+        command_type=command_type,
     )
 
 
@@ -373,7 +377,9 @@ def expansions_update(
 
 
 def expansions_write(
-    file: str, redacted: Optional[bool] = None, command_type: Optional[EvgCommandType] = None,
+    file: str,
+    redacted: Optional[bool] = None,
+    command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:
     """
     Command to write expansion definitions to a file.
@@ -391,7 +397,8 @@ def expansions_write(
 
 
 def generate_tasks(
-    files: List[str], command_type: Optional[EvgCommandType] = None,
+    files: List[str],
+    command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:
     """
     Command to generate tasks dynamically.
@@ -401,7 +408,9 @@ def generate_tasks(
     :return: generate.tasks command.
     """
     return BuiltInCommand(
-        command="generate.tasks", params={"files": files}, command_type=command_type,
+        command="generate.tasks",
+        params={"files": files},
+        command_type=command_type,
     )
 
 
@@ -428,7 +437,8 @@ def git_get_project(
 
 
 def gotest_parse_files(
-    files: List[str], command_type: Optional[EvgCommandType] = None,
+    files: List[str],
+    command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:
     """
     Parameters to attach gotest test results to the task results.
@@ -438,7 +448,9 @@ def gotest_parse_files(
     :return: gotest.parse_files command.
     """
     return BuiltInCommand(
-        command="gotest.parse_files", params={"files": files}, command_type=command_type,
+        command="gotest.parse_files",
+        params={"files": files},
+        command_type=command_type,
     )
 
 
@@ -588,7 +600,9 @@ def host_list(
 
 
 def json_send(
-    file: str, name: str, command_type: Optional[EvgCommandType] = None,
+    file: str,
+    name: str,
+    command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:
     """
     Send json data to the task results.
@@ -599,12 +613,16 @@ def json_send(
     :return: json send command.
     """
     return BuiltInCommand(
-        command="json.send", params={"file": file, "name": name}, command_type=command_type,
+        command="json.send",
+        params={"file": file, "name": name},
+        command_type=command_type,
     )
 
 
 def key_val_inc(
-    destination: str, key: str, command_type: Optional[EvgCommandType] = None,
+    destination: str,
+    key: str,
+    command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:
     """
     Command for key/val increment.
