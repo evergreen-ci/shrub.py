@@ -74,8 +74,6 @@ tasks:
 
         . venv/bin/activate
 
-        poetry run flake8 src tests
-        poetry run black --check src tests
         poetry run pytest --junitxml=junit-test-output.xml
 
 - name: deploy
