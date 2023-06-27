@@ -22,7 +22,11 @@ class TestS3Get:
 
     def test_using_local_file(self):
         command = under_test.s3_get(
-            "aws_key", "aws_secret", "remote_file", "bucket", local_file="local_file",
+            "aws_key",
+            "aws_secret",
+            "remote_file",
+            "bucket",
+            local_file="local_file",
         )
 
         d = command.as_dict()
@@ -31,7 +35,11 @@ class TestS3Get:
 
     def test_using_extract_to(self):
         command = under_test.s3_get(
-            "aws_key", "aws_secret", "remote_file", "bucket", extract_to="extract to",
+            "aws_key",
+            "aws_secret",
+            "remote_file",
+            "bucket",
+            extract_to="extract to",
         )
 
         d = command.as_dict()
@@ -125,9 +133,17 @@ class TestS3Copy:
             "aws_key",
             "aws_secret",
             [
-                under_test.S3CopyFile("source_bucket", "source_path", "dest_bucket", "dest_path",),
                 under_test.S3CopyFile(
-                    "source_bucket 2", "source_path 2", "dest_bucket 2", "dest_path 2",
+                    "source_bucket",
+                    "source_path",
+                    "dest_bucket",
+                    "dest_path",
+                ),
+                under_test.S3CopyFile(
+                    "source_bucket 2",
+                    "source_path 2",
+                    "dest_bucket 2",
+                    "dest_path 2",
                 ),
             ],
         )

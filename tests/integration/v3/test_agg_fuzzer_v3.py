@@ -52,7 +52,10 @@ class TestAggregationFuzzerV3:
             ],
         )
 
-        project = EvgProject(buildvariants=[variant], tasks=tasks,)
+        project = EvgProject(
+            buildvariants=[variant],
+            tasks=tasks,
+        )
 
         return project
 
