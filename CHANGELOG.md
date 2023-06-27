@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.6 - 2023-06-27
+- Added cron field to v1 API
+
 ## 3.0.5 - 2023-04-26
 - Added activate field to v1 API
 
