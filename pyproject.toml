@@ -21,6 +21,7 @@ dataclasses = {version = "^0.7", python = "3.6.*"}
 pydantic = "^1.8"
 git-url-parse = "^1"
 typing-extensions = "^4"
+croniter = "^1.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0"

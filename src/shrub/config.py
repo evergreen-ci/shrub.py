@@ -5,6 +5,7 @@ from shrub.command import CommandSequence
 from shrub.task import Task
 from shrub.task import TaskGroup
 from shrub.variant import Variant
+from croniter import croniter
 
 
 def _find_name_in_list(name_list, name):
@@ -193,6 +194,9 @@ class Configuration(EvergreenBuilder):
         """
         if not isinstance(cron_schedule, str):
             raise TypeError("cron only accepts strings")
+
+        if not croniter.is_valid(cron_schedule):
+            raise ValueError("Invalid cron syntax")
 
         self._cron = cron_schedule
         return self
