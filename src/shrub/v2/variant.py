@@ -30,6 +30,7 @@ class BuildVariant(object):
         name: str,
         display_name: Optional[str] = None,
         batch_time: Optional[int] = None,
+        cron: Optional[str] = None,
         expansions: Optional[Dict[str, Any]] = None,
         run_on: Optional[Sequence[str]] = None,
         modules: Optional[Sequence[str]] = None,
@@ -42,6 +43,7 @@ class BuildVariant(object):
         :param display_name: Display name of build variant.
         :param batch_time: Interval of time in minutes that evergreen should wait before activating
             this variant.
+        :param cron: Schedule in cron syntax that this variant should run on.
         :param expansions: A set of key-value expansions pairs.
         :param run_on: Which distros the tasks should run on.
         :param modules: Which modules to include in this build variant.
@@ -50,6 +52,7 @@ class BuildVariant(object):
         self.name = name
         self.display_name = display_name
         self.batch_time = batch_time
+        self.cron = cron
         self.tasks: Set[Task] = set()
         self.task_groups: Set[TaskGroup] = set()
         self.existing_tasks: Set[ExistingTask] = set()
@@ -245,6 +248,7 @@ class BuildVariant(object):
                 "modules": self.modules,
                 "display_name": self.display_name,
                 "batch_time": self.batch_time,
+                "cron": self.cron,
                 "activate": self.activate,
             },
         )

@@ -31,7 +31,9 @@ class TestAggregationFuzzerV2:
             ).dependency("compile")
 
         tasks = {define_task(i) for i in range(n_tasks)}
-        variant = BuildVariant("linux-64").display_task("aggregation_multiversion_fuzzer", tasks)
+        variant = BuildVariant(name="linux-64").display_task(
+            "aggregation_multiversion_fuzzer", tasks
+        )
 
         project = ShrubProject({variant})
 
