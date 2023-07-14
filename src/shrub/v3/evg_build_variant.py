@@ -28,6 +28,7 @@ class BuildVariant(BaseModel):
     * run_on: Distros that tasks should be run on.
     * display_tasks: Display tasks that are part of the build variant.
     * batchtime: How frequent this build variant should be run.
+    * cron: What cron schedule this build variant should run on.
     * expansions: Definition of expansions for this build variant.
     * stepback: If stepback should be run on this build variant.
     * module: List of modules to include in this build variant.
@@ -39,6 +40,7 @@ class BuildVariant(BaseModel):
     run_on: Optional[List[str]] = None
     display_tasks: Optional[List[DisplayTask]] = None
     batchtime: Optional[int] = None
+    cron: Optional[str] = None
     expansions: Optional[Dict[str, str]] = None
     stepback: Optional[bool] = None
     modules: Optional[List[str]] = None

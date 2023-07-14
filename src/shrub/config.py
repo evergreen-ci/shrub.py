@@ -5,6 +5,7 @@ from shrub.command import CommandSequence
 from shrub.task import Task
 from shrub.task import TaskGroup
 from shrub.variant import Variant
+from croniter import croniter
 
 
 def _find_name_in_list(name_list, name):
@@ -33,6 +34,7 @@ class Configuration(EvergreenBuilder):
 
         self._exec_timeout_secs = None
         self._batch_time_secs = None
+        self._cron = None
         self._stepback = None
         self._command_type = None
         self._ignore_files = []
@@ -47,6 +49,7 @@ class Configuration(EvergreenBuilder):
             "_timeout": {NAME_KEY: "timeout", RECURSE_KEY: False},
             "_exec_timeout_secs": {NAME_KEY: "exec_timeout_secs", RECURSE_KEY: False},
             "_batch_time_secs": {NAME_KEY: "batchtime", RECURSE_KEY: False},
+            "_cron": {NAME_KEY: "cron", RECURSE_KEY: False},
             "_stepback": {NAME_KEY: "stepback", RECURSE_KEY: False},
             "_command_type": {NAME_KEY: "command_type", RECURSE_KEY: False},
             "_ignore_files": {NAME_KEY: "ignore", RECURSE_KEY: False},
@@ -180,6 +183,22 @@ class Configuration(EvergreenBuilder):
             raise TypeError("batch_time only accepts an int")
 
         self._batch_time_secs = duration
+        return self
+
+    def cron(self, cron_schedule):
+        """
+        Sets the cron schedule.
+
+        :param cron_schedule: cron schedule to set.
+        :return: instance of config.
+        """
+        if not isinstance(cron_schedule, str):
+            raise TypeError("cron only accepts strings")
+
+        if not croniter.is_valid(cron_schedule):
+            raise ValueError("Invalid cron syntax")
+
+        self._cron = cron_schedule
         return self
 
     def stepback(self):

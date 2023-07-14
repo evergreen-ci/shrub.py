@@ -147,6 +147,12 @@ class TestConfiguration:
         with pytest.raises(TypeError):
             c.batch_time("hello world")
 
+    def test_invalid_cron(self):
+        c = Configuration()
+
+        with pytest.raises(TypeError):
+            c.cron(12)
+
     def test_invalid_ignore_file(self):
         c = Configuration()
 
