@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.7 - 2023-07-14
+- Added cron field to v2 and v3 API
+
 ## 3.0.6 - 2023-06-27
 - Added cron field to v1 API
 
