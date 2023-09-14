@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.0 - 2023-09-14
+- Remove git-url-parse dependency
+
 ## 3.0.7 - 2023-07-14
 - Added cron field to v2 and v3 API
 
