@@ -1,9 +1,9 @@
 """Evergreen configuration models for projects."""
 from __future__ import annotations
 
+import re
 from typing import List, Optional, Dict, Union
 
-import giturlparse
 import yaml
 from pydantic import BaseModel
 
@@ -11,6 +11,8 @@ from shrub.v3.evg_build_variant import BuildVariant
 from shrub.v3.evg_command import EvgCommandType, EvgCommand
 from shrub.v3.evg_task import EvgTask
 from shrub.v3.evg_task_group import EvgTaskGroup
+
+REPO_NAME_REGEX = re.compile(r"[/|:](?P<repo_name>[\w\-.]+?)(\.git|/)?$")
 
 
 class EvgParameter(BaseModel):
@@ -42,10 +44,12 @@ class EvgModule(BaseModel):
     branch: str
     prefix: str
 
-    def get_repository_name(self) -> str:
+    def get_repository_name(self) -> Optional[str]:
         """Get the repository name of the module."""
-        repository = giturlparse.parse(self.repo)
-        return repository.name
+        match = REPO_NAME_REGEX.search(self.repo)
+        if match:
+            return match.groupdict().get("repo_name")
+        return None
 
 
 FunctionDefinition = Union[EvgCommand, List[EvgCommand]]
