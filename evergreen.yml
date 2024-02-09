@@ -70,7 +70,10 @@ tasks:
       params:
         working_dir: src
         add_to_path: [ "${workdir}/src/venv/bin" ]
-        command: poetry publish --build --username ${pypi_user} --password ${pypi_password}
+        command: poetry publish --build
+        env:
+          POETRY_HTTP_BASIC_PYPI_USERNAME: ${pypi_user}
+          POETRY_HTTP_BASIC_PYPI_PASSWORD: ${pypi_password}
 
 - name: check_pypi_version
   commands:
