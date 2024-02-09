@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.1 - 2024-02-09
+- Refactor deploy task
+
 ## 3.1.0 - 2023-09-14
 - Remove git-url-parse dependency
 

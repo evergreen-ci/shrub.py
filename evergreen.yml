@@ -25,21 +25,6 @@ functions:
         pip install poetry
         poetry install
 
-  deploy:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          set -o errexit
-          . venv/bin/activate
-
-          if [ "${is_patch|false}" = "true" ]; then
-            # Do not deploy on patches.
-            exit 0
-          fi
-
-          poetry publish --build --username ${pypi_user} --password ${pypi_password}
-
   check_version_update:
     - command: shell.exec
       params:
@@ -81,7 +66,14 @@ tasks:
   depends_on:
     - name: unit_tests
   commands:
-    - func: deploy
+    - command: subprocess.exec
+      params:
+        working_dir: src
+        add_to_path: [ "${workdir}/src/venv/bin" ]
+        command: poetry publish --build
+        env:
+          POETRY_HTTP_BASIC_PYPI_USERNAME: ${pypi_user}
+          POETRY_HTTP_BASIC_PYPI_PASSWORD: ${pypi_password}
 
 - name: check_pypi_version
   commands:
