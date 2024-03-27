@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.2 - 2024-03-27
+- Switch to GitHub merge queue (no code changes)
+
 ## 3.1.1 - 2024-02-09
 - Refactor deploy task
 
