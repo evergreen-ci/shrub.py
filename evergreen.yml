@@ -1,13 +1,11 @@
 buildvariants:
-- display_name: Ubuntu 18.04
-  name: ubuntu1804
+- display_name: Ubuntu 22.04
+  name: ubuntu2204
   run_on:
-  - ubuntu1804-small
+  - ubuntu2204-small
   tasks:
   - name: unit_tests
   - name: deploy
-  - name: check_pypi_version
-
 
 functions:
   create virtualenv:
@@ -24,17 +22,6 @@ functions:
 
         pip install poetry
         poetry install
-
-  check_version_update:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          set -o errexit
-          set -o verbose
-          wget -q https://github.com/dbradf/pypi-version-check/releases/download/v0.3.0/pypi-version-check
-          chmod +x pypi-version-check
-          ./pypi-version-check
 
 pre:
 - command: git.get_project
@@ -74,7 +61,3 @@ tasks:
         env:
           POETRY_HTTP_BASIC_PYPI_USERNAME: ${pypi_user}
           POETRY_HTTP_BASIC_PYPI_PASSWORD: ${pypi_password}
-
-- name: check_pypi_version
-  commands:
-  - func: check_version_update

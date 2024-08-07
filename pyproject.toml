@@ -1,12 +1,8 @@
 [tool.poetry]
 name = "shrub.py"
-version = "3.1.2"
+version = "3.1.3"
 description = "Library for creating evergreen configurations"
-authors = [
-    "David Bradford <david.bradford@mongodb.com>",
-    "Lydia Stepanek <lydia.stepanek@mongodb.com>",
-    "Tausif Rahman <tausif.rahman@mongodb.com>"
-]
+authors = ["DevProd Services & Integrations Team <devprod-si-team@mongodb.com>"]
 license = "Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/evergreen-ci/shrub.py"
@@ -18,7 +14,7 @@ packages = [
 python = ">3.7.0"
 PyYaml = "^5.1 || ^6.0"
 dataclasses = {version = "^0.7", python = "3.6.*"}
-pydantic = "^1.8"
+pydantic = "^1.8 || ^2.0"
 typing-extensions = "^4"
 croniter = "^1.4.1"
 
