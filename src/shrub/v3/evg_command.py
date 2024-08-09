@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Any, Dict, Optional, Union, List
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 AvailableCommands = Literal[
@@ -180,13 +180,13 @@ class BuiltInCommand(BaseModel):
 
     * command: Name of command to call.
     * params: Value of parameters to pass to call.
-    * command_type: How failures should be represented.
+    * type: How failures should be represented.
     * params_yaml: Value of parameters in yaml format.
     """
 
     command: AvailableCommands
     params: Optional[Dict[str, Any]] = None
-    command_type: Optional[EvgCommandType] = Field(None, alias="type")
+    type: Optional[EvgCommandType] = None
     params_yaml: Optional[str] = None
 
     def __init__(self, **kwargs: Dict[str, Any]) -> None:
@@ -229,7 +229,7 @@ def archive_targz_extract(
     return BuiltInCommand(
         command="archive.targz_extract",
         params={"path": path, "destination": destination, "exclude_files": exclude_files},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -258,7 +258,7 @@ def archive_targz_pack(
             "include": include,
             "exclude_files": exclude_files,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -287,7 +287,7 @@ def attach_artifacts(
             "optional": optional,
             "ignore_artifacts_for_spawn": ignore_artifacts_for_spawn,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -305,7 +305,7 @@ def attach_results(
     return BuiltInCommand(
         command="attach.results",
         params={"file_location": file_location},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -325,7 +325,7 @@ def attach_xunit_results(
     return BuiltInCommand(
         command="attach.xunit_results",
         params={"file": file, "files": files},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -343,7 +343,7 @@ def downstream_expansions_set(
     return BuiltInCommand(
         command="downstream_expansions.set",
         params={"file": file},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -372,7 +372,7 @@ def expansions_update(
             "ignore_missing_file": ignore_missing_file,
             "env": env,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -392,7 +392,7 @@ def expansions_write(
     return BuiltInCommand(
         command="expansions.write",
         params={"file": file, "redacted": redacted},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -410,7 +410,7 @@ def generate_tasks(
     return BuiltInCommand(
         command="generate.tasks",
         params={"files": files},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -432,7 +432,7 @@ def git_get_project(
     return BuiltInCommand(
         command="git.get_project",
         params={"directory": directory, "token": token, "revisions": revisions},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -450,7 +450,7 @@ def gotest_parse_files(
     return BuiltInCommand(
         command="gotest.parse_files",
         params={"files": files},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -563,7 +563,7 @@ def host_create(
             "stderr_file_name": stderr_file_name,
             "environment_vars": environment_vars,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -595,7 +595,7 @@ def host_list(
             "path": path,
             "silent": silent,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -615,7 +615,7 @@ def json_send(
     return BuiltInCommand(
         command="json.send",
         params={"file": file, "name": name},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -635,7 +635,7 @@ def key_val_inc(
     return BuiltInCommand(
         command="keyval.inc",
         params={"destination": destination, "key": key},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -670,7 +670,7 @@ def perf_send(
             "prefix": prefix,
             "region": region,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -708,7 +708,7 @@ def s3_get(
             "extract_to": extract_to,
             "build_variants": build_variants,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -764,7 +764,7 @@ def s3_put(
             "region": region,
             "visibility": visibility,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -786,7 +786,7 @@ def s3_copy(
     return BuiltInCommand(
         command="s3Copy.copy",
         params={"s3_copy_files": s3_copy_files, "aws_key": aws_key, "aws_secret": aws_secret},
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -842,7 +842,7 @@ def shell_exec(
             "ignore_standard_error": ignore_standard_error,
             "redirect_standard_error_to_output": redirect_standard_error_to_output,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -907,7 +907,7 @@ def subprocess_exec(
             "add_expansions_to_env": add_expansions_to_env,
             "include_expansions_in_env": include_expansions_in_env,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -983,7 +983,7 @@ def subprocess_scripting(
             "add_expansions_to_env": add_expansions_to_env,
             "include_expansions_in_env": include_expansions_in_env,
         },
-        command_type=command_type,
+        type=command_type,
     )
 
 
@@ -1003,5 +1003,5 @@ def timeout_update(
     return BuiltInCommand(
         command="timeout.update",
         params={"exec_timout_secs": exec_timeout_secs, "timeout_secs": timeout_secs},
-        command_type=command_type,
+        type=command_type,
     )

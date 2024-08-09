@@ -11,7 +11,7 @@ class TestBuiltInCommands:
 
         assert cmd.command == "git.get_project"
         assert cmd.params["directory"] == "src"
-        assert cmd.command_type == under_test.EvgCommandType.SYSTEM
+        assert cmd.type == under_test.EvgCommandType.SYSTEM
 
     def test_specifying_params_again(self):
         cmd = under_test.timeout_update(timeout_secs=60)

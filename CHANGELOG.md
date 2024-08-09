@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 3.1.3 - 2024-08-07
+- Upgrade pydantic to 2.0
+
 ## 3.1.2 - 2024-03-27
 - Switch to GitHub merge queue (no code changes)
 
