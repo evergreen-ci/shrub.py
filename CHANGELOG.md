@@ -1,5 +1,7 @@
 # Changelog
 
+## 3.1.4 - 2024-09-30
+- Added command for generating github tokens
 
 ## 3.1.3 - 2024-08-07
 - Upgrade pydantic to 2.0
