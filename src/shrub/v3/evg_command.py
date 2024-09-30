@@ -18,6 +18,7 @@ AvailableCommands = Literal[
     "expansions.write",
     "generate.tasks",
     "git.get_project",
+    "github.generate_token",
     "gotest.parse_files",
     "host.create",
     "host.list",
