@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.6 - 2024-10-08
+- Added custom yaml output for `shrub.v3.shrub_service.generate_yaml`.
+
 ## 3.1.5 - 2024-10-07
 - Updated README example to use v3 API
 
