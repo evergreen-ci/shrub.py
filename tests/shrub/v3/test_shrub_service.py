@@ -5,7 +5,7 @@ import pytest
 
 from shrub.v3.evg_task import EvgTask, EvgTaskDependency
 from shrub.v3.evg_build_variant import BuildVariant, DisplayTask
-from shrub.v3.evg_command import FunctionCall, shell_exec
+from shrub.v3.evg_command import FunctionCall, shell_exec, subprocess_exec
 from shrub.v3.evg_project import EvgProject
 from shrub.v3.shrub_service import ShrubService
 
@@ -26,7 +26,9 @@ def project():
                     vars={"parameter_1": "value 1", "parameter_2": "value 2"},
                 ),
                 FunctionCall(func="run tests"),
-                shell_exec("a=1\nb=2", env=dict(foo="true", bar="1", fizz=True, buzz=1)),
+                shell_exec("a=1\nb=2", env=dict(foo="true", bar="1")),
+                shell_exec("a=1\nb=2\n", env=dict(fizz=True, buzz=1)),
+                subprocess_exec("bash", command="a=1\nb=2\n\n"),
             ],
             tags=[f"tag{i}" for i in range(index)],
             depends_on=[EvgTaskDependency(name="compile")],
@@ -79,61 +81,41 @@ tasks:
           env:
             foo: "true"
             bar: "1"
+      - command: shell.exec
+        params:
+          script: |
+            a=1
+            b=2
+          env:
             fizz: true
             buzz: 1
+      - command: subprocess.exec
+        params:
+          binary: bash
+          command: |+
+            a=1
+            b=2
+
     depends_on: [{ name: compile }]
     tags: []
 """.strip()
 
 EXPECTED_YAML2 = """
-  - name: task_name_3
-    commands:
-      - func: do setup
-      - func: run test generator
-        vars:
-          parameter_1: value 1
-          parameter_2: value 2
-      - func: run tests
-      - command: shell.exec
-        params:
-          script: |-
-            a=1
-            b=2
-          env:
-            foo: "true"
-            bar: "1"
-            fizz: true
-            buzz: 1
-    depends_on: [{ name: compile }]
     tags: [tag0, tag1, tag2]
   - name: task_name_4
-    commands:
-      - func: do setup
-      - func: run test generator
-        vars:
-          parameter_1: value 1
-          parameter_2: value 2
-      - func: run tests
-      - command: shell.exec
-        params:
-          script: |-
-            a=1
-            b=2
-          env:
-            foo: "true"
-            bar: "1"
-            fizz: true
-            buzz: 1
-    depends_on: [{ name: compile }]
+"""
+
+EXPECTED_YAML3 = """
     tags:
       - tag0
       - tag1
       - tag2
       - tag3
+  - name: task_name_5
 """
-
 
 def test_project_yaml(project):
     out = ShrubService.generate_yaml(project)
-    assert EXPECTED_YAML1 in out, out
-    assert EXPECTED_YAML2 in out, out
+    assert EXPECTED_YAML1 in out
+    assert EXPECTED_YAML2 in out
+    assert EXPECTED_YAML3 in out
