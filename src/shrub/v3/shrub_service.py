@@ -5,6 +5,9 @@ from pydantic import BaseModel
 
 
 class ConfigDumper(yaml.SafeDumper):
+    # The max number of tags to flow.
+    FLOW_TAG_COUNT = 3
+
     # Represent multiline strings in the form:
     #     key: |
     #       multiline string
@@ -44,7 +47,7 @@ class ConfigDumper(yaml.SafeDumper):
         for item_key, item_value in mapping:
             node_key = self.represent_data(item_key)
 
-            if item_key == "tags":
+            if item_key == "tags" and len(item_value) <= self.FLOW_TAG_COUNT:
                 # Represent task tags using flow style to reduce line count:
                 #     - name: task-name
                 #       tags: [A, B, C]
@@ -86,31 +89,7 @@ class ConfigDumper(yaml.SafeDumper):
         if len(mapping) == 2 and "key" in mapping and "value" in mapping:
             flow_style = True
 
-        before = [
-            "name",
-            "display_name",
-            "command",
-            "type",
-            "run_on",
-            "tags",
-            "depends_on",
-            "binary",
-            "working_dir",
-        ]
-
-        after = [
-            "commands",
-            "args",
-        ]
-
-        ordered = {field: mapping.pop(field) for field in before if field in mapping}
-
-        suffix = {field: mapping.pop(field) for field in after if field in mapping}
-
-        ordered.update(sorted(mapping.items()))
-        ordered.update(suffix)
-
-        return self.represent_special_mapping(tag, ordered.items(), flow_style)
+        return self.represent_special_mapping(tag, mapping.items(), flow_style)
 
     # Ensure a block sequence is indented relative to its parent node::
     #     key:
