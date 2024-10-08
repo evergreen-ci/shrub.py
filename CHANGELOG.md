@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.5 - 2024-10-07
+- Updated README example to use v3 API
+
 ## 3.1.4 - 2024-09-30
 - Added command for generating github tokens
 
