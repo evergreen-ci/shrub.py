@@ -114,6 +114,7 @@ EXPECTED_YAML3 = """
   - name: task_name_5
 """
 
+
 def test_project_yaml(project):
     out = ShrubService.generate_yaml(project)
     assert EXPECTED_YAML1 in out
