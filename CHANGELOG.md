@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.6 - 2024-10-08
+## 3.2.0 - 2024-10-09
 - Added custom yaml output for `shrub.v3.shrub_service.ShrubService.generate_yaml`
 
 ## 3.1.5 - 2024-10-07

@@ -75,15 +75,15 @@ class ConfigDumper(yaml.SafeDumper):
 
         return node
 
+    # Represent updates mapping for expansions.update commands using flow
+    # style to reduce line count:
+    #    - command: expansions.update
+    #      params:
+    #        updates:
+    #          - { key: KEY, value: VALUE }
+    #          - { key: KEY, value: VALUE }
+    #          - { key: KEY, value: VALUE }
     def represent_mapping(self, tag, mapping, flow_style=False):
-        # Represent updates mapping for expansions.update commands using flow
-        # style to reduce line count:
-        #    - command: expansions.update
-        #      params:
-        #        updates:
-        #          - { key: KEY, value: VALUE }
-        #          - { key: KEY, value: VALUE }
-        #          - { key: KEY, value: VALUE }
         if len(mapping) == 2 and "key" in mapping and "value" in mapping:
             flow_style = True
 
