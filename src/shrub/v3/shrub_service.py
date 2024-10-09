@@ -75,8 +75,6 @@ class ConfigDumper(yaml.SafeDumper):
 
         return node
 
-    # Make an effort to order fields in a readable manner.
-    # Ordering applies to *all* mappings regardless of the parent node.
     def represent_mapping(self, tag, mapping, flow_style=False):
         # Represent updates mapping for expansions.update commands using flow
         # style to reduce line count:
