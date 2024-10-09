@@ -3,6 +3,8 @@
 import json
 import pytest
 
+from pydantic import BaseModel, ConfigDict
+from yaml.representer import RepresenterError
 from shrub.v3.evg_task import EvgTask, EvgTaskDependency
 from shrub.v3.evg_build_variant import BuildVariant, DisplayTask
 from shrub.v3.evg_command import FunctionCall, shell_exec, subprocess_exec
@@ -120,3 +122,18 @@ def test_project_yaml(project):
     assert EXPECTED_YAML1 in out
     assert EXPECTED_YAML2 in out
     assert EXPECTED_YAML3 in out
+
+
+class CustomClass:
+    pass
+
+
+class UnsafeModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    prop: CustomClass
+
+
+def test_safe_yaml():
+    model = UnsafeModel(prop=CustomClass(), arbitrary_types_allowed=True)
+    with pytest.raises(RepresenterError):
+        ShrubService.generate_yaml(model)
