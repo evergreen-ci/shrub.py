@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.3.0 - 2024-10-10
+- Added `run_on`, `batchtime`, and `patchable` fields to `shrub.v3.evg_task.EvgTask`
+
 ## 3.2.0 - 2024-10-09
 - Added custom yaml output for `shrub.v3.shrub_service.ShrubService.generate_yaml`
 
