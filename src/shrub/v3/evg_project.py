@@ -25,7 +25,7 @@ class EvgParameter(BaseModel):
     """
 
     key: str
-    value: Optional[str]
+    value: Optional[str] = None
     description: str
 
 
@@ -75,8 +75,8 @@ class EvgProject(BaseModel):
     * parameters: Definition of available patch build parameters for the project.
     """
 
-    buildvariants: Optional[List[BuildVariant]]
-    tasks: Optional[List[EvgTask]]
+    buildvariants: Optional[List[BuildVariant]] = None
+    tasks: Optional[List[EvgTask]] = None
     functions: Optional[Dict[str, FunctionDefinition]] = None
     task_groups: Optional[List[EvgTaskGroup]] = None
     pre: Optional[List[EvgCommand]] = None
