@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.3.1 - 2024-10-16
+- Added default value `None` to optional fields for pydantic 2.0 compatibility.
+
 ## 3.3.0 - 2024-10-10
 - Added `run_on`, `batchtime`, and `patchable` fields to `shrub.v3.evg_task.EvgTask`
 
