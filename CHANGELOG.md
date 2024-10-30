@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.4.0 - 2024-10-30
+- Address Python 3.12+ compatibility issues.
+- Address pydantic v2 compatibility issues.
+- Raise minimum required Python version to 3.8.
+- Raise minimum required `pydantic` version to 2.0.
+
 ## 3.3.1 - 2024-10-16
 - Added default value `None` to optional fields for pydantic 2.0 compatibility.
 
