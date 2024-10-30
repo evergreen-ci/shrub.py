@@ -495,21 +495,6 @@ pytest = ">=3.5.0"
 toml = "*"
 
 [[package]]
-name = "pytest-flake8"
-version = "1.1.0"
-description = "pytest plugin to check FLAKE8 requirements"
-optional = false
-python-versions = "*"
-files = [
-    {file = "pytest-flake8-1.1.0.tar.gz", hash = "sha256:358d449ca06b80dbadcb43506cd3e38685d273b4968ac825da871bd4cc436202"},
-    {file = "pytest_flake8-1.1.0-py2.py3-none-any.whl", hash = "sha256:f1b19dad0b9f0aa651d391c9527ebc20ac1a0f847aa78581094c747462bfa182"},
-]
-
-[package.dependencies]
-flake8 = ">=3.5"
-pytest = ">=3.5"
-
-[[package]]
 name = "pytest-mypy"
 version = "0.8.1"
 description = "Mypy static type checker plugin for Pytest"
@@ -663,4 +648,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1"
-content-hash = "99a296884f20e043c4b756e2619d16bbdcfa5f8376494b84534a517379f19b00"
+content-hash = "44857f623d6a227ba34dba183605720226ff7a4c39c0f01d00aa40a124ca36f6"
