@@ -18,6 +18,7 @@ class EvgTaskGroup(BaseModel):
     * setup_group_can_fail_task: Whether a task group setup failure should make a task fail.
     * setup_group_timeout_secs: Time to wait until task group setup commands are stopped.
     * setup_group: List of commands to run before any task is run.
+    * teardown_group_timeout_secs: Time to wait until task group teardown commands are stopped.
     * teardown_group: List of commands to run after tasks finish on a host.
     * setup_task_can_fail_task: Whether a task setup failure should make a task fail.
     * setup_task_timeout_secs: Time to wait until setup commands are stopped.
@@ -37,6 +38,7 @@ class EvgTaskGroup(BaseModel):
     setup_group_timeout_secs: Optional[int] = None
     setup_group: Optional[List[EvgCommand]] = None
     # teardown_group_can_fail_task: Optional[int] = None # DEVPROD-12438
+    teardown_group_timeout_secs: Optional[int] = None
     teardown_group: Optional[List[EvgCommand]] = None
     setup_task_can_fail_task: Optional[bool] = None
     setup_task_timeout_secs: Optional[int] = None
