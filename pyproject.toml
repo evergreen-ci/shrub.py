@@ -14,7 +14,7 @@ packages = [
 python = ">=3.8.1"
 PyYaml = "^5.1 || ^6.0"
 dataclasses = {version = "^0.7", python = "3.6.*"}
-pydantic = "^1.8 || ^2.0"
+pydantic = "^2.0"
 typing-extensions = "^4"
 croniter = "^1.4.1"
 
