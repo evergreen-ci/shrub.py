@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Any, Dict, Optional, Union, List
 from typing_extensions import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 AvailableCommands = Literal[
@@ -198,9 +198,11 @@ class BuiltInCommand(BaseModel):
             kwargs["params"] = {k: v for k, v in kwargs["params"].items() if v is not None}
         super().__init__(**kwargs)
 
-    class Config:
-        populate_by_name = True
-        use_enum_values = True
+    model_config = ConfigDict(
+        populate_by_name=True,
+        use_enum_values=True,
+        validate_default=True,
+    )
 
 
 EvgCommand = Union[
