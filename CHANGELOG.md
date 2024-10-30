@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.3.2 - 2024-10-16
+## 3.3.2 - 2024-10-30
 - Revert support for `batchtime` field in `shrub.v3.evg_task.EvgTask`
 
 ## 3.3.1 - 2024-10-16
