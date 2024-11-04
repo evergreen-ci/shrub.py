@@ -37,7 +37,6 @@ class EvgTaskGroup(BaseModel):
     setup_group_can_fail_task: Optional[bool] = None
     setup_group_timeout_secs: Optional[int] = None
     setup_group: Optional[List[EvgCommand]] = None
-    # teardown_group_can_fail_task: Optional[int] = None # DEVPROD-12438
     teardown_group_timeout_secs: Optional[int] = None
     teardown_group: Optional[List[EvgCommand]] = None
     setup_task_can_fail_task: Optional[bool] = None
