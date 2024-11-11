@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.3.2 - 2024-10-30
+- Revert support for `batchtime` field in `shrub.v3.evg_task.EvgTask`
+
 ## 3.3.1 - 2024-10-16
 - Added default value `None` to optional fields for pydantic 2.0 compatibility.
 
