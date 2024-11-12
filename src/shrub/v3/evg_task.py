@@ -54,7 +54,7 @@ class EvgTask(BaseModel):
     tags: Optional[List[str]] = None
     disable: Optional[bool] = None
     patchable: Optional[bool] = None
-    batchtime: Optional[int] = None
+    # batchtime: Optional[int] = None # DEVPROD-12032
     stepback: Optional[bool] = None
 
     def get_task_ref(self, distros: Optional[List[str]] = None) -> EvgTaskRef:
