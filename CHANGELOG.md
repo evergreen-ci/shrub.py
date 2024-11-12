@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.4.0 - 2024-10-30
+- Added additional `*_can_fail_task` and `*_timeout_secs` fields to `shrub.v3.evg_task_group.EvgTaskGroup`.
+- Restrict the type of `*_timeout_secs` fields to `Optional[int]` instead of `Optional[Union[int, str]]`.
+
 ## 3.3.2 - 2024-10-30
 - Revert support for `batchtime` field in `shrub.v3.evg_task.EvgTask`
 
