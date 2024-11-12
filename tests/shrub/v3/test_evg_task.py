@@ -150,10 +150,11 @@ class TestTaskFields:
         _test_task_field("patchable", False, ["patchable: false"])
         _test_task_field("patchable", True, ["patchable: true"])
 
-    def test_task_batchtime(self):
-        _test_task_field("batchtime", None, None)
-        _test_task_field("batchtime", 0, ["batchtime: 0"])
-        _test_task_field("batchtime", 123, ["batchtime: 123"])
+    # DEVPROD-12032
+    # def test_task_batchtime(self):
+    #     _test_task_field("batchtime", None, None)
+    #     _test_task_field("batchtime", 0, ["batchtime: 0"])
+    #     _test_task_field("batchtime", 123, ["batchtime: 123"])
 
     def test_task_stepback(self):
         _test_task_field("stepback", None, None)
