@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.6.0 - 2024-11-18
+- Address Python 3.12+ compatibility issues.
+- Address pydantic v2 compatibility issues.
+- Raise minimum required Python version to 3.8.
+- Raise minimum required `pydantic` version to 2.0.
+
 ## 3.5.0 - 2024-11-12
 - Add `batchtime` and `depends_on` fields to `shrub.v3.evg_task.EvgTaskRef`.
 

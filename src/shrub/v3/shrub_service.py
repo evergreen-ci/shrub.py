@@ -116,7 +116,7 @@ class ShrubService:
         :return: YAML version of given shrub configuration.
         """
         return yaml.dump(
-            shrub_config.dict(exclude_none=True, exclude_unset=True, by_alias=True),
+            shrub_config.model_dump(exclude_none=True, exclude_unset=True, by_alias=True),
             Dumper=ConfigDumper,
             default_flow_style=False,
             width=float("inf"),
@@ -130,4 +130,4 @@ class ShrubService:
         :param shrub_config: Shrub configuration to generate.
         :return: JSON version of given shrub configuration.
         """
-        return shrub_config.json(exclude_none=True, exclude_unset=True, by_alias=True)
+        return shrub_config.model_dump_json(exclude_none=True, exclude_unset=True, by_alias=True)

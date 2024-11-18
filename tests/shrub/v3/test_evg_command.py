@@ -24,7 +24,7 @@ class TestBuiltInCommands:
             updates=[under_test.KeyValueParam(key=f"key_{i}", value=f"value_{i}") for i in range(5)]
         )
 
-        assert cmd.dict(exclude_none=True, exclude_unset=True) == {
+        assert cmd.model_dump(exclude_none=True, exclude_unset=True) == {
             "command": "expansions.update",
             "params": {
                 "updates": [
