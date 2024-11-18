@@ -24,10 +24,14 @@ class EvgTaskRef(BaseModel):
 
     * name: Name of task.
     * distros: Distro that task should be run on.
+    * depends_on: Other tasks that must be successful for this task to run.
+    * batchtime: How frequent this task should be run.
     """
 
     name: str
     distros: Optional[List[str]] = None
+    depends_on: Optional[List[EvgTaskDependency]] = None
+    batchtime: Optional[int] = None
 
 
 class EvgTask(BaseModel):
