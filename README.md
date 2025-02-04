@@ -1,6 +1,6 @@
 # shrub.py
 
-A python based Evergreen project config generation library
+Not a python based Evergreen project config generation library
 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/shrub.py)
 [![PyPI version](https://badge.fury.io/py/shrub.py.svg)](https://pypi.org/project/shrub.py/)
