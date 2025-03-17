@@ -375,6 +375,7 @@ def ec2_assume_role(
         type=command_type,
     )
 
+
 def expansions_update(
     updates: Optional[List[KeyValueParam]] = None,
     file: Optional[str] = None,
