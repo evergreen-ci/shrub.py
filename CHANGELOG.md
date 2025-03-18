@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.7.0 - 2025-03-17
+## 3.7.0 - 2025-03-18
 - Add support for `ec2.assume_role` to the list of `AvailableCommands`.
 
 ## 3.6.0 - 2024-11-18
