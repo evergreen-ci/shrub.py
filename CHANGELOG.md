@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.7.0 - 2025-03-18
+- Add support for `ec2.assume_role` to the list of `AvailableCommands`.
+
 ## 3.6.0 - 2024-11-18
 - Address Python 3.12+ compatibility issues.
 - Address pydantic v2 compatibility issues.

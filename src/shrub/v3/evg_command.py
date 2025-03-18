@@ -14,6 +14,7 @@ AvailableCommands = Literal[
     "attach.results",
     "attach.xunit_results",
     "downstream_expansions.set",
+    "ec2.assume_role",
     "expansions.update",
     "expansions.write",
     "generate.tasks",
@@ -346,6 +347,31 @@ def downstream_expansions_set(
     return BuiltInCommand(
         command="downstream_expansions.set",
         params={"file": file},
+        type=command_type,
+    )
+
+
+def ec2_assume_role(
+    role_arn: str,
+    policy: Optional[str] = None,
+    duration_seconds: Optional[int] = None,
+    command_type: Optional[EvgCommandType] = None,
+) -> BuiltInCommand:
+    """
+    Command to call the aws assumeRole API and returns credentials as expansions.
+
+    :param role_arn: string ARN of the role you want to assume.
+    :param policy: string in JSON format that you want to use as an inline session policy.
+    :param duration_seconds: Int in seconds of how long the returned credentials will be valid.
+    :return: ec2.assume_role command.
+    """
+    return BuiltInCommand(
+        command="ec2.assume_role",
+        params={
+            "role_arn": role_arn,
+            "policy": policy,
+            "duration_seconds": duration_seconds,
+        },
         type=command_type,
     )
 
