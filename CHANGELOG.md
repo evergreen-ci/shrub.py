@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.8.0 - 2025-03-28
+## 3.8.0 - 2025-04-01
 - Add missing fields to `EvgTaskDependency`.
 
 ## 3.7.0 - 2025-03-18
