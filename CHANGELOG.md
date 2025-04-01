@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.8.0 - 2025-04-01
+- Add missing fields to `EvgTaskDependency`.
+
 ## 3.7.0 - 2025-03-18
 - Add support for `ec2.assume_role` to the list of `AvailableCommands`.
 

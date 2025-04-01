@@ -16,6 +16,9 @@ class EvgTaskDependency(BaseModel):
 
     name: str
     variant: Optional[str] = None
+    status: Optional[str] = None
+    patch_optional: Optional[bool] = None
+    omit_generated_tasks: Optional[bool] = None
 
 
 class EvgTaskRef(BaseModel):
