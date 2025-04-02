@@ -712,6 +712,7 @@ def s3_get(
     extract_to: Optional[str] = None,
     build_variants: Optional[List[str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    aws_session_token: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to get a file from S3.
@@ -721,6 +722,7 @@ def s3_get(
     :param remote_file: Path to file in S3.
     :param aws_key: AWS key to use for authentication.
     :param aws_secret: AWS secret to use for authentication.
+    :param aws_session_token: AWS session token to use for authentication.
     :param bucket: S3 Bucket where file is stored.
     :param build_variants: List of build variants command should be run on.
     :param command_type: How failures should be reported.
@@ -732,6 +734,7 @@ def s3_get(
             "remote_file": remote_file,
             "aws_key": aws_key,
             "aws_secret": aws_secret,
+            "aws_session_token": aws_session_token,
             "bucket": bucket,
             "local_file": local_file,
             "extract_to": extract_to,
@@ -756,6 +759,7 @@ def s3_put(
     region: Optional[str] = None,
     visibility: Optional[S3Visibility] = None,
     command_type: Optional[EvgCommandType] = None,
+    aws_session_token: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to upload a file to S3.
@@ -766,6 +770,7 @@ def s3_put(
     :param remote_file: Location in S3 to upload files to.
     :param aws_key: AWS key to use for authentication.
     :param aws_secret: AWS secret to use for authentication.
+    :param aws_session_token: AWS session token to use for authentication.
     :param bucket: S3 bucket to upload to.
     :param permissions: Permissions to upload with.
     :param content_type: Content type of files.
@@ -782,6 +787,7 @@ def s3_put(
             "remote_file": remote_file,
             "aws_key": aws_key,
             "aws_secret": aws_secret,
+            "aws_session_token": aws_session_token,
             "bucket": bucket,
             "local_file": local_file,
             "permissions": permissions,
@@ -802,6 +808,7 @@ def s3_copy(
     aws_key: str,
     aws_secret: str,
     command_type: Optional[EvgCommandType] = None,
+    aws_session_token: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to copy files in S3.
@@ -809,12 +816,18 @@ def s3_copy(
     :param s3_copy_files: Description of how files should be copied.
     :param aws_key: AWS key to use for authentication.
     :param aws_secret: AWS secret to use for authentication.
+    :param aws_session_token: AWS session token to use for authentication.
     :param command_type: How failures should be reported.
     :return: s3.copy command.
     """
     return BuiltInCommand(
         command="s3Copy.copy",
-        params={"s3_copy_files": s3_copy_files, "aws_key": aws_key, "aws_secret": aws_secret},
+        params={
+            "s3_copy_files": s3_copy_files,
+            "aws_key": aws_key,
+            "aws_secret": aws_secret,
+            "aws_session_token": aws_session_token,
+        },
         type=command_type,
     )
 
