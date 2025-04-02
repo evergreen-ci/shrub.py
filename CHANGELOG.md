@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.9.0 - 2025-04-02
+- Add support for ``aws_session_token`` in s3 commands.
+
 ## 3.8.0 - 2025-04-01
 - Add missing fields to `EvgTaskDependency`.
 
