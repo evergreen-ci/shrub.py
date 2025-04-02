@@ -822,7 +822,12 @@ def s3_copy(
     """
     return BuiltInCommand(
         command="s3Copy.copy",
-        params={"s3_copy_files": s3_copy_files, "aws_key": aws_key, "aws_secret": aws_secret, "aws_session_token": aws_session_token},
+        params={
+            "s3_copy_files": s3_copy_files,
+            "aws_key": aws_key,
+            "aws_secret": aws_secret,
+            "aws_session_token": aws_session_token,
+        },
         type=command_type,
     )
 
