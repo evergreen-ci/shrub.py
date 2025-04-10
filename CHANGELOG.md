@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.10.0 - 2025-04-10
+- Relax field requirements in ``perf_send``.
+
 ## 3.9.0 - 2025-04-02
 - Add support for ``aws_session_token`` in s3 commands.
 

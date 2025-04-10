@@ -670,10 +670,10 @@ def key_val_inc(
 
 def perf_send(
     file: str,
-    aws_key: str,
-    aws_secret: str,
-    bucket: str,
-    prefix: str,
+    aws_key: Optional[str] = None,
+    aws_secret: Optional[str] = None,
+    bucket: Optional[str] = None,
+    prefix: Optional[str] = None,
     region: Optional[str] = None,
     command_type: Optional[EvgCommandType] = None,
 ) -> BuiltInCommand:

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shrub.py"
-version = "3.9.0"
+version = "3.10.0"
 description = "Library for creating evergreen configurations"
 authors = ["DevProd Services & Integrations Team <devprod-si-team@mongodb.com>"]
 license = "Apache-2.0"
