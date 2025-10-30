@@ -1,4 +1,5 @@
 """Evergreen models for commands."""
+
 from enum import Enum
 from typing import Any, Dict, Optional, Union, List
 from typing_extensions import Literal
@@ -183,12 +184,14 @@ class BuiltInCommand(BaseModel):
     * command: Name of command to call.
     * params: Value of parameters to pass to call.
     * type: How failures should be represented.
+    * display_name: A human-readable name for the command object
     * params_yaml: Value of parameters in yaml format.
     """
 
     command: AvailableCommands
     params: Optional[Dict[str, Any]] = None
     type: Optional[EvgCommandType] = None
+    display_name: Optional[str] = None
     params_yaml: Optional[str] = None
 
     def __init__(self, **kwargs: Dict[str, Any]) -> None:
