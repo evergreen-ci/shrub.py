@@ -223,6 +223,7 @@ def archive_targz_extract(
     destination: str,
     exclude_files: Optional[List[str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to extract an archived tgz file.
@@ -237,6 +238,7 @@ def archive_targz_extract(
         command="archive.targz_extract",
         params={"path": path, "destination": destination, "exclude_files": exclude_files},
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -246,6 +248,7 @@ def archive_targz_pack(
     include: List[str],
     exclude_files: Optional[List[str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to create an archived tgz file.
@@ -266,6 +269,7 @@ def archive_targz_pack(
             "exclude_files": exclude_files,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -275,6 +279,7 @@ def attach_artifacts(
     optional: Optional[bool] = None,
     ignore_artifacts_for_spawn: Optional[bool] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to attach files to the evergreen task results.
@@ -295,12 +300,14 @@ def attach_artifacts(
             "ignore_artifacts_for_spawn": ignore_artifacts_for_spawn,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
 def attach_results(
     file_location: str,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to attach test results to the task results.
@@ -313,6 +320,7 @@ def attach_results(
         command="attach.results",
         params={"file_location": file_location},
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -320,6 +328,7 @@ def attach_xunit_results(
     file: Optional[str] = None,
     files: Optional[List[str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to attach x-unit test results to the task results.
@@ -333,12 +342,14 @@ def attach_xunit_results(
         command="attach.xunit_results",
         params={"file": file, "files": files},
         type=command_type,
+        display_name=display_name,
     )
 
 
 def downstream_expansions_set(
     file: Optional[str] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command used by parent patches to pass key-value pairs to its children patches.
@@ -351,6 +362,7 @@ def downstream_expansions_set(
         command="downstream_expansions.set",
         params={"file": file},
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -359,6 +371,7 @@ def ec2_assume_role(
     policy: Optional[str] = None,
     duration_seconds: Optional[int] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to call the aws assumeRole API and returns credentials as expansions.
@@ -376,6 +389,7 @@ def ec2_assume_role(
             "duration_seconds": duration_seconds,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -385,6 +399,7 @@ def expansions_update(
     ignore_missing_file: Optional[bool] = None,
     env: Optional[Dict[str, str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to update expansions.
@@ -405,6 +420,7 @@ def expansions_update(
             "env": env,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -412,6 +428,7 @@ def expansions_write(
     file: str,
     redacted: Optional[bool] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to write expansion definitions to a file.
@@ -425,12 +442,14 @@ def expansions_write(
         command="expansions.write",
         params={"file": file, "redacted": redacted},
         type=command_type,
+        display_name=display_name,
     )
 
 
 def generate_tasks(
     files: List[str],
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to generate tasks dynamically.
@@ -443,6 +462,7 @@ def generate_tasks(
         command="generate.tasks",
         params={"files": files},
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -451,6 +471,7 @@ def git_get_project(
     token: Optional[str] = None,
     revisions: Optional[Dict[str, str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to get the git repository of a project.
@@ -465,12 +486,14 @@ def git_get_project(
         command="git.get_project",
         params={"directory": directory, "token": token, "revisions": revisions},
         type=command_type,
+        display_name=display_name,
     )
 
 
 def gotest_parse_files(
     files: List[str],
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Parameters to attach gotest test results to the task results.
@@ -483,6 +506,7 @@ def gotest_parse_files(
         command="gotest.parse_files",
         params={"files": files},
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -520,6 +544,7 @@ def host_create(
     stderr_file_name: Optional[str] = None,
     environment_vars: Optional[Dict[str, str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to create a host.
@@ -596,6 +621,7 @@ def host_create(
             "environment_vars": environment_vars,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -606,6 +632,7 @@ def host_list(
     path: Optional[str] = None,
     silent: Optional[bool] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to list hosts.
@@ -628,6 +655,7 @@ def host_list(
             "silent": silent,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -635,6 +663,7 @@ def json_send(
     file: str,
     name: str,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Send json data to the task results.
@@ -648,6 +677,7 @@ def json_send(
         command="json.send",
         params={"file": file, "name": name},
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -655,6 +685,7 @@ def key_val_inc(
     destination: str,
     key: str,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command for key/val increment.
@@ -668,6 +699,7 @@ def key_val_inc(
         command="keyval.inc",
         params={"destination": destination, "key": key},
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -679,6 +711,7 @@ def perf_send(
     prefix: Optional[str] = None,
     region: Optional[str] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Send perf data to cedar.
@@ -703,6 +736,7 @@ def perf_send(
             "region": region,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -716,6 +750,7 @@ def s3_get(
     build_variants: Optional[List[str]] = None,
     command_type: Optional[EvgCommandType] = None,
     aws_session_token: Optional[str] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to get a file from S3.
@@ -744,6 +779,7 @@ def s3_get(
             "build_variants": build_variants,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -803,6 +839,7 @@ def s3_put(
             "visibility": visibility,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -812,6 +849,7 @@ def s3_copy(
     aws_secret: str,
     command_type: Optional[EvgCommandType] = None,
     aws_session_token: Optional[str] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to copy files in S3.
@@ -832,6 +870,7 @@ def s3_copy(
             "aws_session_token": aws_session_token,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -850,6 +889,7 @@ def shell_exec(
     ignore_standard_error: Optional[bool] = None,
     redirect_standard_error_to_output: Optional[bool] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command for executing shell in a task.
@@ -888,6 +928,7 @@ def shell_exec(
             "redirect_standard_error_to_output": redirect_standard_error_to_output,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -909,6 +950,7 @@ def subprocess_exec(
     add_expansions_to_env: Optional[bool] = None,
     include_expansions_in_env: Optional[List[str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to run subprocess.exec.
@@ -953,6 +995,7 @@ def subprocess_exec(
             "include_expansions_in_env": include_expansions_in_env,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -977,6 +1020,7 @@ def subprocess_scripting(
     add_expansions_to_env: Optional[bool] = None,
     include_expansions_in_env: Optional[List[str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to run subprocess.scripting.
@@ -1029,6 +1073,7 @@ def subprocess_scripting(
             "include_expansions_in_env": include_expansions_in_env,
         },
         type=command_type,
+        display_name=display_name,
     )
 
 
@@ -1036,6 +1081,7 @@ def timeout_update(
     exec_timeout_secs: Optional[Union[int, str]] = None,
     timeout_secs: Optional[Union[int, str]] = None,
     command_type: Optional[EvgCommandType] = None,
+    display_name: Optional[str] = None,
 ) -> BuiltInCommand:
     """
     Command to update timeouts.
@@ -1049,4 +1095,5 @@ def timeout_update(
         command="timeout.update",
         params={"exec_timout_secs": exec_timeout_secs, "timeout_secs": timeout_secs},
         type=command_type,
+        display_name=display_name,
     )
