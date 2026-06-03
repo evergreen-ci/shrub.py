@@ -13,6 +13,8 @@ AvailableCommands = Literal[
     "attach.artifacts",
     "attach.results",
     "attach.xunit_results",
+    "cache.restore",
+    "cache.save",
     "downstream_expansions.set",
     "ec2.assume_role",
     "expansions.update",
@@ -329,6 +331,103 @@ def attach_xunit_results(
     return BuiltInCommand(
         command="attach.xunit_results",
         params={"file": file, "files": files},
+        type=command_type,
+    )
+
+
+def cache_restore(
+    name: str,
+    bucket: str,
+    remote_path: str,
+    key_expansions: List[str],
+    key_files: Optional[List[str]] = None,
+    aws_key: Optional[str] = None,
+    aws_secret: Optional[str] = None,
+    aws_session_token: Optional[str] = None,
+    role_arn: Optional[str] = None,
+    region: Optional[str] = None,
+    command_type: Optional[EvgCommandType] = None,
+) -> BuiltInCommand:
+    """
+    Command to restore a cache from S3.
+
+    :param name: Cache identifier (alphanumeric and dashes only).
+    :param bucket: S3 bucket holding the cache.
+    :param remote_path: S3 key prefix under which caches are stored.
+    :param key_expansions: Expansion values folded into the cache key.
+    :param key_files: File paths whose contents are folded into the cache key.
+    :param aws_key: AWS access key (required if role_arn not set).
+    :param aws_secret: AWS secret key (required if role_arn not set).
+    :param aws_session_token: Optional AWS session token for temporary credentials.
+    :param role_arn: ARN to assume for S3 access (mutually exclusive with static credentials).
+    :param region: S3 region (defaults to us-east-1).
+    :param command_type: How failures should be reported.
+    :return: cache.restore command.
+    """
+    return BuiltInCommand(
+        command="cache.restore",
+        params={
+            "name": name,
+            "bucket": bucket,
+            "remote_path": remote_path,
+            "key_expansions": key_expansions,
+            "key_files": key_files,
+            "aws_key": aws_key,
+            "aws_secret": aws_secret,
+            "aws_session_token": aws_session_token,
+            "role_arn": role_arn,
+            "region": region,
+        },
+        type=command_type,
+    )
+
+
+def cache_save(
+    name: str,
+    bucket: str,
+    remote_path: str,
+    key_expansions: List[str],
+    paths: List[str],
+    key_files: Optional[List[str]] = None,
+    aws_key: Optional[str] = None,
+    aws_secret: Optional[str] = None,
+    aws_session_token: Optional[str] = None,
+    role_arn: Optional[str] = None,
+    region: Optional[str] = None,
+    command_type: Optional[EvgCommandType] = None,
+) -> BuiltInCommand:
+    """
+    Command to save a cache to S3.
+
+    :param name: Cache identifier (alphanumeric and dashes only).
+    :param bucket: S3 bucket to store the cache in.
+    :param remote_path: S3 key prefix under which caches are stored.
+    :param key_expansions: Expansion values folded into the cache key.
+    :param paths: File/directory paths (relative to working directory) to bundle into the cache.
+    :param key_files: File paths whose contents are folded into the cache key.
+    :param aws_key: AWS access key (required if role_arn not set).
+    :param aws_secret: AWS secret key (required if role_arn not set).
+    :param aws_session_token: Optional AWS session token for temporary credentials.
+    :param role_arn: ARN to assume for S3 access (mutually exclusive with static credentials).
+    :param region: S3 region (defaults to us-east-1).
+    :param command_type: How failures should be reported.
+    :return: cache.save command.
+    """
+    return BuiltInCommand(
+        command="cache.save",
+        params={
+            "name": name,
+            "bucket": bucket,
+            "remote_path": remote_path,
+            "key_expansions": key_expansions,
+            "paths": paths,
+            "key_files": key_files,
+            "aws_key": aws_key,
+            "aws_secret": aws_secret,
+            "aws_session_token": aws_session_token,
+            "role_arn": role_arn,
+            "region": region,
+        },
         type=command_type,
     )
 
