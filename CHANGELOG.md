@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.11.0 - 2026-06-04
+- Add support for `cache.save` and `cache.restore` commands.
+
 ## 3.10.0 - 2025-04-10
 - Relax field requirements in ``perf_send``.
 
