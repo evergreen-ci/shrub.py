@@ -1,7 +1,10 @@
 """Unit tests for evg_project.py."""
+
 import pytest
 
 import shrub.v3.evg_project as under_test
+from shrub.v3.evg_command import BuiltInCommand
+from shrub.v3.evg_task import EvgTask
 
 
 class TestGetRepositoryName:
@@ -19,3 +22,37 @@ class TestGetRepositoryName:
         )
 
         assert module.get_repository_name() == repo_name
+
+
+def test_evg_project_command_display_name():
+    """Test that a project's tasks' commands' displaly names are included in model serialization"""
+    proj = under_test.EvgProject(
+        tasks=[
+            EvgTask(
+                name="my-task",
+                commands=[
+                    BuiltInCommand(
+                        command="subprocess.exec",
+                        type="setup",
+                        params={},
+                        display_name="bar",
+                    )
+                ],
+            )
+        ]
+    )
+    assert proj.model_dump(exclude_unset=True) == {
+        "tasks": [
+            {
+                "name": "my-task",
+                "commands": [
+                    {
+                        "command": "subprocess.exec",
+                        "type": "setup",
+                        "params": {},
+                        "display_name": "bar",
+                    }
+                ],
+            }
+        ]
+    }

@@ -155,3 +155,19 @@ class TestBuiltInCommands:
                 ]
             },
         }
+
+    def test_display_name(self):
+        """Test that the display_name property is serialized"""
+        cmd = under_test.BuiltInCommand(
+            command="subprocess.exec",
+            params={},
+            type="setup",
+            display_name="foo",
+        )
+        data = cmd.model_dump(exclude_none=True)
+        assert data == {
+            "command": "subprocess.exec",
+            "params": {},
+            "type": "setup",
+            "display_name": "foo",
+        }
