@@ -1,5 +1,6 @@
+from shrub.v3.evg_build_variant import BuildVariant
 from shrub.v3.evg_project import EvgProject
-from shrub.v3.evg_task import EvgTask, EvgTaskDependency
+from shrub.v3.evg_task import EvgTask, EvgTaskDependency, EvgTaskRef
 from shrub.v3.shrub_service import ShrubService
 from shrub.v3.evg_command import FunctionCall, subprocess_exec
 
@@ -150,6 +151,27 @@ class TestTaskFields:
         _test_task_field("patchable", False, ["patchable: false"])
         _test_task_field("patchable", True, ["patchable: true"])
 
+    def test_task_allowed_requesters(self):
+        _test_task_field("allowed_requesters", None, None)
+        _test_task_field("allowed_requesters", [], ["allowed_requesters: []"])
+        _test_task_field(
+            "allowed_requesters",
+            ["commit"],
+            [
+                "allowed_requesters:",
+                "- commit",
+            ],
+        )
+        _test_task_field(
+            "allowed_requesters",
+            ["commit", "patch"],
+            [
+                "allowed_requesters:",
+                "- commit",
+                "- patch",
+            ],
+        )
+
     # DEVPROD-12032
     # def test_task_batchtime(self):
     #     _test_task_field("batchtime", None, None)
@@ -160,3 +182,18 @@ class TestTaskFields:
         _test_task_field("stepback", None, None)
         _test_task_field("stepback", False, ["stepback: false"])
         _test_task_field("stepback", True, ["stepback: true"])
+
+
+class TestTaskRefFields:
+    def test_task_ref_allowed_requesters(self):
+        task_ref = EvgTaskRef(name="task name", allowed_requesters=["commit"])
+        variant = BuildVariant(name="variant", tasks=[task_ref])
+        out = ShrubService.generate_yaml(EvgProject(buildvariants=[variant], tasks=[]))
+        assert "allowed_requesters:" in out
+        assert "- commit" in out
+
+    def test_task_ref_allowed_requesters_absent_when_unset(self):
+        task_ref = EvgTaskRef(name="task name")
+        variant = BuildVariant(name="variant", tasks=[task_ref])
+        out = ShrubService.generate_yaml(EvgProject(buildvariants=[variant], tasks=[]))
+        assert "allowed_requesters" not in out

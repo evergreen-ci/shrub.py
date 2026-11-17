@@ -29,12 +29,14 @@ class EvgTaskRef(BaseModel):
     * distros: Distro that task should be run on.
     * depends_on: Other tasks that must be successful for this task to run.
     * batchtime: How frequent this task should be run.
+    * allowed_requesters: Requester types allowed to run this task on this variant (e.g. "commit", "patch", "github_pr", "github_tag", "trigger", "ad_hoc", "github_merge_queue").
     """
 
     name: str
     distros: Optional[List[str]] = None
     depends_on: Optional[List[EvgTaskDependency]] = None
     batchtime: Optional[int] = None
+    allowed_requesters: Optional[List[str]] = None
 
 
 class EvgTask(BaseModel):
@@ -49,6 +51,7 @@ class EvgTask(BaseModel):
     * tags: List of tags to attach to task.
     * disable: Prevent this task from running at all.
     * patchable: Whether this task can run in patch builds.
+    * allowed_requesters: Requester types allowed to run this task (e.g. "commit", "patch", "github_pr", "github_tag", "trigger", "ad_hoc", "github_merge_queue").
     * batchtime: How frequent this task should be run.
     * stepback: Whether this task should run stepback.
     """
@@ -61,6 +64,7 @@ class EvgTask(BaseModel):
     tags: Optional[List[str]] = None
     disable: Optional[bool] = None
     patchable: Optional[bool] = None
+    allowed_requesters: Optional[List[str]] = None
     # batchtime: Optional[int] = None # DEVPROD-12032
     stepback: Optional[bool] = None
 

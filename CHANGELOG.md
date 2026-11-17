@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.12.0 - 2026-11-17
+- Add `allowed_requesters` field to `shrub.v3.evg_task.EvgTask`, `shrub.v3.evg_task.EvgTaskRef`, and `shrub.v3.evg_build_variant.BuildVariant`.
+
 ## 3.11.0 - 2026-06-04
 - Add support for `cache.save` and `cache.restore` commands.
 
