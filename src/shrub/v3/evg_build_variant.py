@@ -32,6 +32,7 @@ class BuildVariant(BaseModel):
     * expansions: Definition of expansions for this build variant.
     * stepback: If stepback should be run on this build variant.
     * module: List of modules to include in this build variant.
+    * allowed_requesters: Requester types allowed to run tasks on this build variant (e.g. "commit", "patch", "github_pr", "github_tag", "trigger", "ad_hoc", "github_merge_queue").
     """
 
     name: str
@@ -45,3 +46,4 @@ class BuildVariant(BaseModel):
     stepback: Optional[bool] = None
     modules: Optional[List[str]] = None
     tags: Optional[List[str]] = None
+    allowed_requesters: Optional[List[str]] = None
